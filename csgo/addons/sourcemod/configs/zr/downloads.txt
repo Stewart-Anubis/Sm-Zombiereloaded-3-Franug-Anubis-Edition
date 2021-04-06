@@ -21,51 +21,6 @@ materials/overlays/zr/humans_win.vmt
 materials/overlays/zr/zvision.vtf
 materials/overlays/zr/zvision.vmt
 
-// csgo zombie sounds
-
-sound/zr/zombie_pain1.mp3
-sound/zr/zombie_pain2.mp3
-sound/zr/zombie_pain3.mp3
-sound/zr/zombie_pain4.mp3
-sound/zr/zombie_pain5.mp3
-sound/zr/zombie_pain6.mp3
-
-sound/zr/zombie_voice_idle1.mp3
-sound/zr/zombie_voice_idle2.mp3
-sound/zr/zombie_voice_idle3.mp3
-sound/zr/zombie_voice_idle4.mp3
-sound/zr/zombie_voice_idle5.mp3
-sound/zr/zombie_voice_idle6.mp3
-sound/zr/zombie_voice_idle7.mp3
-sound/zr/zombie_voice_idle8.mp3
-sound/zr/zombie_voice_idle9.mp3
-sound/zr/zombie_voice_idle10.mp3
-sound/zr/zombie_voice_idle11.mp3
-sound/zr/zombie_voice_idle12.mp3
-sound/zr/zombie_voice_idle13.mp3
-sound/zr/zombie_voice_idle14.mp3
-
-sound/zr/zombie_die1.mp3
-sound/zr/zombie_die2.mp3
-sound/zr/zombie_die3.mp3
-
-sound/ambient/zr/zr_ambience.mp3
-sound/zr/fz_scream1.mp3
-
-// Round End Sounds Humans Win
-
-sound/roundend/humanswin/humans_win1.mp3
-sound/roundend/humanswin/humans_win2.mp3
-sound/roundend/humanswin/humans_win3.mp3
-sound/roundend/humanswin/humans_win4.mp3
-
-// Round End Sounds Zombie Wim
-
-sound/roundend/zombiewin/zombie_win1.mp3
-sound/roundend/zombiewin/zombie_win2.mp3
-sound/roundend/zombiewin/zombie_win3.mp3
-sound/roundend/zombiewin/zombie_win4.mp3
-
 // Zumbi_Classico
 
 models/player/mapeadores/morell/ghoul/ghoulfix.dx90.vtx

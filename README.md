@@ -1,11 +1,11 @@
 # sm-zombiereloaded-3-Franug-Anubis-Edition
 ### Improved version of zombiereloaded plugin with support for CS:GO and CS:S
  
-* Test & Compile, SouceMod 1.10.0-6490
+* Test & Compile, SouceMod 1.10.0-6492
 * Sorry for my English.
 
 * Author Greyscale | Richard Helgeby and Franc1sco franug, Anubis Edition
-* Version = 3.4.1-A Anubis edition
+* Version = 3.6 -A Franug,Anubis edition
 
 ### Natives implemented:
 
@@ -20,6 +20,23 @@
 "zr_zombies_sounds",	 "1",	"Enable/disable togle sounds Zombies. Default '1'"
 "zr_zombies_sounds_enable",	 "1",	"Enable/disable sounds Zombies. Default '1'"
 "zr_volume_default",			 "0.5",	"Default volume Zr Sounds. Default '0.5'"
+
+### Sounds-General  ...
+
+Added the possibility to change the location of the system's sound folders.
+
+* Added the possibility to change the location of the system's sound folders.
+* To upload the sound, simply replace the file "By the same name as the previous file", enter the folder name, and upload the corresponding Cvar to the new folder.
+* Changing the path of folders avoids file conflicts with the same name as competing servers.
+
+# New Cvars
+
+* zr_countdown_files_mam - "zr/countdown/" - Folder referring to the counter sounds. Man.
+* zr_countdown_files_woman - "zr/countdown/female/" - Folder referring to the counter sounds. Woman.
+* zr_files_humans_win - "roundend/humanswin/" - Folder referring to the sounds of the round end. Humans win.
+* zr_files_zombie_win - "roundend/zombiewin/" - Folder referring to the sounds of the round end. Zombie win.
+* zr_files_zombie_sounds - "zr/" - Folder referring to the sounds of zombies.
+
 
 ### Countdown-Male and Female Voice, Customer Selects.
 "zr_voice_count_default",			 "1",	"Default countdown voice. ['1' = Mem  | '2' = Woman!] Default 1"

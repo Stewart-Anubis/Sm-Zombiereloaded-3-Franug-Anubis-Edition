@@ -200,7 +200,12 @@ enum CvarsList
 	Handle:CVAR_ROUNDEND_SOUNDS_DEFAULT,
 	Handle:CVAR_VOICECOUNT_DEFAULT,
 	Handle:CVAR_VOLUME_DEFAULT,
-	Handle:CVAR_KNOCKBACK_MULTIPLIER
+	Handle:CVAR_KNOCKBACK_MULTIPLIER,
+	Handle:CVAR_COUNTDOWN_MAM_PATH,
+	Handle:CVAR_COUNTDOWN_WOMAN_PATH,
+	Handle:CVAR_ROUNDEND_HUMANS_WIN,
+	Handle:CVAR_ROUNDEND_ZOMBIE_WIN,
+	Handle:CVAR_ZOMBIES_SOUNDS_FILES
 }
 
 /**
@@ -359,7 +364,7 @@ CvarsCreate()
 	g_hCvarsList[CVAR_INFECT_FIREBALL]				  =	CreateConVar("zr_infect_fireball",			 "1",								"Spawn a fireball effect around player on infection. [Dependency: zr_infect_explosion]");
 	g_hCvarsList[CVAR_INFECT_SMOKE]					 =	CreateConVar("zr_infect_smoke",				"1",								"Spawn a smoke cloud effect around player on infection. [Dependency: zr_infect_explosion]");
 	g_hCvarsList[CVAR_INFECT_SPARKS]					=	CreateConVar("zr_infect_sparks",			   "1",								"Emit sparks from player on infection. [Dependency: zr_infect_explosion]");
-	g_hCvarsList[CVAR_INFECT_SOUND]					 =	CreateConVar("zr_infect_sound",				"npc/fast_zombie/fz_scream1.wav",   "Sound, relative to \"sound\" folder, to play from player on infection. ['\"\"' = No sound]");
+	g_hCvarsList[CVAR_INFECT_SOUND]					 =	CreateConVar("zr_infect_sound",				"fz_scream1.mp3",   "Sound, relative to [zr_files_zombie_sounds] folder, to play from player on infection. ['\"\"' = No sound]");
 	g_hCvarsList[CVAR_INFECT_ESPLASH]				   =	CreateConVar("zr_infect_esplash",			  "1",								"Emit an energy splash from player on infection.");
 	g_hCvarsList[CVAR_INFECT_SHAKE]					 =	CreateConVar("zr_infect_shake",				"1",								"Shake player's view on infect.");
 	g_hCvarsList[CVAR_INFECT_SHAKE_AMP]				 =	CreateConVar("zr_infect_shake_amp",			"15.0",							 "Amplitude of shaking effect. [Dependency: zr_infect_shake]");
@@ -566,6 +571,14 @@ CvarsCreate()
 	g_hCvarsList[CVAR_ROUNDEND_SOUNDS_DEFAULT]					  =	CreateConVar("zr_roundend_sounds_enable",	 "1",	"Enable/disable sounds roundend. Default '1'");	
 	g_hCvarsList[CVAR_VOICECOUNT_DEFAULT]							  =	CreateConVar("zr_voice_count_default",			 "1",	"Default countdown voice. ['1' = Mem  | '2' = Woman!] Default 1");
 	g_hCvarsList[CVAR_VOLUME_DEFAULT]							  =	CreateConVar("zr_volume_default",			 "0.5",	"Default volume Zr Sounds. Default '0.5'");
+
+	g_hCvarsList[CVAR_COUNTDOWN_MAM_PATH]							  =	CreateConVar("zr_countdown_files_mam",			 "zr/countdown/",	"Folder referring to the counter sounds. Man.");
+	g_hCvarsList[CVAR_COUNTDOWN_WOMAN_PATH]							  =	CreateConVar("zr_countdown_files_woman",			 "zr/countdown/female/",	"Folder referring to the counter sounds. Woman.");
+
+	g_hCvarsList[CVAR_ROUNDEND_HUMANS_WIN]							  =	CreateConVar("zr_files_humans_win",			 "roundend/humanswin/",	"Folder referring to the sounds of the round end. Humans win.");
+	g_hCvarsList[CVAR_ROUNDEND_ZOMBIE_WIN]							  =	CreateConVar("zr_files_zombie_win",			 "roundend/zombiewin/",	"Folder referring to the sounds of the round end. Zombie win.");
+
+	g_hCvarsList[CVAR_ZOMBIES_SOUNDS_FILES]							  =	CreateConVar("zr_files_zombie_sounds",			 "zr/",	"Folder referring to the sounds of zombies.");
 	
 	g_hCvarsList[CVAR_KNOCKBACK_MULTIPLIER]	 =	CreateConVar("zr_knockback_multiplier",	"1.0",			"Multiplier for knockback");
 	

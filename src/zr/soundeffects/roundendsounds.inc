@@ -28,20 +28,8 @@
 /**
  * @section Defines for min/max round wim human sound file index.
  */
-#define SOUND_ROUNDENDCT_PATH "roundend/humanswin/humans_win%d.mp3" // %d is sound file index
-#define SOUND_ROUNDENDCT_MIN 1
-#define SOUND_ROUNDENDCT_MAX 4
-
-/**
- * @endsection
- */
-
-/**
- * @section Defines for min/max round wim zombies sound file index.
- */
-#define SOUND_ROUNDENDT_PATH "roundend/zombiewin/zombie_win%d.mp3" // %d is sound file index
-#define SOUND_ROUNDENDT_MIN 1
-#define SOUND_ROUNDENDT_MAX 4
+#define SOUND_ROUNDEND_MIN 1
+#define SOUND_ROUNDEND_MAX 4
 
 /**
  * @endsection
@@ -58,31 +46,32 @@ enum RoundEndSounds
 
 bool:RoundEndSoundsGetRandomSound(String:soundre[], RoundEndSounds:soundtype)
 {
-	new soundroundmin;
-	new soundroundmax;
-	decl String:soundrepath[SOUND_MAX_PATH];
+	new soundroundmin = SOUND_ROUNDEND_MIN;
+	new soundroundmax = SOUND_ROUNDEND_MAX;
+
+	// Get round end sound.
+	decl String:HumansWinCache[PLATFORM_MAX_PATH];
+	decl String:ZombieWinCache[PLATFORM_MAX_PATH];
+	
+	GetConVarString(g_hCvarsList[CVAR_ROUNDEND_HUMANS_WIN], HumansWinCache, sizeof(HumansWinCache));
+	GetConVarString(g_hCvarsList[CVAR_ROUNDEND_ZOMBIE_WIN], ZombieWinCache, sizeof(ZombieWinCache));
+
+	// Pick a random integer between min and max sound file index.
+	new randresound = GetRandomInt(soundroundmin, soundroundmax);
 	
 	switch(soundtype)
 	{
 		// Find HumansWin sound.
 		case HumansWinCt:
 		{
-			// Copy min and max
-			soundroundmin = SOUND_ROUNDENDCT_MIN;
-			soundroundmax = SOUND_ROUNDENDCT_MAX;
-			
-			// Copy path
-			strcopy(soundrepath, sizeof(soundrepath), SOUND_ROUNDENDCT_PATH);
+			// Format random index into sound path.
+			Format(soundre, SOUND_MAX_PATH, "%shumans_win%d.mp3", HumansWinCache, randresound);
 		}
 		// Find ZombisWim sound.
 		case ZombisWimT:
 		{
-			// Copy min and max
-			soundroundmin = SOUND_ROUNDENDT_MIN;
-			soundroundmax = SOUND_ROUNDENDT_MAX;
-			
-			// Copy path
-			strcopy(soundrepath, sizeof(soundrepath), SOUND_ROUNDENDT_PATH);
+			// Format random index into sound path.
+			Format(soundre, SOUND_MAX_PATH, "%szombie_win%d.mp3", ZombieWinCache, randresound);
 		}
 		// Invalid case given.
 		default:
@@ -91,48 +80,75 @@ bool:RoundEndSoundsGetRandomSound(String:soundre[], RoundEndSounds:soundtype)
 			return false;
 		}
 	}
-	
-	// Pick a random integer between min and max sound file index.
-	new randresound = GetRandomInt(soundroundmin, soundroundmax);
-	
-	// Format random index into sound path.
-	Format(soundre, SOUND_MAX_PATH, soundrepath, randresound);
-	
 	// Found sound.
 	return true;
 }
 
-RoundEndSoundsSoundOnMapStart()
+RoundEndSoundsLoad()
 {
-	int countCT = 1;
-	int countTR = 1;
-	char roundendCTdir[PLATFORM_MAX_PATH];
-	char roundendTRdir[PLATFORM_MAX_PATH];
+	// Get round end sound.
+	decl String:HumansWinCache[PLATFORM_MAX_PATH];
+	decl String:ZombieWinCache[PLATFORM_MAX_PATH];
+	decl String:HumansWinPath[PLATFORM_MAX_PATH];
+	decl String:ZombieWinPath[PLATFORM_MAX_PATH];
 
-	Format(roundendCTdir, sizeof(roundendCTdir), "sound/roundend/humanswin/humans_win%i.mp3", countCT);
-	Format(roundendTRdir, sizeof(roundendTRdir), "sound/roundend/zombiewin/zombie_win%i.mp3", countTR);
+	GetConVarString(g_hCvarsList[CVAR_ROUNDEND_HUMANS_WIN], HumansWinCache, sizeof(HumansWinCache));
+	GetConVarString(g_hCvarsList[CVAR_ROUNDEND_ZOMBIE_WIN], ZombieWinCache, sizeof(ZombieWinCache));
 
-	while(FileExists(roundendCTdir))
+	// Prepend sound/ to the path.
+	Format(HumansWinPath, sizeof(HumansWinPath), "sound/%s", HumansWinCache);
+	Format(ZombieWinPath, sizeof(ZombieWinPath), "sound/%s", ZombieWinCache);
+
+	
+	decl String:s_SoundsFile[64], String:s_PreCachePath[PLATFORM_MAX_PATH];
+
+	new FileType:f_SoundsFileType, Handle:h_SoundsDir = OpenDirectory(HumansWinPath);
+
+	if (h_SoundsDir == INVALID_HANDLE)
 	{
-		AddFileToDownloadsTable(roundendCTdir);
-		ReplaceString(roundendCTdir, sizeof(roundendCTdir), "sound/", "");
-		// Precache sound before playing.// Emit sound from client.
-		PrecacheSound(roundendCTdir);
-		Format(roundendCTdir, sizeof(roundendCTdir), "sound/roundend/humanswin/humans_win%i.mp3", countCT);
-
-		countCT++;
+		return;
 	}
 
-	while(FileExists(roundendTRdir))
+	while(ReadDirEntry(h_SoundsDir, s_SoundsFile, sizeof(s_SoundsFile), f_SoundsFileType))     
 	{
-		AddFileToDownloadsTable(roundendTRdir);
-		ReplaceString(roundendTRdir, sizeof(roundendTRdir), "sound/", "");
-		// Precache sound before playing.// Emit sound from client.
-		PrecacheSound(roundendTRdir);
-		Format(roundendTRdir, sizeof(roundendTRdir), "sound/roundend/zombiewin/zombie_win%i.mp3", countTR);
+		if(f_SoundsFileType == FileType_File)
+		{
+			Format(s_PreCachePath, sizeof(s_PreCachePath), "%s%s", HumansWinPath, s_SoundsFile);
 
-		countTR++;
+			// Add sound file to downloads table.
+			AddFileToDownloadsTable(s_PreCachePath);
+
+			//Precache Sound
+			ReplaceString(s_PreCachePath, sizeof(s_PreCachePath), "sound/", "");
+
+			PrecacheSound(s_PreCachePath);
+		}
 	}
+	CloseHandle(h_SoundsDir);
+
+	Handle:h_SoundsDir = OpenDirectory(ZombieWinPath);
+
+	if (h_SoundsDir == INVALID_HANDLE)
+	{
+		return;
+	}
+
+	while(ReadDirEntry(h_SoundsDir, s_SoundsFile, sizeof(s_SoundsFile), f_SoundsFileType))     
+	{
+		if(f_SoundsFileType == FileType_File)
+		{
+			Format(s_PreCachePath, sizeof(s_PreCachePath), "%s%s", ZombieWinPath, s_SoundsFile);
+
+			// Add sound file to downloads table.
+			AddFileToDownloadsTable(s_PreCachePath);
+
+			//Precache Sound
+			ReplaceString(s_PreCachePath, sizeof(s_PreCachePath), "sound/", "");
+
+			PrecacheSound(s_PreCachePath);
+		}
+	}
+	CloseHandle(h_SoundsDir);
 }
 
 RoundEndSoundsSoundFromClient(x, const String:soundre[], Float:level)

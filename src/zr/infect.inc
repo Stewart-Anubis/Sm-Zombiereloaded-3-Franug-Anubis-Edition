@@ -25,8 +25,6 @@
  * ============================================================================
  */
 
-#define SOUND_PATH "npc/zombie" // %d is sound file index
-#define SOUND_PATH_CSGO "zr" // %d is sound file index
 /**
  * @section Explosion flags.
  */
@@ -106,53 +104,66 @@ InfectOnMapEnd()
 /**
  * Loads downloadable content data for infect module.
  */
-InfectLoad()
+InfectSoundsLoad()
 {
 	// Get infection sound.
-	decl String:sound[PLATFORM_MAX_PATH];
-	decl String:soundcache[PLATFORM_MAX_PATH];
-	decl String:soundpath[PLATFORM_MAX_PATH];
+	decl String:ContMamCache[PLATFORM_MAX_PATH];
+	decl String:ContWomCache[PLATFORM_MAX_PATH];
+	decl String:ContMamPath[PLATFORM_MAX_PATH];
+	decl String:ContWomPath[PLATFORM_MAX_PATH];
 
-	GetConVarString(g_hCvarsList[CVAR_INFECT_SOUND], sound, sizeof(sound));
+	GetConVarString(g_hCvarsList[CVAR_COUNTDOWN_MAM_PATH], ContMamCache, sizeof(ContMamCache));
+	GetConVarString(g_hCvarsList[CVAR_COUNTDOWN_WOMAN_PATH], ContWomCache, sizeof(ContWomCache));
+
+	// Prepend sound/ to the path.
+	Format(ContMamPath, sizeof(ContMamPath), "sound/%s", ContMamCache);
+	Format(ContWomPath, sizeof(ContWomPath), "sound/%s", ContWomCache);
+
 	
-	// If infect sound cvar is empty, then stop.
-	if (!sound[0])
+	decl String:s_SoundsFile[64], String:s_PreCachePath[PLATFORM_MAX_PATH];
+
+	new FileType:f_SoundsFileType, Handle:h_SoundsDir = OpenDirectory(ContMamPath);
+
+	if (h_SoundsDir == INVALID_HANDLE)
 	{
 		return;
 	}
 
-	// Get infection sound.
-	if (g_Game != Game_CSGO)
+	while(ReadDirEntry(h_SoundsDir, s_SoundsFile, sizeof(s_SoundsFile), f_SoundsFileType))     
 	{
-		strcopy(soundcache, sizeof(soundcache), SOUND_PATH);
-	}
-	else 
-	{
-		strcopy(soundcache, sizeof(soundcache), SOUND_PATH_CSGO);
-	}
-
-	// Prepend sound/ to the path.
-	Format(soundpath, sizeof(soundpath), "sound/%s", soundcache);
-
-	decl String:sZombieSoundsFile[64], String:PreCachePath[512], String:DownloadPath[PLATFORM_MAX_PATH];
-	new FileType:isZombieSoundsFileType, Handle:h_ZombieSoundsDir = OpenDirectory(soundpath);
-
-	while(ReadDirEntry(h_ZombieSoundsDir, sZombieSoundsFile, sizeof(sZombieSoundsFile), isZombieSoundsFileType))     
-	{
-		if(isZombieSoundsFileType == FileType_File)
+		if(f_SoundsFileType == FileType_File)
 		{
-			Format(PreCachePath, sizeof(PreCachePath), "%s/%s", soundcache, sZombieSoundsFile);
-			Format(DownloadPath, sizeof(DownloadPath), "%s/%s", soundpath, sZombieSoundsFile);
+			Format(s_PreCachePath, sizeof(s_PreCachePath), "%s%s", ContMamPath, s_SoundsFile);
 
 			// Add sound file to downloads table.
-			AddFileToDownloadsTable(DownloadPath);
+			AddFileToDownloadsTable(s_PreCachePath);
 
 			//Precache Sound
-			PrecacheSound(PreCachePath);
+			ReplaceString(s_PreCachePath, sizeof(s_PreCachePath), "sound/", "");
+
+			PrecacheSound(s_PreCachePath);
 		}
 	}
+	CloseHandle(h_SoundsDir);
 
-	CloseHandle(h_ZombieSoundsDir);
+	Handle:h_SoundsDir = OpenDirectory(ContWomPath);
+
+	while(ReadDirEntry(h_SoundsDir, s_SoundsFile, sizeof(s_SoundsFile), f_SoundsFileType))     
+	{
+		if(f_SoundsFileType == FileType_File)
+		{
+			Format(s_PreCachePath, sizeof(s_PreCachePath), "%s%s", ContWomPath, s_SoundsFile);
+
+			// Add sound file to downloads table.
+			AddFileToDownloadsTable(s_PreCachePath);
+
+			//Precache Sound
+			ReplaceString(s_PreCachePath, sizeof(s_PreCachePath), "sound/", "");
+
+			PrecacheSound(s_PreCachePath);
+		}
+	}
+	CloseHandle(h_SoundsDir);
 }
 
 /**
@@ -703,14 +714,22 @@ public Action:InfectCountdown(Handle:timer)
 		InfectStopCountdown();
 		return Plugin_Stop;
 	}
+
+	// Get infection sound.
+	decl String:ContMamCache[PLATFORM_MAX_PATH];
+	decl String:ContWomCache[PLATFORM_MAX_PATH];
+	decl String:ContMamPath[PLATFORM_MAX_PATH];
+	decl String:ContWomPath[PLATFORM_MAX_PATH];
+
+	GetConVarString(g_hCvarsList[CVAR_COUNTDOWN_MAM_PATH], ContMamCache, sizeof(ContMamCache));
+	GetConVarString(g_hCvarsList[CVAR_COUNTDOWN_WOMAN_PATH], ContWomCache, sizeof(ContWomCache));
 	
 	new counter_int = RoundToNearest(length - counter);
-	char sounddir[128];
-	char soundfemaledir[128];
-	Format(sounddir, 128, "sound/zr/countdown/%i.mp3", counter_int);
-	Format(soundfemaledir, 128, "sound/zr/countdown/female/%i.mp3", counter_int);
 	
-	if(FileExists(sounddir) && FileExists(soundfemaledir))
+	Format(ContMamPath, sizeof(ContMamPath), "%s%i.mp3", ContMamCache, counter_int);
+	Format(ContWomPath, sizeof(ContWomPath), "%s%i.mp3", ContWomCache, counter_int);
+	
+	if(counter_int <= 10 && counter_int >= 1)
 	{
 		for (new i = 1; i <= MaxClients; i++)
 		{
@@ -724,15 +743,11 @@ public Action:InfectCountdown(Handle:timer)
 				
 				if(selectedVoice == 1)
 				{
-					ReplaceString(sounddir, 128, "sound/", "");
-
-					EmitSoundToClient(i, sounddir, SOUND_FROM_PLAYER, SNDCHAN_AUTO, _, _, selectedVolume);
+					EmitSoundToClient(i, ContMamPath, SOUND_FROM_PLAYER, SNDCHAN_AUTO, _, _, selectedVolume);
 				}
 				if(selectedVoice == 2)
 				{
-					ReplaceString(soundfemaledir, 128, "sound/", "");
-
-					EmitSoundToClient(i, soundfemaledir, SOUND_FROM_PLAYER, SNDCHAN_AUTO, _, _, selectedVolume);
+					EmitSoundToClient(i, ContWomPath, SOUND_FROM_PLAYER, SNDCHAN_AUTO, _, _, selectedVolume);
 				}
 				else
 				{
@@ -752,38 +767,6 @@ public Action:InfectCountdown(Handle:timer)
 	WritePackFloat(hInfectCountdownData, counter);
 	
 	return Plugin_Continue;
-}
-
-CountDown()
-{
-	int count = 1;
-	int countf = 1;
-	char sounddir[PLATFORM_MAX_PATH];
-	char soundfemaledir[PLATFORM_MAX_PATH];
-	Format(sounddir, sizeof(sounddir), "sound/zr/countdown/%i.mp3", count);
-	Format(soundfemaledir, sizeof(soundfemaledir), "sound/zr/countdown/female/%i.mp3", countf);
-	
-	while(FileExists(sounddir))
-	{
-		AddFileToDownloadsTable(sounddir);
-		ReplaceString(sounddir, sizeof(sounddir), "sound/", "");
-		// Precache Sound
-		PrecacheSound(sounddir);
-
-		count++;
-		Format(sounddir, sizeof(sounddir), "sound/zr/countdown/%i.mp3", count);
-	}
-
-	while(FileExists(soundfemaledir))
-	{
-		AddFileToDownloadsTable(soundfemaledir);
-		ReplaceString(soundfemaledir, sizeof(soundfemaledir), "sound/", "");
-		//Precache Sound
-		PrecacheSound(soundfemaledir);
-
-		countf++;
-		Format(soundfemaledir, sizeof(soundfemaledir), "sound/zr/countdown/female/%i.mp3", countf);
-	}
 }
 
 /**

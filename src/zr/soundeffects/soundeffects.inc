@@ -41,21 +41,15 @@
 #include "zr/soundeffects/roundendsounds"
 
 /**
- * Load sound effects data.
- */
-SEffectsLoad()
-{
-	// Load ambient sound cvars.
-	AmbientSoundsLoad();
-}
-
-/**
  * Map is starting.
  */ 
 SEffectsOnMapStart()
 {
-	// Forward event to sub-modules.
-	AmbientSoundsOnMapStart();
+	// Load sound cvars.
+	AmbientSoundsLoad();
+	InfectSoundsLoad();
+	ZombiesSoundsLoad();
+	RoundEndSoundsLoad();
 }
 
 /**

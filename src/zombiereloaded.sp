@@ -51,7 +51,7 @@
 	#define ACTION_HANDLED	  ZRTools_Handled
 #endif
 
-#define VERSION "3.5-A Franug,Anubis edition"
+#define VERSION "3.6 -A Franug,Anubis edition"
 
 bool g_allweapons[MAXPLAYERS + 1];
 
@@ -163,12 +163,12 @@ public APLRes:AskPluginLoad2(Handle:myself, bool:late, String:error[], err_max)
  */
 public OnPluginStart()
 {
+	CvarsInit();
 	UpdateGameFolder();
 	
 	// Forward event to modules.
 	LogInit();		  // Doesn't depend on CVARs.
 	TranslationInit();
-	CvarsInit();
 	ToolsInit();
 	CookiesInit();
 	CommandsInit();
@@ -210,22 +210,18 @@ public OnLibraryRemoved(const String:name[])
 public OnMapStart()
 {
 	// Forward event to modules.
+	ModelsLoad();
+	ZSpawnOnMapStart();
 	ClassOnMapStart();
 	OverlaysOnMapStart();
 	RoundEndOnMapStart();
-	RoundEndSoundsSoundOnMapStart();
 	SEffectsOnMapStart();
-	ZSpawnOnMapStart();
+	AmbientSoundsOnMapStart();
 	VolInit();
 	
-	CountDown();
-	
 	// Fixed crashes on CS:GO
-	ModelsLoad();
 	DownloadsLoad();
-	InfectLoad();
 	VEffectsLoad();
-	SEffectsLoad();
 }
 
 /**

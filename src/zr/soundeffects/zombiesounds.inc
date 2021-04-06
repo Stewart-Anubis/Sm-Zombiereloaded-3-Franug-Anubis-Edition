@@ -28,8 +28,6 @@
 /**
  * @section Defines for min/max moaning sound file index.
  */
-#define SOUND_MOAN_PATH "npc/zombie/zombie_voice_idle%d.wav" // %d is sound file index
-#define SOUND_MOAN_PATH_CSGO "zr/zombie_voice_idle%d.mp3" // %d is sound file index
 #define SOUND_MOAN_MIN 1
 #define SOUND_MOAN_MAX 14
 /**
@@ -39,8 +37,6 @@
 /**
  * @section Defines for min/max groan sound file index.
  */
-#define SOUND_GROAN_PATH "npc/zombie/zombie_pain%d.wav" // %d is sound file index
-#define SOUND_GROAN_PATH_CSGO "zr/zombie_pain%d.mp3" // %d is sound file index
 #define SOUND_GROAN_MIN 1
 #define SOUND_GROAN_MAX 6
 /**
@@ -50,8 +46,6 @@
 /**
  * @section Defines for min/max death sound file index.
  */
-#define SOUND_DEATH_PATH "npc/zombie/zombie_die%d.wav" // %d is sound file index
-#define SOUND_DEATH_PATH_CSGO "zr/zombie_die%d.mp3" // %d is sound file index
 #define SOUND_DEATH_MIN 1
 #define SOUND_DEATH_MAX 3
 /**
@@ -82,6 +76,44 @@ new g_SEffectsCommandCount[MAXPLAYERS + 1];
  * Timers for resetting sound command counters.
  */
 new Handle:g_hSEffectsCommandTimer[MAXPLAYERS + 1];
+
+ZombiesSoundsLoad()
+{
+	// Get round end sound.
+	decl String:ZombiesSoundsCache[PLATFORM_MAX_PATH];
+	decl String:ZombiesSoundsPath[PLATFORM_MAX_PATH];
+
+	GetConVarString(g_hCvarsList[CVAR_ZOMBIES_SOUNDS_FILES], ZombiesSoundsCache, sizeof(ZombiesSoundsCache));
+
+	// Prepend sound/ to the path.
+	Format(ZombiesSoundsPath, sizeof(ZombiesSoundsPath), "sound/%s", ZombiesSoundsCache);
+
+	decl String:s_SoundsFile[64], String:s_PreCachePath[PLATFORM_MAX_PATH];
+
+	new FileType:f_SoundsFileType, Handle:h_SoundsDir = OpenDirectory(ZombiesSoundsPath);
+
+	if (h_SoundsDir == INVALID_HANDLE)
+	{
+		return;
+	}
+
+	while(ReadDirEntry(h_SoundsDir, s_SoundsFile, sizeof(s_SoundsFile), f_SoundsFileType))     
+	{
+		if(f_SoundsFileType == FileType_File)
+		{
+			Format(s_PreCachePath, sizeof(s_PreCachePath), "%s%s", ZombiesSoundsPath, s_SoundsFile);
+
+			// Add sound file to downloads table.
+			AddFileToDownloadsTable(s_PreCachePath);
+
+			//Precache Sound
+			ReplaceString(s_PreCachePath, sizeof(s_PreCachePath), "sound/", "");
+
+			PrecacheSound(s_PreCachePath);
+		}
+	}
+	CloseHandle(h_SoundsDir);
+}
 
 /**
  * Client is joining the server.
@@ -245,8 +277,12 @@ bool:ZombieSoundsGetRandomSound(String:sound[], ZombieSounds:soundtype)
 {
 	new soundmin;
 	new soundmax;
-	decl String:soundpath[SOUND_MAX_PATH];
-	
+
+	// Get round end sound.
+	decl String:ZombiesSoundsCache[PLATFORM_MAX_PATH];
+
+	GetConVarString(g_hCvarsList[CVAR_ZOMBIES_SOUNDS_FILES], ZombiesSoundsCache, sizeof(ZombiesSoundsCache));
+
 	switch(soundtype)
 	{
 		// Find moan sound.
@@ -255,10 +291,12 @@ bool:ZombieSoundsGetRandomSound(String:sound[], ZombieSounds:soundtype)
 			// Copy min and max
 			soundmin = SOUND_MOAN_MIN;
 			soundmax = SOUND_MOAN_MAX;
-			
-			// Copy path
-			if (g_Game != Game_CSGO) strcopy(soundpath, sizeof(soundpath), SOUND_MOAN_PATH);
-			else strcopy(soundpath, sizeof(soundpath), SOUND_MOAN_PATH_CSGO);
+
+			// Pick a random integer between min and max sound file index.
+			new randsound = GetRandomInt(soundmin, soundmax);
+
+			// Format random index into sound path.
+			Format(sound, SOUND_MAX_PATH, "%szombie_voice_idle%d.mp3", ZombiesSoundsCache, randsound);
 		}
 		// Find groan sound. (zombie shot)
 		case Groan:
@@ -266,10 +304,12 @@ bool:ZombieSoundsGetRandomSound(String:sound[], ZombieSounds:soundtype)
 			// Copy min and max
 			soundmin = SOUND_GROAN_MIN;
 			soundmax = SOUND_GROAN_MAX;
-			
-			// Copy path
-			if (g_Game != Game_CSGO) strcopy(soundpath, sizeof(soundpath), SOUND_GROAN_PATH);
-			else strcopy(soundpath, sizeof(soundpath), SOUND_GROAN_PATH_CSGO);
+
+			// Pick a random integer between min and max sound file index.
+			new randsound = GetRandomInt(soundmin, soundmax);
+
+			// Format random index into sound path.
+			Format(sound, SOUND_MAX_PATH, "%szombie_pain%d.mp3", ZombiesSoundsCache, randsound);
 		}
 		// Find death sound.
 		case Death:
@@ -278,9 +318,11 @@ bool:ZombieSoundsGetRandomSound(String:sound[], ZombieSounds:soundtype)
 			soundmin = SOUND_DEATH_MIN;
 			soundmax = SOUND_DEATH_MAX;
 			
-			// Copy path
-			if (g_Game != Game_CSGO) strcopy(soundpath, sizeof(soundpath), SOUND_DEATH_PATH);
-			else strcopy(soundpath, sizeof(soundpath), SOUND_DEATH_PATH_CSGO);
+			// Pick a random integer between min and max sound file index.
+			new randsound = GetRandomInt(soundmin, soundmax);
+
+			// Format random index into sound path.
+			Format(sound, SOUND_MAX_PATH, "%szombie_die%d.mp3", ZombiesSoundsCache, randsound);
 		}
 		// Invalid case given.
 		default:
@@ -289,13 +331,6 @@ bool:ZombieSoundsGetRandomSound(String:sound[], ZombieSounds:soundtype)
 			return false;
 		}
 	}
-	
-	// Pick a random integer between min and max sound file index.
-	new randsound = GetRandomInt(soundmin, soundmax);
-	
-	// Format random index into sound path.
-	Format(sound, SOUND_MAX_PATH, soundpath, randsound);
-	
 	// Found sound.
 	return true;
 }
@@ -348,13 +383,19 @@ ZombieSoundsMoan(client)
 ZombieSoundsScream(client)
 {
 	decl String:sound[PLATFORM_MAX_PATH];
+	decl String:ZombiesSoundsCache[PLATFORM_MAX_PATH];
+	decl String:SoundFile[PLATFORM_MAX_PATH];
+
 	GetConVarString(g_hCvarsList[CVAR_INFECT_SOUND], sound, sizeof(sound));
+	GetConVarString(g_hCvarsList[CVAR_ZOMBIES_SOUNDS_FILES], ZombiesSoundsCache, sizeof(ZombiesSoundsCache));
+
+	Format(SoundFile, sizeof(SoundFile), "%s%s", ZombiesSoundsCache, sound);
 	
 	// If cvar contains path, then continue.
 	if (sound[0])
 	{
 		// Emit infect sound from infected client.
-		SEffectsEmitSoundFromClient(client, sound);
+		SEffectsEmitSoundFromClient(client, SoundFile);
 	}
 }
 
