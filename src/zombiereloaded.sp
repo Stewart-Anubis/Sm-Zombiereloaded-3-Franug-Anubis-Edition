@@ -51,7 +51,7 @@
 	#define ACTION_HANDLED	  ZRTools_Handled
 #endif
 
-#define VERSION "3.6 -A Franug,Anubis edition"
+#define VERSION "3.6 Anubis edition"
 
 bool g_allweapons[MAXPLAYERS + 1];
 
