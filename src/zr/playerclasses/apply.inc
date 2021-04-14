@@ -28,7 +28,7 @@
 /**
  * Array that stores the client's current speed.
  */
-new Float:g_flClassApplySpeed[MAXPLAYERS + 1];
+float g_flClassApplySpeed[MAXPLAYERS + 1];
 
 /**
  * Applies all class attributes on a player. Changing model, hp, speed, health,
@@ -40,9 +40,9 @@ new Float:g_flClassApplySpeed[MAXPLAYERS + 1];
  *					  false.
  * @return  True if all success on applying all attributes, false otherwise.
  */
-bool:ClassApplyAttributes(client, bool:improved = false)
+bool ClassApplyAttributes(int client, bool improved = false)
 {
-	new classindex = ClassGetActiveIndex(client);
+	int classindex = ClassGetActiveIndex(client);
 	
 	// Validate class index.
 	if (!ClassValidateIndex(classindex))
@@ -81,15 +81,15 @@ bool:ClassApplyAttributes(client, bool:improved = false)
  *					  ZR_CLASS_CACHE_PLAYER (default) - Player cache.
  * @return  True on success, false otherwise.
  */
-bool:ClassApplyModel(client, classindex, cachetype = ZR_CLASS_CACHE_PLAYER)
+bool ClassApplyModel(int client, int classindex, int cachetype = ZR_CLASS_CACHE_PLAYER)
 {
-	new bool:isAttributePreset = false;
-	decl String:modelpath[PLATFORM_MAX_PATH];
-	new index;
-	new ModelTeam:team;
-	new access;
-	new model;
-	new skinIndex = 0;
+	bool isAttributePreset = false;
+	char modelpath[PLATFORM_MAX_PATH];
+	int index;
+	ModelTeam team;
+	int access;
+	int model;
+	int skinIndex = 0;
 	
 	// Get correct index according to cache type.
 	if (cachetype == ZR_CLASS_CACHE_PLAYER)
@@ -207,9 +207,9 @@ bool:ClassApplyModel(client, classindex, cachetype = ZR_CLASS_CACHE_PLAYER)
  *					  ZR_CLASS_CACHE_PLAYER (default) - Player cache.
  * @return  True on success, false otherwise.
  */
-bool:ClassApplyAlpha(client, classindex, cachetype = ZR_CLASS_CACHE_PLAYER)
+bool ClassApplyAlpha(int client, int classindex, int cachetype = ZR_CLASS_CACHE_PLAYER)
 {
-	new alpha;
+	int alpha;
 	
 	// Get the alpha value from the specified cache.
 	if (cachetype == ZR_CLASS_CACHE_PLAYER)
@@ -242,9 +242,9 @@ bool:ClassApplyAlpha(client, classindex, cachetype = ZR_CLASS_CACHE_PLAYER)
  *					  ZR_CLASS_CACHE_PLAYER (default) - Player cache.
  * @return  True on success, false otherwise.
  */
-bool:ClassApplyOverlay(client, classindex, cachetype = ZR_CLASS_CACHE_PLAYER)
+bool ClassApplyOverlay(int client, int classindex, int cachetype = ZR_CLASS_CACHE_PLAYER)
 {
-	decl String:overlaypath[PLATFORM_MAX_PATH];
+	char overlaypath[PLATFORM_MAX_PATH];
 	
 	// Get the overlay path from the specified cache.
 	if (cachetype == ZR_CLASS_CACHE_PLAYER)
@@ -272,9 +272,9 @@ bool:ClassApplyOverlay(client, classindex, cachetype = ZR_CLASS_CACHE_PLAYER)
  *					  ZR_CLASS_CACHE_PLAYER (default) - Player cache.
  * @return  True on success, false otherwise.
  */
-bool:ClassApplyNightVision(client, classindex, cachetype = ZR_CLASS_CACHE_PLAYER)
+bool ClassApplyNightVision(int client, int classindex, int cachetype = ZR_CLASS_CACHE_PLAYER)
 {
-	new bool:nvgs;
+	bool nvgs;
 	
 	// Get the night vision setting from the specified cache.
 	if (cachetype == ZR_CLASS_CACHE_PLAYER)
@@ -304,9 +304,9 @@ bool:ClassApplyNightVision(client, classindex, cachetype = ZR_CLASS_CACHE_PLAYER
  *					  ZR_CLASS_CACHE_PLAYER (default) - Player cache.
  * @return  True on success, false otherwise.
  */
-bool:ClassApplyFOV(client, classindex, cachetype = ZR_CLASS_CACHE_PLAYER)
+bool ClassApplyFOV(int client, int classindex, int cachetype = ZR_CLASS_CACHE_PLAYER)
 {
-	new fov;
+	int fov;
 	
 	// Get the field of view setting from the specified cache.
 	if (cachetype == ZR_CLASS_CACHE_PLAYER)
@@ -335,9 +335,9 @@ bool:ClassApplyFOV(client, classindex, cachetype = ZR_CLASS_CACHE_PLAYER)
  *					  ZR_CLASS_CACHE_PLAYER (default) - Player cache.
  * @return  True on success, false otherwise.
  */
-bool:ClassApplyHealth(client, classindex, bool:boost = false, cachetype = ZR_CLASS_CACHE_PLAYER)
+bool ClassApplyHealth(int client, int classindex, bool boost = false, int cachetype = ZR_CLASS_CACHE_PLAYER)
 {
-	new health;
+	int health;
 	
 	// Get the health points from the specified cache.
 	if (cachetype == ZR_CLASS_CACHE_PLAYER)
@@ -371,11 +371,11 @@ bool:ClassApplyHealth(client, classindex, bool:boost = false, cachetype = ZR_CLA
  *					  ZR_CLASS_CACHE_PLAYER (default) - Player cache.
  * @return  True if applied, false otherwise.
  */
-bool:ClassApplyHealthRegen(client, classindex, cachetype = ZR_CLASS_CACHE_PLAYER)
+bool ClassApplyHealthRegen(int client, int classindex, int cachetype = ZR_CLASS_CACHE_PLAYER)
 {
-	new Float:interval;
-	new amount;
-	new max;
+	float interval;
+	int amount;
+	int max;
 	
 	// Get the health regeneration info from the specified cache.
 	if (cachetype == ZR_CLASS_CACHE_PLAYER)
@@ -416,9 +416,9 @@ bool:ClassApplyHealthRegen(client, classindex, cachetype = ZR_CLASS_CACHE_PLAYER
  *					  ZR_CLASS_CACHE_PLAYER (default) - Player cache.
  * @return  True on success, false otherwise.
  */
-bool:ClassApplySpeed(client, classindex, cachetype = ZR_CLASS_CACHE_PLAYER)
+bool ClassApplySpeed(int client, int classindex, int cachetype = ZR_CLASS_CACHE_PLAYER)
 {
-	new Float:speed;
+	float speed;
 	
 	// Get the health points from the specified cache.
 	if (cachetype == ZR_CLASS_CACHE_PLAYER)
@@ -440,7 +440,7 @@ bool:ClassApplySpeed(client, classindex, cachetype = ZR_CLASS_CACHE_PLAYER)
  * @param client	Client to apply to.
  * @param speed	 Speed value.
  */
-ClassApplySpeedEx(client, Float:speed)
+void ClassApplySpeedEx(int client, float speed)
 {
 	// Check what speed method that's used and apply it.
 	switch (ClassSpeedMethod)
@@ -462,7 +462,7 @@ ClassApplySpeedEx(client, Float:speed)
  * 
  * @param client	The client index.
  */
-public ClassPreThinkPost(client)
+public void ClassPreThinkPost(int client)
 {
 	// Only apply speed if the prop method is used.
 	if (ClassSpeedMethod == ClassSpeed_Prop)
@@ -473,15 +473,15 @@ public ClassPreThinkPost(client)
 		}
 		
 		// Note: Default is around 200.0 - 250.0
-		new Float:newspeed = GetEntPropFloat(client, Prop_Data, "m_flMaxspeed") + g_flClassApplySpeed[client];
+		float newspeed = GetEntPropFloat(client, Prop_Data, "m_flMaxspeed") + g_flClassApplySpeed[client];
 		SetEntPropFloat(client, Prop_Data, "m_flMaxspeed", newspeed);
 	}
 }
 
-public ClassApplyNoarmorZombie(client)
+public void ClassApplyNoarmorZombie(int client)
 {
 	// If Noarmor is disabled, stop here.
-	new bool:zrnoarmor = GetConVarBool(g_hCvarsList[CVAR_INFECT_NOARMOR_ZOMBIE]);
+	bool zrnoarmor = GetConVarBool(g_hCvarsList[CVAR_INFECT_NOARMOR_ZOMBIE]);
 
 	// If Noarmor is enabled.	
 	if (zrnoarmor)
@@ -499,7 +499,7 @@ public ClassApplyNoarmorZombie(client)
  * @param client	Index of the client.
  * @param vel		Players desired velocity.
  */
-Class_OnPlayerRunCmd(client, Float:vel[3])
+void Class_OnPlayerRunCmd(int client, float vel[3])
 {
 	if (!IsPlayerAlive(client))
 		return;
@@ -523,16 +523,16 @@ Class_OnPlayerRunCmd(client, Float:vel[3])
 	}
 }
 
-bool:ClassApplyArms(client, classindex, cachetype = ZR_CLASS_CACHE_PLAYER)
+bool ClassApplyArms(int client, int classindex, int cachetype = ZR_CLASS_CACHE_PLAYER)
 {
 	// If Class Arms is disabled, then stop.
-	new bool:arms = GetConVarBool(g_hCvarsList[CVAR_CLASSES_ARMS]);
+	bool arms = GetConVarBool(g_hCvarsList[CVAR_CLASSES_ARMS]);
 	if (!arms)
 	{		
 		return false;
 	}
 	
-	decl String:arms_path[PLATFORM_MAX_PATH];
+	char arms_path[PLATFORM_MAX_PATH];
 	
 	// Get the overlay path from the specified cache.
 	if (cachetype == ZR_CLASS_CACHE_PLAYER)

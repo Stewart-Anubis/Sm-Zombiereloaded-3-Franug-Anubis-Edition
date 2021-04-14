@@ -93,9 +93,9 @@ enum LogModules
 /**
  * Handle for dynamic string array for module filtering.
  */
-new Handle:hLogModuleFilter;
+Handle hLogModuleFilter;
 
 /**
  * Cache of current module filter settings. For fast and easy access.
  */
-new LogModuleFilterCache[LogModules];
+LogModuleFilterCache[LogModules];

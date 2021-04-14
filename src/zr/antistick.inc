@@ -62,7 +62,7 @@
 /**
  * Stores "StartTouch" HookID's for each client.
  */
-new g_iStartTouchHookID[MAXPLAYERS + 1] = {-1, ...};
+int g_iStartTouchHookID[MAXPLAYERS + 1] = {-1, ...};
 bool g_isHooked;
 int g_offsCollisionGroup;
 /**
@@ -87,7 +87,7 @@ enum AntiStickBoxBound
 	BoxBound_BDL,
 }
 
-AntiStickNoblock()
+void AntiStickNoblock()
 {
 	g_offsCollisionGroup = FindSendPropInfo("CBaseEntity", "m_CollisionGroup");
 	if (g_offsCollisionGroup == -1)
@@ -101,9 +101,9 @@ AntiStickNoblock()
 	}
 }
 
-OnSpawnAntiStickNoblock(client)
+void OnSpawnAntiStickNoblock(int client)
 {
-	new bool:noblock_enable = GetConVarBool(g_hCvarsList[CVAR_NOBLOCK]);
+	bool noblock_enable = GetConVarBool(g_hCvarsList[CVAR_NOBLOCK]);
 
 	if(!noblock_enable)
 		return;
@@ -119,7 +119,7 @@ OnSpawnAntiStickNoblock(client)
 /**
  * Create commands related to antistick here.
  */
-AntiStickOnCommandsCreate()
+void AntiStickOnCommandsCreate()
 {
 	RegConsoleCmd("zr_antistick_dump_group", AntiStickDumpGroupCommand, "Dumps collision group data on one or more players. Usage zr_antistick_dump_group [#userid|name]");
 }
@@ -129,17 +129,13 @@ AntiStickOnCommandsCreate()
  * 
  * @param client	The client index.
  */
-AntiStickClientInit(client)
+void AntiStickClientInit(int client)
 {
 	// Hook "StartTouch" and "EndTouch" on client.
-	#if defined USE_SDKHOOKS
-		SDKHook(client, SDKHook_StartTouch, AntiStickStartTouch);
-		
-		// Set dummy value so it think it's hooked.
-		g_iStartTouchHookID[client] = 1;
-	#else
-		g_iStartTouchHookID[client] = ZRTools_HookStartTouch(client, AntiStickStartTouch);
-	#endif
+	SDKHook(client, SDKHook_StartTouch, AntiStickStartTouch);
+
+	// Set dummy value so it think it's hooked.
+	g_iStartTouchHookID[client] = 1;	
 }
 
 /**
@@ -147,17 +143,13 @@ AntiStickClientInit(client)
  * 
  * @param client	The client index.
  */
-AntiStickOnClientDisconnect(client)
+void AntiStickOnClientDisconnect(int client)
 {
 	// Unhook "StartTouch" callback, and reset variable.
 	if (g_iStartTouchHookID[client] != -1)
 	{
-		#if defined USE_SDKHOOKS
-			SDKUnhook(client, SDKHook_StartTouch, AntiStickStartTouch);
-		#else
-			ZRTools_UnhookStartTouch(g_iStartTouchHookID[client]);
-		#endif
-		
+		SDKUnhook(client, SDKHook_StartTouch, AntiStickStartTouch);
+
 		g_iStartTouchHookID[client] = -1;
 	}
 }
@@ -168,14 +160,10 @@ AntiStickOnClientDisconnect(client)
  * @param client		The client index.
  * @param entity		The entity index of the entity being touched.
  */
-#if defined USE_SDKHOOKS
-public AntiStickStartTouch(client, entity)
-#else
-public ZRTools_Action:AntiStickStartTouch(client, entity)
-#endif
+public void AntiStickStartTouch(int client, int entity)
 {
 	// If antistick is disabled, then stop.
-	new bool:antistick = GetConVarBool(g_hCvarsList[CVAR_ANTISTICK]);
+	bool antistick = GetConVarBool(g_hCvarsList[CVAR_ANTISTICK]);
 	if (!antistick)
 	{
 		return;
@@ -209,7 +197,7 @@ public ZRTools_Action:AntiStickStartTouch(client, entity)
 	LogEvent(false, LogType_Normal, LOG_DEBUG, LogModule_AntiStick, "Collision", "Player \"%N\" and \"%N\" are intersecting. Removing collisions.", client, entity);
 	
 	// Get current collision groups of client and entity.
-	new clientcollisiongroup = AntiStickGetCollisionGroup(client);
+	int clientcollisiongroup = AntiStickGetCollisionGroup(client);
 	
 	// Note: If zombies get stuck on infection or stuck in a teleport, they'll
 	//	   get the COLLISION_GROUP_PUSHAWAY collision group, so check this
@@ -229,7 +217,7 @@ public ZRTools_Action:AntiStickStartTouch(client, entity)
  * 
  * @param client		The client index.
  */
-public Action:AntiStickSolidifyTimer(Handle:timer, any:client)
+public Action AntiStickSolidifyTimer(Handle timer, any client)
 {
 	// If client has left, then stop.
 	if (!IsClientInGame(client))
@@ -250,7 +238,7 @@ public Action:AntiStickSolidifyTimer(Handle:timer, any:client)
 	}
 	
 	// Loop through all clients and check if client is stuck in them.
-	for (new x = 1; x <= MaxClients; x++)
+	for (int x = 1; x <= MaxClients; x++)
 	{
 		// If client isn't connected or in-game, then skip it.
 		if (!IsClientConnected(x) || !IsClientInGame(x))
@@ -293,13 +281,13 @@ public Action:AntiStickSolidifyTimer(Handle:timer, any:client)
  * @param boundaries	Array with 'AntiStickBoxBounds' for indexes to return bounds into.
  * @param width		 The width of the model box.
  */
-stock AntiStickBuildModelBox(client, Float:boundaries[AntiStickBoxBound][3], Float:width)
+stock void AntiStickBuildModelBox(int client, float boundaries[AntiStickBoxBound][3], float width)
 {
-	new Float:clientloc[3];
-	new Float:twistang[3];
-	new Float:cornerang[3];
-	new Float:sideloc[3];
-	new Float:finalloc[4][3];
+	float clientloc[3];
+	float twistang[3];
+	float cornerang[3];
+	float sideloc[3];
+	float finalloc[4][3];
 	
 	// Get needed vector info.
 	GetClientAbsOrigin(client, clientloc);
@@ -308,7 +296,7 @@ stock AntiStickBuildModelBox(client, Float:boundaries[AntiStickBoxBound][3], Flo
 	twistang[1] = 90.0;
 	cornerang[1] = 0.0;
 	
-	for (new x = 0; x < 4; x++)
+	for (int x = 0; x < 4; x++)
 	{
 		// Jump to point on player's left side.
 		AntiStickJumpToPoint(clientloc, twistang, width / 2, sideloc);
@@ -351,7 +339,7 @@ stock AntiStickBuildModelBox(client, Float:boundaries[AntiStickBoxBound][3], Flo
 	boundaries[BoxBound_BDL][1] = finalloc[1][1];
 	
 	// Set Z bounds.
-	new Float:eyeloc[3];
+	float eyeloc[3];
 	GetClientEyePosition(client, eyeloc);
 	
 	boundaries[BoxBound_FUR][2] = eyeloc[2];
@@ -372,9 +360,9 @@ stock AntiStickBuildModelBox(client, Float:boundaries[AntiStickBoxBound][3], Flo
  * @param distance  Distance to jump
  * @param result	Resultant point.
  */
-stock AntiStickJumpToPoint(const Float:vec[3], const Float:ang[3], Float:distance, Float:result[3])
+stock void AntiStickJumpToPoint(const float vec[3], const float ang[3], float distance, float result[3])
 {
-	new Float:viewvec[3];
+	float viewvec[3];
 	
 	// Turn client angle, into a vector.
 	GetAngleVectors(ang, viewvec, NULL_VECTOR, NULL_VECTOR);
@@ -396,14 +384,14 @@ stock AntiStickJumpToPoint(const Float:vec[3], const Float:ang[3], Float:distanc
  * @param boundaries	The boundaries to check.
  * @param min		   Return the min value instead.
  */
-stock Float:AntiStickGetBoxMaxBoundary(axis, Float:boundaries[AntiStickBoxBound][3], bool:min = false)
+stock float AntiStickGetBoxMaxBoundary(int axis, float boundaries[AntiStickBoxBound][3], bool min = false)
 {
 	// Create 'outlier' with initial value of first boundary.
-	new Float:outlier = boundaries[0][axis];
+	float outlier = boundaries[0][axis];
 	
 	// x = Boundary index. (Start at 1 because we initialized 'outlier' with the 0 index's value)
-	new size = sizeof(boundaries);
-	for (new x = 1; x < size; x++)
+	int size = sizeof(boundaries);
+	for (int x = 1; x < size; x++)
 	{
 		if (!min && boundaries[x][axis] > outlier)
 		{
@@ -426,20 +414,20 @@ stock Float:AntiStickGetBoxMaxBoundary(axis, Float:boundaries[AntiStickBoxBound]
  * @param client2   The second client index.
  * @return		  True if they are stuck together, false if not.
  */
-stock bool:AntiStickIsModelBoxColliding(client1, client2)
+stock bool AntiStickIsModelBoxColliding(int client1, int client2)
 {
-	new Float:client1modelbox[AntiStickBoxBound][3];
-	new Float:client2modelbox[AntiStickBoxBound][3];
+	float client1modelbox[AntiStickBoxBound][3];
+	float client2modelbox[AntiStickBoxBound][3];
 	
 	// Build model boxes for each client.
 	AntiStickBuildModelBox(client1, client1modelbox, ANTISTICK_DEFAULT_HULL_WIDTH);
 	AntiStickBuildModelBox(client2, client2modelbox, ANTISTICK_DEFAULT_HULL_WIDTH);
 	
 	// Compare x values.
-	new Float:max1x = AntiStickGetBoxMaxBoundary(0, client1modelbox);
-	new Float:max2x = AntiStickGetBoxMaxBoundary(0, client2modelbox);
-	new Float:min1x = AntiStickGetBoxMaxBoundary(0, client1modelbox, true);
-	new Float:min2x = AntiStickGetBoxMaxBoundary(0, client2modelbox, true);
+	float max1x = AntiStickGetBoxMaxBoundary(0, client1modelbox);
+	float max2x = AntiStickGetBoxMaxBoundary(0, client2modelbox);
+	float min1x = AntiStickGetBoxMaxBoundary(0, client1modelbox, true);
+	float min2x = AntiStickGetBoxMaxBoundary(0, client2modelbox, true);
 	
 	if (max1x < min2x || min1x > max2x)
 	{
@@ -447,10 +435,10 @@ stock bool:AntiStickIsModelBoxColliding(client1, client2)
 	}
 	
 	// Compare y values.
-	new Float:max1y = AntiStickGetBoxMaxBoundary(1, client1modelbox);
-	new Float:max2y = AntiStickGetBoxMaxBoundary(1, client2modelbox);
-	new Float:min1y = AntiStickGetBoxMaxBoundary(1, client1modelbox, true);
-	new Float:min2y = AntiStickGetBoxMaxBoundary(1, client2modelbox, true);
+	float max1y = AntiStickGetBoxMaxBoundary(1, client1modelbox);
+	float max2y = AntiStickGetBoxMaxBoundary(1, client2modelbox);
+	float min1y = AntiStickGetBoxMaxBoundary(1, client1modelbox, true);
+	float min2y = AntiStickGetBoxMaxBoundary(1, client2modelbox, true);
 	
 	if (max1y < min2y || min1y > max2y)
 	{
@@ -458,10 +446,10 @@ stock bool:AntiStickIsModelBoxColliding(client1, client2)
 	}
 	
 	// Compare z values.
-	new Float:max1z = AntiStickGetBoxMaxBoundary(2, client1modelbox);
-	new Float:max2z = AntiStickGetBoxMaxBoundary(2, client2modelbox);
-	new Float:min1z = AntiStickGetBoxMaxBoundary(2, client1modelbox, true);
-	new Float:min2z = AntiStickGetBoxMaxBoundary(2, client2modelbox, true);
+	float max1z = AntiStickGetBoxMaxBoundary(2, client1modelbox);
+	float max2z = AntiStickGetBoxMaxBoundary(2, client2modelbox);
+	float min1z = AntiStickGetBoxMaxBoundary(2, client1modelbox, true);
+	float min2z = AntiStickGetBoxMaxBoundary(2, client2modelbox, true);
 	
 	if (max1z < min2z || min1z > max2z)
 	{
@@ -478,7 +466,7 @@ stock bool:AntiStickIsModelBoxColliding(client1, client2)
  * @param client			The client index.
  * @param collisiongroup	Collision group flag.
  */
-AntiStickSetCollisionGroup(client, collisiongroup)
+void AntiStickSetCollisionGroup(int client, int collisiongroup)
 {
 	SetEntProp(client, Prop_Data, "m_CollisionGroup", collisiongroup);
 }
@@ -489,7 +477,7 @@ AntiStickSetCollisionGroup(client, collisiongroup)
  * @param client	The client index.
  * @return		  The collision group on the client.
  */
-AntiStickGetCollisionGroup(client)
+int AntiStickGetCollisionGroup(int client)
 {
 	return GetEntProp(client, Prop_Data, "m_CollisionGroup");
 }
@@ -502,7 +490,7 @@ AntiStickGetCollisionGroup(client)
  * @param maxlen			Size of destination buffer.
  * @return				  Number of cells written.
  */
-AntiStickCollisionGroupToString(collisiongroup, String:buffer[], maxlen)
+int AntiStickCollisionGroupToString(int collisiongroup, char[] buffer, int maxlen)
 {
 	switch (collisiongroup)
 	{
@@ -595,12 +583,12 @@ AntiStickCollisionGroupToString(collisiongroup, String:buffer[], maxlen)
  * @param client	The client index.
  * @param argc	  Argument count.
  */
-public Action:AntiStickDumpGroupCommand(client, argc)
+public Action AntiStickDumpGroupCommand(int client, int argc)
 {
-	new collisiongroup;
-	new target;
-	decl String:groupname[64];
-	decl String:arg[96];
+	int collisiongroup;
+	int target;
+	char groupname[64];
+	char arg[96];
 	
 	// Write header.
 	ReplyToCommand(client, "Player:							 Collision group:\n--------------------------------------------------------------------------------");

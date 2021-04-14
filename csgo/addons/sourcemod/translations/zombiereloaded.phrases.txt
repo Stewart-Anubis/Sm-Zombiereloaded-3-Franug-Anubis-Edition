@@ -1345,4 +1345,29 @@
 	{
 		"en" 		"Insufficient number of players to start infection!"
 	}
+
+	"Disabling respawn"
+	{
+		"en" 		"Disabling respawn for this round."
+	}
+
+	"Repeat killer detector force toggled off"
+	{
+		"en" 		"Repeat killer detector force toggled off. Re-enabling respawn for this round."
+	}
+
+	"Repeat killer is already turned off"
+	{
+		"en" 		"Repeat killer is already turned off!"
+	}
+
+	"Infect Alone on"
+	{
+		"en" 		"Infect Alone on!"
+	}
+
+	"Infect Alone off"
+	{
+		"en" 		"Infect Alone off!"
+	}
 }

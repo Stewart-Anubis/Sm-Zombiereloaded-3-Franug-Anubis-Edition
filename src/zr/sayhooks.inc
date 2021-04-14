@@ -43,15 +43,15 @@
  * @section Say command key words.
  */
 #define SAYHOOKS_KEYWORD_ZMENU	  "zmenu"
-#define SAYHOOKS_KEYWORD_ZSOUNDS	  "zsounds"
 #define SAYHOOKS_KEYWORD_ZADMIN	 "zadmin"
 #define SAYHOOKS_KEYWORD_ZCLASS	 "zclass"
 #define SAYHOOKS_KEYWORD_ZCOOKIES   "zcookies"
 #define SAYHOOKS_KEYWORD_ZSPAWN	 "zspawn"
+#define SAYHOOKS_KEYWORD_ZRK	 "zrk"
 #define SAYHOOKS_KEYWORD_ZTELE	  "ztele"
-#define SAYHOOKS_KEYWORD_ZHP		"zhp"
 #define SAYHOOKS_KEYWORD_ZMARKET	"zmarket"
 #define SAYHOOKS_KEYWORD_ZSHIELD	"zshield"
+#define SAYHOOKS_KEYWORD_ZALONE	"zalone"
 /**
  * @endsection
  */

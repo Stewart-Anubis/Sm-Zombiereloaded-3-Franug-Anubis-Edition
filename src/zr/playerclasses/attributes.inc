@@ -46,7 +46,7 @@
  *				  index will be used as a client index.
  * @return		  True if it's enabled, false otherwise.
  */
-stock bool:ClassIsEnabled(index, cachetype = ZR_CLASS_CACHE_MODIFIED)
+stock bool ClassIsEnabled(int index, int cachetype = ZR_CLASS_CACHE_MODIFIED)
 {
 	switch (cachetype)
 	{
@@ -78,7 +78,7 @@ stock bool:ClassIsEnabled(index, cachetype = ZR_CLASS_CACHE_MODIFIED)
  *				  is used, index will be used as a client index.
  * @return		  The team ID if successful, -1 otherwise.
  */
-stock ClassGetTeamID(index, cachetype = ZR_CLASS_CACHE_PLAYER)
+stock int ClassGetTeamID(int index, int cachetype = ZR_CLASS_CACHE_PLAYER)
 {
 	switch (cachetype)
 	{
@@ -112,7 +112,7 @@ stock ClassGetTeamID(index, cachetype = ZR_CLASS_CACHE_PLAYER)
  *				  index will be used as a client index.
  * @return		  True if it's default for its current team, false otherwise.
  */
-stock bool:ClassGetTeamDefault(index, cachetype = ZR_CLASS_CACHE_MODIFIED)
+stock bool ClassGetTeamDefault(int index, int cachetype = ZR_CLASS_CACHE_MODIFIED)
 {
 	switch (cachetype)
 	{
@@ -145,7 +145,7 @@ stock bool:ClassGetTeamDefault(index, cachetype = ZR_CLASS_CACHE_MODIFIED)
  *				  index will be used as a client index.
  * @return		  Class flags, or -1 if failed.
  */
-stock ClassGetFlags(index, cachetype = ZR_CLASS_CACHE_MODIFIED)
+stock int ClassGetFlags(int index, int cachetype = ZR_CLASS_CACHE_MODIFIED)
 {
 	switch (cachetype)
 	{
@@ -179,21 +179,21 @@ stock ClassGetFlags(index, cachetype = ZR_CLASS_CACHE_MODIFIED)
  *				  index will be used as a client index.
  * @return		  True if the flags are set, false otherwise or if failed.
  */
-stock bool:ClassHasFlags(index, flags, cachetype = ZR_CLASS_CACHE_MODIFIED)
+stock bool ClassHasFlags(int index, int flags, int cachetype = ZR_CLASS_CACHE_MODIFIED)
 {
 	switch (cachetype)
 	{
 		case ZR_CLASS_CACHE_ORIGINAL:
 		{
-			return bool:(ClassData[index][Class_Flags] & flags);
+			return view_as<bool>((ClassData[index][Class_Flags] & flags));
 		}
 		case ZR_CLASS_CACHE_MODIFIED:
 		{
-			return bool:(ClassDataCache[index][Class_Flags] & flags);
+			return view_as<bool>((ClassDataCache[index][Class_Flags] & flags));
 		}
 		case ZR_CLASS_CACHE_PLAYER:
 		{
-			return bool:(ClassPlayerCache[index][Class_Flags] & flags);
+			return view_as<bool>((ClassPlayerCache[index][Class_Flags] & flags));
 		}
 	}
 	return false;
@@ -213,7 +213,7 @@ stock bool:ClassHasFlags(index, flags, cachetype = ZR_CLASS_CACHE_MODIFIED)
  *				  is used, index will be used as a client index.
  * @return		  Number of cells written. -1 on error.
  */
-stock ClassGetGroup(index, String:buffer[], maxlen, cachetype = ZR_CLASS_CACHE_PLAYER)
+stock int ClassGetGroup(int index, char[] buffer, int maxlen, int cachetype = ZR_CLASS_CACHE_PLAYER)
 {
 	switch (cachetype)
 	{
@@ -248,7 +248,7 @@ stock ClassGetGroup(index, String:buffer[], maxlen, cachetype = ZR_CLASS_CACHE_P
  *				  is used, index will be used as a client index.
  * @return		  Number of cells written. -1 on error.
  */
-stock ClassGetName(index, String:buffer[], maxlen, cachetype = ZR_CLASS_CACHE_PLAYER)
+stock int ClassGetName(int index, char[] buffer, int maxlen, int cachetype = ZR_CLASS_CACHE_PLAYER)
 {
 	switch (cachetype)
 	{
@@ -283,7 +283,7 @@ stock ClassGetName(index, String:buffer[], maxlen, cachetype = ZR_CLASS_CACHE_PL
  *				  is used, index will be used as a client index.
  * @return  Number of cells written. -1 on error.
  */
-stock ClassGetDescription(index, String:buffer[], maxlen, cachetype = ZR_CLASS_CACHE_PLAYER)
+stock int ClassGetDescription(int index, char[] buffer, int maxlen, int cachetype = ZR_CLASS_CACHE_PLAYER)
 {
 	switch (cachetype)
 	{
@@ -303,7 +303,7 @@ stock ClassGetDescription(index, String:buffer[], maxlen, cachetype = ZR_CLASS_C
 	return -1;
 }
 
-stock ClassGetArmsPath(index, String:buffer[], maxlen, cachetype = ZR_CLASS_CACHE_PLAYER)
+stock int ClassGetArmsPath(int index, char[] buffer, int maxlen, int cachetype = ZR_CLASS_CACHE_PLAYER)
 {
 	switch (cachetype)
 	{
@@ -347,7 +347,7 @@ stock ClassGetArmsPath(index, String:buffer[], maxlen, cachetype = ZR_CLASS_CACH
  *				  is used, index will be used as a client index.
  * @return  Number of cells written. -1 on error.
  */
-stock ClassGetModelPath(index, String:buffer[], maxlen, cachetype = ZR_CLASS_CACHE_PLAYER)
+stock int ClassGetModelPath(int index, char[] buffer, int maxlen, int cachetype = ZR_CLASS_CACHE_PLAYER)
 {
 	switch (cachetype)
 	{
@@ -379,7 +379,7 @@ stock ClassGetModelPath(index, String:buffer[], maxlen, cachetype = ZR_CLASS_CAC
  *				  is used, index will be used as a client index.
  * @return  The model skin index in the specified class. -1 on error.
  */
-stock ClassGetModelSkinIndex(index, cachetype = ZR_CLASS_CACHE_PLAYER)
+stock int ClassGetModelSkinIndex(int index, int cachetype = ZR_CLASS_CACHE_PLAYER)
 {
 	switch (cachetype)
 	{
@@ -411,7 +411,7 @@ stock ClassGetModelSkinIndex(index, cachetype = ZR_CLASS_CACHE_PLAYER)
  *				  is used, index will be used as a client index.
  * @return  The initial alpha value from the specified class. -1 on error.
  */
-stock ClassGetAlphaInitial(index, cachetype = ZR_CLASS_CACHE_PLAYER)
+stock int ClassGetAlphaInitial(int index, int cachetype = ZR_CLASS_CACHE_PLAYER)
 {
 	switch (cachetype)
 	{
@@ -444,7 +444,7 @@ stock ClassGetAlphaInitial(index, cachetype = ZR_CLASS_CACHE_PLAYER)
  * @return  The alpha value when damaged, from the specified class. -1 on
  *		  error.
  */
-stock ClassGetAlphaDamaged(index, cachetype = ZR_CLASS_CACHE_PLAYER)
+stock int ClassGetAlphaDamaged(int index, int cachetype = ZR_CLASS_CACHE_PLAYER)
 {
 	switch (cachetype)
 	{
@@ -477,7 +477,7 @@ stock ClassGetAlphaDamaged(index, cachetype = ZR_CLASS_CACHE_PLAYER)
  * @return  The damage amount needed to change alpha, from the specified class.
  *		  -1 on error.
  */
-stock ClassGetAlphaDamage(index, cachetype = ZR_CLASS_CACHE_PLAYER)
+stock int ClassGetAlphaDamage(int index, int cachetype = ZR_CLASS_CACHE_PLAYER)
 {
 	switch (cachetype)
 	{
@@ -521,7 +521,7 @@ stock ClassGetAlphaDamage(index, cachetype = ZR_CLASS_CACHE_PLAYER)
  *				  is used, index will be used as a client index.
  * @return  Number of cells written. -1 on error.
  */
-stock ClassGetOverlayPath(index, String:buffer[], maxlen, cachetype = ZR_CLASS_CACHE_PLAYER)
+stock int ClassGetOverlayPath(int index, char[] buffer, int maxlen, int cachetype = ZR_CLASS_CACHE_PLAYER)
 {
 	switch (cachetype)
 	{
@@ -553,7 +553,7 @@ stock ClassGetOverlayPath(index, String:buffer[], maxlen, cachetype = ZR_CLASS_C
  *				  is used, index will be used as a client index.
  * @return  The night vision setting from the specified class. False on error.
  */
-stock bool:ClassGetNvgs(index, cachetype = ZR_CLASS_CACHE_PLAYER)
+stock bool ClassGetNvgs(int index, int cachetype = ZR_CLASS_CACHE_PLAYER)
 {
 	switch (cachetype)
 	{
@@ -585,7 +585,7 @@ stock bool:ClassGetNvgs(index, cachetype = ZR_CLASS_CACHE_PLAYER)
  *				  is used, index will be used as a client index.
  * @return  The field of view value from the specified class. -1 on error.
  */
-stock ClassGetFOV(index, cachetype = ZR_CLASS_CACHE_PLAYER)
+stock int ClassGetFOV(int index, int cachetype = ZR_CLASS_CACHE_PLAYER)
 {
 	switch (cachetype)
 	{
@@ -627,7 +627,7 @@ stock ClassGetFOV(index, cachetype = ZR_CLASS_CACHE_PLAYER)
  *				  is used, index will be used as a client index.
  * @return  True if the class has napalm grenades, false otherwise.
  */
-stock bool:ClassGetHasNapalm(index, cachetype = ZR_CLASS_CACHE_PLAYER)
+stock bool ClassGetHasNapalm(int index, int cachetype = ZR_CLASS_CACHE_PLAYER)
 {
 	switch (cachetype)
 	{
@@ -661,7 +661,7 @@ stock bool:ClassGetHasNapalm(index, cachetype = ZR_CLASS_CACHE_PLAYER)
  *				  is used, index will be used as a client index.
  * @return  The napalm grenades time from the specified class. -1.0 on error.
  */
-stock Float:ClassGetNapalmTime(index, cachetype = ZR_CLASS_CACHE_PLAYER)
+stock float ClassGetNapalmTime(int index, int cachetype = ZR_CLASS_CACHE_PLAYER)
 {
 	switch (cachetype)
 	{
@@ -704,7 +704,7 @@ stock Float:ClassGetNapalmTime(index, cachetype = ZR_CLASS_CACHE_PLAYER)
  * @return  Current immunity mode to the specified class. Immunity_Invalid on
  *		  error.
  */
-stock ImmunityMode:ClassGetImmunityMode(index, cachetype = ZR_CLASS_CACHE_PLAYER)
+stock ImmunityMode ClassGetImmunityMode(int index, int cachetype = ZR_CLASS_CACHE_PLAYER)
 {
 	switch (cachetype)
 	{
@@ -736,7 +736,7 @@ stock ImmunityMode:ClassGetImmunityMode(index, cachetype = ZR_CLASS_CACHE_PLAYER
  *				  is used, index will be used as a client index.
  * @return  Current immunity amount fot the specified class. -1 on error.
  */
-stock ClassGetImmunityAmount(index, cachetype = ZR_CLASS_CACHE_PLAYER)
+stock int ClassGetImmunityAmount(int index, int cachetype = ZR_CLASS_CACHE_PLAYER)
 {
 	switch (cachetype)
 	{
@@ -768,7 +768,7 @@ stock ClassGetImmunityAmount(index, cachetype = ZR_CLASS_CACHE_PLAYER)
  *				  is used, index will be used as a client index.
  * @return  Current immunity cooldown for the specified class. -1 on error.
  */
-stock ClassGetImmunityCooldown(index, cachetype = ZR_CLASS_CACHE_PLAYER)
+stock int ClassGetImmunityCooldown(int index, int cachetype = ZR_CLASS_CACHE_PLAYER)
 {
 	switch (cachetype)
 	{
@@ -801,7 +801,7 @@ stock ClassGetImmunityCooldown(index, cachetype = ZR_CLASS_CACHE_PLAYER)
  * @return  The no fall damage setting from the specified class. False on
  * error.
  */
-stock bool:ClassGetNoFallDamage(index, cachetype = ZR_CLASS_CACHE_PLAYER)
+stock bool ClassGetNoFallDamage(int index, int cachetype = ZR_CLASS_CACHE_PLAYER)
 {
 	switch (cachetype)
 	{
@@ -835,7 +835,7 @@ stock bool:ClassGetNoFallDamage(index, cachetype = ZR_CLASS_CACHE_PLAYER)
  *				  is used, index will be used as a client index.
  * @return  Health points from the specified class. -1 on error.
  */
-stock ClassGetHealth(index, cachetype = ZR_CLASS_CACHE_PLAYER)
+stock int ClassGetHealth(int index, int cachetype = ZR_CLASS_CACHE_PLAYER)
 {
 	switch (cachetype)
 	{
@@ -870,7 +870,7 @@ stock ClassGetHealth(index, cachetype = ZR_CLASS_CACHE_PLAYER)
  * @return  The health regen interval time from the specified class. -1.0 on
  *		  error.
  */
-stock Float:ClassGetHealthRegenInterval(index, cachetype = ZR_CLASS_CACHE_PLAYER)
+stock float ClassGetHealthRegenInterval(int index, int cachetype = ZR_CLASS_CACHE_PLAYER)
 {
 	switch (cachetype)
 	{
@@ -905,7 +905,7 @@ stock Float:ClassGetHealthRegenInterval(index, cachetype = ZR_CLASS_CACHE_PLAYER
  * @return  The health regen amount value from the specified class. -1 on
  *		  error.
  */
-stock ClassGetHealthRegenAmount(index, cachetype = ZR_CLASS_CACHE_PLAYER)
+stock int ClassGetHealthRegenAmount(int index, int cachetype = ZR_CLASS_CACHE_PLAYER)
 {
 	switch (cachetype)
 	{
@@ -940,7 +940,7 @@ stock ClassGetHealthRegenAmount(index, cachetype = ZR_CLASS_CACHE_PLAYER)
  * @return  The health infect gain value from the specified class. -1 on
  *		  error.
  */
-stock ClassGetHealthInfectGain(index, cachetype = ZR_CLASS_CACHE_PLAYER)
+stock int ClassGetHealthInfectGain(int index, int cachetype = ZR_CLASS_CACHE_PLAYER)
 {
 	switch (cachetype)
 	{
@@ -972,7 +972,7 @@ stock ClassGetHealthInfectGain(index, cachetype = ZR_CLASS_CACHE_PLAYER)
  *				  is used, index will be used as a client index.
  * @return  The kill bonus points from the specified class.
  */
-stock ClassGetKillBonus(index, cachetype = ZR_CLASS_CACHE_PLAYER)
+stock int ClassGetKillBonus(int index, int cachetype = ZR_CLASS_CACHE_PLAYER)
 {
 	switch (cachetype)
 	{
@@ -1006,7 +1006,7 @@ stock ClassGetKillBonus(index, cachetype = ZR_CLASS_CACHE_PLAYER)
  *				  is used, index will be used as a client index.
  * @return  The running speed value from the specified class. -1.0 on error.
  */
-stock Float:ClassGetSpeed(index, cachetype = ZR_CLASS_CACHE_PLAYER)
+stock float ClassGetSpeed(int index, int cachetype = ZR_CLASS_CACHE_PLAYER)
 {
 	switch (cachetype)
 	{
@@ -1020,8 +1020,8 @@ stock Float:ClassGetSpeed(index, cachetype = ZR_CLASS_CACHE_PLAYER)
 		}
 		case ZR_CLASS_CACHE_PLAYER:
 		{
-			new Float:speed = ClassPlayerCache[index][Class_Speed];
-			new Float:multiplier = ClassGetAttributeMultiplier(index, ClassM_Speed);
+			float speed = ClassPlayerCache[index][Class_Speed];
+			float multiplier = ClassGetAttributeMultiplier(index, ClassM_Speed);
 			
 			// Apply multiplier.
 			if (ClassSpeedMethod == ClassSpeed_Prop)
@@ -1059,7 +1059,7 @@ stock Float:ClassGetSpeed(index, cachetype = ZR_CLASS_CACHE_PLAYER)
  *				  is used, index will be used as a client index.
  * @return  The knock back boost from the specified class. 0.0 on error.
  */
-stock Float:ClassGetKnockback(index, cachetype = ZR_CLASS_CACHE_PLAYER)
+stock float ClassGetKnockback(int index, int cachetype = ZR_CLASS_CACHE_PLAYER)
 {
 	switch (cachetype)
 	{
@@ -1093,7 +1093,7 @@ stock Float:ClassGetKnockback(index, cachetype = ZR_CLASS_CACHE_PLAYER)
  *				  is used, index will be used as a client index.
  * @return  The jump height boost from the specified class. -1.0 on error.
  */
-stock Float:ClassGetJumpHeight(index, cachetype = ZR_CLASS_CACHE_PLAYER)
+stock float ClassGetJumpHeight(int index, int cachetype = ZR_CLASS_CACHE_PLAYER)
 {
 	switch (cachetype)
 	{
@@ -1127,7 +1127,7 @@ stock Float:ClassGetJumpHeight(index, cachetype = ZR_CLASS_CACHE_PLAYER)
  *				  is used, index will be used as a client index.
  * @return  The jump distance boost from the specified class. -1.0 on error.
  */
-stock Float:ClassGetJumpDistance(index, cachetype = ZR_CLASS_CACHE_PLAYER)
+stock float ClassGetJumpDistance(int index, int cachetype = ZR_CLASS_CACHE_PLAYER)
 {
 	switch (cachetype)
 	{
@@ -1154,7 +1154,7 @@ stock Float:ClassGetJumpDistance(index, cachetype = ZR_CLASS_CACHE_PLAYER)
  * @return				  The flag that represent the specified attribute.
  *						  -1 on error.
  */
-stock ClassAttributeNameToFlag(const String:attributename[])
+stock int ClassAttributeNameToFlag(const char[] attributename)
 {
 	// Check attribute names.
 	if (StrEqual(attributename, "enabled", false))
@@ -1293,7 +1293,7 @@ stock ClassAttributeNameToFlag(const String:attributename[])
  * @return				  The multiplier that represent the specified attribute.
  *						  ClassM_Invalid if failed.
  */
-stock ClassMultipliers:ClassAttributeNameToMultiplier(const String:attributename[])
+stock ClassMultipliers ClassAttributeNameToMultiplier(const char[] attributename)
 {
 	// Check attribute names.
 	if (StrEqual(attributename, "napalm_time", false))
@@ -1344,7 +1344,7 @@ stock ClassMultipliers:ClassAttributeNameToMultiplier(const String:attributename
  * @return	  The data type used in the specified attribute, or
  *			  ClassType_InvalidType if failed.
  */
-stock ClassDataTypes:ClassGetAttributeType(attributeflag)
+stock ClassDataTypes ClassGetAttributeType(int attributeflag)
 {
 	switch (attributeflag)
 	{

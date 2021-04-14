@@ -28,7 +28,7 @@
 /**
  * Commands are created/hooked.
  */
-CommandsInit()
+void CommandsInit()
 {
 	// Forward event to modules. (create commands)
 	ConfigOnCommandsCreate();
@@ -38,20 +38,13 @@ CommandsInit()
 	HitgroupsOnCommandsCreate();
 	InfectOnCommandsCreate();
 	MenuOnCommandsCreate();
-	ZsoundsOnCommandsCreate();
 	ZAdminOnCommandsCreate();
 	AntiStickOnCommandsCreate();
 	ZCookiesOnCommandsCreate();
 	ZSpawnOnCommandsCreate();
 	ZTeleOnCommandsCreate();
-	ZHPOnCommandsCreate();
 	VolOnCommandsCreate();
-	ZombieSoundsOnCommandsCreate();
 	ImmunityOnCommandsCreate();
-	
-	#if defined ADD_VERSION_INFO
-		VersionOnCommandsCreate();
-	#endif
 	
 	DebugOnCommandsCreate();
 	

@@ -44,12 +44,12 @@ enum RoundEndOutcome
 /**
  * Global variable to store round win timer handle.
  */
-new Handle:tRoundEnd = INVALID_HANDLE;
+Handle tRoundEnd = INVALID_HANDLE;
 
 /**
  * Map is starting.
  */ 
-RoundEndOnMapStart()
+void RoundEndOnMapStart()
 {
 	// Reset timer handle.
 	tRoundEnd = INVALID_HANDLE;
@@ -58,10 +58,10 @@ RoundEndOnMapStart()
 /**
  * Client has been killed.
  */
-RoundEndOnClientDeath()
+void RoundEndOnClientDeath()
 {
 	// Terminate the round if the last player was killed.
-	new RoundEndOutcome:outcome;
+	RoundEndOutcome outcome;
 	if (RoundEndGetRoundStatus(outcome))
 	{
 		RoundEndTerminateRound(ROUNDEND_DELAY, outcome);
@@ -71,10 +71,10 @@ RoundEndOnClientDeath()
 /**
  * Client has been infected.
  */
-RoundEndOnClientInfected()
+void RoundEndOnClientInfected()
 {
 	// Terminate the round if the last player was infected.
-	new RoundEndOutcome:outcome;
+	RoundEndOutcome outcome;
 	if (RoundEndGetRoundStatus(outcome))
 	{
 		RoundEndTerminateRound(ROUNDEND_DELAY, outcome);
@@ -84,7 +84,7 @@ RoundEndOnClientInfected()
 /**
  * The round is starting.
  */
-RoundEndOnRoundStart()
+void RoundEndOnRoundStart()
 {
 	// Stop all overlays.
 	RoundEndOverlayStop();
@@ -103,11 +103,11 @@ RoundEndOnRoundStart()
 /**
  * The freeze time is ending.
  */
-RoundEndOnRoundFreezeEnd()
+void RoundEndOnRoundFreezeEnd()
 {
 	// Calculate round length, in seconds.
 	// Get mp_roundtime. (in minutes)
-	new Float:roundtime = GetConVarFloat(FindConVar("mp_roundtime"));
+	float roundtime = GetConVarFloat(FindConVar("mp_roundtime"));
 	
 	// Convert to seconds.
 	roundtime *= 60.0;
@@ -129,7 +129,7 @@ RoundEndOnRoundFreezeEnd()
  * 
  * @param winner	winner
  */
-RoundEndOnRoundEnd(winner)
+void RoundEndOnRoundEnd(int winner)
 {
 	// If round end timer is running, then kill it.
 	if (tRoundEnd != INVALID_HANDLE)
@@ -145,7 +145,7 @@ RoundEndOnRoundEnd(winner)
 	g_bZombieSpawned = false;
 	
 	// Update team scores.
-	new teamscore;
+	int teamscore;
 	switch(winner)
 	{
 		// Zombies won the round.
@@ -166,13 +166,7 @@ RoundEndOnRoundEnd(winner)
 	
 	// Display the overlay to all clients.
 	RoundEndOverlayStart(winner);
-	RoundEndSoundsStart(winner);
 	
-	// Balance teams if enabled.
-	if (GetConVarBool(g_hCvarsList[CVAR_ROUNDEND_BALANCE_TEAMS]))
-	{
-		RoundEndBalanceTeams();
-	}
 }
 
 /**
@@ -180,7 +174,7 @@ RoundEndOnRoundEnd(winner)
  *
  * @param timer	 The timer handle.
  */
-public Action:RoundEndTimer(Handle:timer)
+public Action RoundEndTimer(Handle timer)
 {
 	// Set the global timer handle variable to INVALID_HANDLE.
 	tRoundEnd = INVALID_HANDLE;
@@ -201,7 +195,7 @@ public Action:RoundEndTimer(Handle:timer)
  * @param outcome   Set to the outcome of the round, if round is over.
  * @return		  True if the round is over, false otherwise.
  */
-bool:RoundEndGetRoundStatus(&RoundEndOutcome:outcome)
+bool RoundEndGetRoundStatus(RoundEndOutcome &outcome)
 {
 	// If zombie hasn't spawned, then stop.
 	if (!g_bZombieSpawned)
@@ -211,8 +205,8 @@ bool:RoundEndGetRoundStatus(&RoundEndOutcome:outcome)
 	}
 	
 	// Initialize count variables
-	new zombiecount;
-	new humancount;
+	int zombiecount;
+	int humancount;
 	
 	// Count valid clients. (true to only allow living clients)
 	ZRCountValidClients(zombiecount, humancount, true);
@@ -254,7 +248,7 @@ bool:RoundEndGetRoundStatus(&RoundEndOutcome:outcome)
  * @param delay	 Delay before new round starts. 
  * @param outcome   The outcome of the round.
  */
-RoundEndTerminateRound(Float:delay, RoundEndOutcome:outcome = Restart)
+void RoundEndTerminateRound(float delay, RoundEndOutcome outcome = Restart)
 {
 	switch(outcome)
 	{
@@ -282,71 +276,21 @@ RoundEndTerminateRound(Float:delay, RoundEndOutcome:outcome = Restart)
 }
 
 /**
- * Balances teams.
- */
-RoundEndBalanceTeams()
-{
-	// Create eligible player list.
-	new Handle:arrayEligibleClients = INVALID_HANDLE;
-	new eligibleclients = ZRCreateEligibleClientList(arrayEligibleClients, true);
-	
-	// If there are no eligible client's then stop.
-	if (!eligibleclients)
-	{
-		// Destroy handle.
-		CloseHandle(arrayEligibleClients);
-		
-		return;
-	}
-	
-	new client;
-	
-	// Move all clients to T
-	
-	// x = Array index.
-	// client = client index.
-	for (new x = 0; x < eligibleclients; x++)
-	{
-		// Get client stored in array index.
-		client = GetArrayCell(arrayEligibleClients, x);
-		
-		// Switch client to T
-		CS_SwitchTeam(client, CS_TEAM_T);
-	}
-	
-	// Move every other client back to CT
-	
-	// x = array index
-	// client = client index.
-	for (new x = 0; x < eligibleclients; x += 2)
-	{
-		// Get client stored in array index.
-		client = GetArrayCell(arrayEligibleClients, x);
-		
-		// Switch client to CT
-		CS_SwitchTeam(client, CS_TEAM_CT);
-	}
-	
-	// Destroy handle.
-	CloseHandle(arrayEligibleClients);
-}
-
-/**
  * Displays overlays to clients, depending on the winner.
  * 
  * @param time	  Time to display overlays.
  * @param winner   The winner of the round.
  */
-RoundEndOverlayStart(winner)
+void RoundEndOverlayStart(int winner)
 {
 	// If round end overlays are disabled, then stop.
-	new bool:overlay = GetConVarBool(g_hCvarsList[CVAR_ROUNDEND_OVERLAY]);
+	bool overlay = GetConVarBool(g_hCvarsList[CVAR_ROUNDEND_OVERLAY]);
 	if (!overlay)
 	{
 		return;
 	}
 	
-	decl String:overlaypath[PLATFORM_MAX_PATH];
+	char overlaypath[PLATFORM_MAX_PATH];
 	
 	switch(winner)
 	{
@@ -368,7 +312,7 @@ RoundEndOverlayStart(winner)
 	}
 	
 	// x = client index.
-	for (new x = 1; x <= MaxClients; x++)
+	for (int x = 1; x <= MaxClients; x++)
 	{
 		// If client isn't in-game, then stop.
 		if (!IsClientInGame(x))
@@ -387,69 +331,10 @@ RoundEndOverlayStart(winner)
 	}
 }
 
-RoundEndSoundsStart(winner)
-{
-	// If round end sounds are disabled, then stop.
-	new bool:roundendsdenable = GetConVarBool(g_hCvarsList[CVAR_ROUNDEND_SOUNDS]);
-	if (!roundendsdenable)
-	{
-		return;
-	}
-	
-	switch(winner)
-	{
-		// Show "zombies win" RoundSoundsWim
-		case CS_TEAM_T:
-		{	
-			// x = client index.
-			for (new x = 1; x <= MaxClients; x++)
-			{
-				// If client isn't in-game, then stop.
-				if (!IsClientInGame(x))
-				{
-					continue;
-				}
-				
-				// If client is fake (or bot), then stop.
-				if (IsFakeClient(x))
-				{
-					continue;
-				}
-				RoundEndSoundsOnClientSoundT(x);
-			}
-		}
-		// Show "humans win" RoundSoundsWim
-		case CS_TEAM_CT:
-		{
-			// x = client index.
-			for (new x = 1; x <= MaxClients; x++)
-			{
-				// If client isn't in-game, then stop.
-				if (!IsClientInGame(x))
-				{
-					continue;
-				}
-				
-				// If client is fake (or bot), then stop.
-				if (IsFakeClient(x))
-				{
-					continue;
-				}
-				RoundEndSoundsOnClientSoundCT(x);
-			}
-		}
-		// Show no overlay.
-		default:
-		{
-			//strcopy(overlaypath, sizeof(overlaypath), "");
-		}
-	}
-}
-
-RoundEndOverlayStop()
+void RoundEndOverlayStop()
 {
 	// x = client index.
-	for (new x = 1; x <= MaxClients; x++)
+	for (int x = 1; x <= MaxClients; x++)
 	{
 		// If client isn't in-game, then stop.
 		if (!IsClientInGame(x))

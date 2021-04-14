@@ -5,7 +5,16 @@
 * Sorry for my English.
 
 * Author Greyscale | Richard Helgeby and Franc1sco franug, Anubis Edition
-* Version = 3.6 -A Franug,Anubis edition
+* Version = 3.7 Anubis edition
+
+### Update
+
+* Updated new synthase. Separate audio module to make editing easier and the core lighter. (Without it there will be no audio.)
+* Repeatkill fix, block! Zspawn. Command add admin "! Zrk".
+* Infect alone off. Command admin "! Zalone" for map testers.
+* Zhp removed, as most servers use external plugins for this function.
+
+*Update cfg, so that there are no conflicts of cvars from the "zombireload.cfg" cfg related to the audio ..
 
 ### Natives implemented:
 
@@ -22,6 +31,7 @@
 "zr_volume_default",			 "0.5",	"Default volume Zr Sounds. Default '0.5'"
 
 ### Sounds-General  ...
+
 
 Added the possibility to change the location of the system's sound folders.
 

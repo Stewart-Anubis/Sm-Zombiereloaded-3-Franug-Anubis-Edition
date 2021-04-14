@@ -81,6 +81,7 @@ enum CvarsList
 	Handle:CVAR_WEAPONS_ZMARKET_REBUY,
 	Handle:CVAR_WEAPONS_ZMARKET_REBUY_AUTO,
 	Handle:CVAR_HITGROUPS,
+	Handle:CVAR_KNOCKBACK_MULTIPLIER,
 	Handle:CVAR_DAMAGE_HITGROUPS,
 	Handle:CVAR_DAMAGE_BLOCK_FF,
 	Handle:CVAR_DAMAGE_BLOCK_BLAST,
@@ -98,7 +99,6 @@ enum CvarsList
 	Handle:CVAR_ROUNDEND_OVERLAY,
 	Handle:CVAR_ROUNDEND_OVERLAY_ZOMBIE,
 	Handle:CVAR_ROUNDEND_OVERLAY_HUMAN,
-	Handle:CVAR_ROUNDEND_BALANCE_TEAMS,
 	Handle:CVAR_FORCETEAMS,
 	Handle:CVAR_INFECT_SPAWNTIME_MIN,
 	Handle:CVAR_INFECT_SPAWNTIME_MAX,
@@ -114,7 +114,6 @@ enum CvarsList
 	Handle:CVAR_INFECT_FIREBALL,
 	Handle:CVAR_INFECT_SMOKE,
 	Handle:CVAR_INFECT_SPARKS,
-	Handle:CVAR_INFECT_SOUND,
 	Handle:CVAR_INFECT_ESPLASH,
 	Handle:CVAR_INFECT_SHAKE,
 	Handle:CVAR_INFECT_SHAKE_AMP,
@@ -141,17 +140,6 @@ enum CvarsList
 	Handle:CVAR_VEFFECTS_RAGDOLL_REMOVE,
 	Handle:CVAR_VEFFECTS_RAGDOLL_DISSOLVE,
 	Handle:CVAR_VEFFECTS_RAGDOLL_DELAY,
-	Handle:CVAR_VOICE,
-	Handle:CVAR_VOICE_ZOMBIES_MUTE,
-	Handle:CVAR_SEFFECTS_MOAN,
-	Handle:CVAR_SEFFECTS_GROAN,
-	Handle:CVAR_SEFFECTS_DEATH,
-	Handle:CVAR_SEFFECTS_COMMAND_LIMIT,
-	Handle:CVAR_SEFFECTS_COMMAND_TIMESPAN,
-	Handle:CVAR_AMBIENTSOUNDS,
-	Handle:CVAR_AMBIENTSOUNDS_FILE,
-	Handle:CVAR_AMBIENTSOUNDS_LENGTH,
-	Handle:CVAR_AMBIENTSOUNDS_VOLUME,
 	Handle:CVAR_ANTISTICK,
 	Handle:CVAR_NOBLOCK,
 	Handle:CVAR_ANTISTICK_DEFAULT_WIDTH,
@@ -191,36 +179,20 @@ enum CvarsList
 	Handle:CVAR_ZTELE_MAX_HUMAN,
 	Handle:CVAR_ZTELE_AUTOCANCEL,
 	Handle:CVAR_ZTELE_AUTOCANCEL_DISTANCE,
-	Handle:CVAR_ZHP,
-	Handle:CVAR_ZHP_DEFAULT,
-	Handle:CVAR_ZMENU_ENABLED,
-	Handle:CVAR_ZOMBIES_SOUNDS,
-	Handle:CVAR_ZOMBIES_SOUNDS_DEFAULT,
-	Handle:CVAR_ROUNDEND_SOUNDS,
-	Handle:CVAR_ROUNDEND_SOUNDS_DEFAULT,
-	Handle:CVAR_VOICECOUNT_DEFAULT,
-	Handle:CVAR_VOLUME_DEFAULT,
-	Handle:CVAR_KNOCKBACK_MULTIPLIER,
-	Handle:CVAR_COUNTDOWN_MAM_PATH,
-	Handle:CVAR_COUNTDOWN_WOMAN_PATH,
-	Handle:CVAR_ROUNDEND_HUMANS_WIN,
-	Handle:CVAR_ROUNDEND_ZOMBIE_WIN,
-	Handle:CVAR_ZOMBIES_SOUNDS_FILES
+	Handle:CVAR_ZMENU_ENABLED
 }
 
 /**
  * Array to store cvar data in.
  */
-new g_hCvarsList[CvarsList];
+g_hCvarsList[CvarsList];
 
 /**
  * @section Global cvar handles.
  */
-new Handle:g_hAutoTeamBalance = INVALID_HANDLE;
-new Handle:g_hLimitTeams = INVALID_HANDLE;
-//new Handle:g_hRestartGame = INVALID_HANDLE;
-// Force teams Bool.
-new bool:started = false;
+Handle g_hAutoTeamBalance = INVALID_HANDLE;
+Handle g_hLimitTeams = INVALID_HANDLE;
+//Handle g_hRestartGame = INVALID_HANDLE;
 /**
  * @endsection
  */
@@ -228,7 +200,7 @@ new bool:started = false;
 /**
  * Cvars module init function.
  */
-CvarsInit()
+void CvarsInit()
 {
 	// Retrieve handles of CS:S cvars.
 	g_hAutoTeamBalance = FindConVar("mp_autoteambalance");
@@ -242,14 +214,10 @@ CvarsInit()
 	CvarsHook();
 	
 	// Create public cvar for tracking.
-	decl String:description[64];
+	char description[64];
 	Format(description, sizeof(description), "%s Current version of this plugin", TRANSLATION_PHRASE_PREFIX);
 	CreateConVar("gs_zombiereloaded_version", VERSION, description, FCVAR_SPONLY|FCVAR_UNLOGGED|FCVAR_DONTRECORD|FCVAR_REPLICATED|FCVAR_NOTIFY);
-	
-	#if defined ADD_VERSION_INFO
-		CreateConVar("zombiereloaded_revision", ZR_VER_REVISION, "Revision number for this plugin in source code repository.", FCVAR_SPONLY|FCVAR_UNLOGGED|FCVAR_DONTRECORD|FCVAR_REPLICATED|FCVAR_NOTIFY);
-	#endif
-	
+
 	// Forward event to modules.
 	VEffectsOnCvarInit();
 }
@@ -257,7 +225,7 @@ CvarsInit()
 /**
  * Create all cvars for plugin.
  */
-CvarsCreate()
+void CvarsCreate()
 {
 	// ===========================
 	// Log (core)
@@ -341,7 +309,7 @@ CvarsCreate()
 	// Hitgroups (core)
 	// ===========================
 	g_hCvarsList[CVAR_HITGROUPS]						=	CreateConVar("zr_hitgroups",   "1",	"Enable hitgroups module, disabling this will disable hitgroup-related features. (hitgroup knockback multipliers, hitgroup damage control)");
-	
+	g_hCvarsList[CVAR_KNOCKBACK_MULTIPLIER]	 =	CreateConVar("zr_knockback_multiplier",	"1.0",			"Multiplier for knockback");
 	
 	// ===========================
 	// Infect (core)
@@ -364,7 +332,6 @@ CvarsCreate()
 	g_hCvarsList[CVAR_INFECT_FIREBALL]				  =	CreateConVar("zr_infect_fireball",			 "1",								"Spawn a fireball effect around player on infection. [Dependency: zr_infect_explosion]");
 	g_hCvarsList[CVAR_INFECT_SMOKE]					 =	CreateConVar("zr_infect_smoke",				"1",								"Spawn a smoke cloud effect around player on infection. [Dependency: zr_infect_explosion]");
 	g_hCvarsList[CVAR_INFECT_SPARKS]					=	CreateConVar("zr_infect_sparks",			   "1",								"Emit sparks from player on infection. [Dependency: zr_infect_explosion]");
-	g_hCvarsList[CVAR_INFECT_SOUND]					 =	CreateConVar("zr_infect_sound",				"fz_scream1.mp3",   "Sound, relative to [zr_files_zombie_sounds] folder, to play from player on infection. ['\"\"' = No sound]");
 	g_hCvarsList[CVAR_INFECT_ESPLASH]				   =	CreateConVar("zr_infect_esplash",			  "1",								"Emit an energy splash from player on infection.");
 	g_hCvarsList[CVAR_INFECT_SHAKE]					 =	CreateConVar("zr_infect_shake",				"1",								"Shake player's view on infect.");
 	g_hCvarsList[CVAR_INFECT_SHAKE_AMP]				 =	CreateConVar("zr_infect_shake_amp",			"15.0",							 "Amplitude of shaking effect. [Dependency: zr_infect_shake]");
@@ -407,12 +374,11 @@ CvarsCreate()
 	g_hCvarsList[CVAR_ROUNDEND_OVERLAY]				 =	CreateConVar("zr_roundend_overlay",			"1",							"Show specified overlay to players depending on winner when the round ends.");
 	g_hCvarsList[CVAR_ROUNDEND_OVERLAY_HUMAN]		   =	CreateConVar("zr_roundend_overlays_human",	 "overlays/zr/humans_win",	   "Overlay, relative to \"materials\" folder, to display when humans win the round. [Dependency: zr_roundend_overlay]");
 	g_hCvarsList[CVAR_ROUNDEND_OVERLAY_ZOMBIE]		  =	CreateConVar("zr_roundend_overlays_zombie",	"overlays/zr/zombies_win",	  "Overlay, relative to \"materials\" folder, to display when zombies win the round. [Dependency: zr_roundend_overlay]");
-	g_hCvarsList[CVAR_ROUNDEND_BALANCE_TEAMS]		   =	CreateConVar("zr_roundend_balance_teams",	  "1",							"Balances the team every time the round ends. Disable this if you use something else to balance teams.");
 	
 	// ===========================
 	// Round Start (core)
 	// ==================
-	g_hCvarsList[CVAR_FORCETEAMS]					 =	CreateConVar("zr_forceteams",		"0",			"Força os times mudarem para Humanos no incio da Partida.");
+	g_hCvarsList[CVAR_FORCETEAMS]					 =	CreateConVar("zr_forceteams",		"0",			"Forces teams to switch to Humans at the start of the Match.");
 	
 	
 	// ===========================
@@ -453,28 +419,6 @@ CvarsCreate()
 	g_hCvarsList[CVAR_VEFFECTS_RAGDOLL_REMOVE]		  =	CreateConVar("zr_veffects_ragdoll_remove",	 "1",					"Remove players' ragdolls from the game after a delay.");
 	g_hCvarsList[CVAR_VEFFECTS_RAGDOLL_DISSOLVE]		=	CreateConVar("zr_veffects_ragdoll_dissolve",   "-1",				   "The ragdoll removal effect. ['-2' = Effectless removal | '-1' = Random effect | '0' = Energy dissolve | '1' = Heavy electrical dissolve | '2' = Light electrical dissolve | '3' = Core dissolve | Dependency: zr_veffects_ragdoll_remove]");
 	g_hCvarsList[CVAR_VEFFECTS_RAGDOLL_DELAY]		   =	CreateConVar("zr_veffects_ragdoll_delay",	  "0.5",				  "Time to wait before removing the ragdoll. [Dependency: zr_veffects_ragdoll_remove]");
-	
-	
-	// ===========================
-	// Sound Effects (module)
-	// ===========================
-	
-	// Voice
-	g_hCvarsList[CVAR_VOICE]							=	CreateConVar("zr_voice",				   "0",							"(Incomplete) Modify sv_alltalk to obey zombie/human teams instead of t/ct.");
-	g_hCvarsList[CVAR_VOICE_ZOMBIES_MUTE]			   =	CreateConVar("zr_voice_zombies_mute",	  "0",							"(Incomplete) Only allow humans to communicate, block verbal zombie communication.");
-	
-	// Zombie Sounds
-	g_hCvarsList[CVAR_SEFFECTS_MOAN]					=	CreateConVar("zr_seffects_moan",			   "30.0",					 "Time between emission of a moan sound from a zombie.");
-	g_hCvarsList[CVAR_SEFFECTS_GROAN]				   =	CreateConVar("zr_seffects_groan",			  "5",						"The probability that a groan sound will be emitted from a zombie when shot. ['100' = 1% chance | '50' = 2% chance | '1' = 100% chance]");
-	g_hCvarsList[CVAR_SEFFECTS_DEATH]				   =	CreateConVar("zr_seffects_death",			  "1",						"Emit a death sound when a zombie dies.");
-	g_hCvarsList[CVAR_SEFFECTS_COMMAND_LIMIT]		   =	CreateConVar("zr_seffects_command_limit",	  "4",						"Number of sound commands allowed within the time span, or total limit if time span is disabled. ['0' = Disable sound command limit]");
-	g_hCvarsList[CVAR_SEFFECTS_COMMAND_TIMESPAN]		=	CreateConVar("zr_seffects_command_timespan",   "10",					   "Time span for sound command limiter (in seconds). ['0' = Disable time span check | positive number = Time span]");
-	
-	// Ambient Sounds
-	g_hCvarsList[CVAR_AMBIENTSOUNDS]					=	CreateConVar("zr_ambientsounds",		   "1",							"Play an ambient sound to all players during gameplay.");
-	g_hCvarsList[CVAR_AMBIENTSOUNDS_FILE]			   =	CreateConVar("zr_ambientsounds_file",	  "ambient/zr/zr_ambience.mp3",   "Sound file, relative to \"sound\" folder, to play as ambience.  This file is automatically downloaded to clients. [Dependency: zr_ambientsounds]");
-	g_hCvarsList[CVAR_AMBIENTSOUNDS_LENGTH]			 =	CreateConVar("zr_ambientsounds_length",	"60.0",						 "Length of the ambient sound. [Dependency: zr_ambientsounds]");
-	g_hCvarsList[CVAR_AMBIENTSOUNDS_VOLUME]			 =	CreateConVar("zr_ambientsounds_volume",	"0.8",						  "Volume of the ambient sound. [1.0 = Max volume | 0.0001 = Not audible | Dependency: zr_ambientsounds]");
 	
 	
 	// ===========================
@@ -555,32 +499,9 @@ CvarsCreate()
 	
 	
 	// ===========================
-	// ZHP (module)
+	// Zmenu (module)
 	// ===========================
-	g_hCvarsList[CVAR_ZHP]							  =	CreateConVar("zr_zhp",			 "1",	"Allow player to toggle real HP display as a zombie.");
-	g_hCvarsList[CVAR_ZHP_DEFAULT]					  =	CreateConVar("zr_zhp_default",	 "1",	"Default ZHP toggle state set on connecting player. [Dependency: zr_zhp]");
 	g_hCvarsList[CVAR_ZMENU_ENABLED]					  =	CreateConVar("zr_zmenu_enable",	 "1",	"Enable/disable main menu command.");
-	
-	// ===========================
-	// Voice ZrSounds (module)
-	// ===========================
-	
-	g_hCvarsList[CVAR_ZOMBIES_SOUNDS]					  =	CreateConVar("zr_zombies_sounds",	 "1",	"Enable/disable togle sounds Zombies. Default '1'");
-	g_hCvarsList[CVAR_ZOMBIES_SOUNDS_DEFAULT]					  =	CreateConVar("zr_zombies_sounds_enable",	 "1",	"Enable/disable sounds Zombies. Default '1'");
-	g_hCvarsList[CVAR_ROUNDEND_SOUNDS]					  =	CreateConVar("zr_roundend_sounds",	 "1",	"Enable/disable togle sounds roundend. Default '1'");
-	g_hCvarsList[CVAR_ROUNDEND_SOUNDS_DEFAULT]					  =	CreateConVar("zr_roundend_sounds_enable",	 "1",	"Enable/disable sounds roundend. Default '1'");	
-	g_hCvarsList[CVAR_VOICECOUNT_DEFAULT]							  =	CreateConVar("zr_voice_count_default",			 "1",	"Default countdown voice. ['1' = Mem  | '2' = Woman!] Default 1");
-	g_hCvarsList[CVAR_VOLUME_DEFAULT]							  =	CreateConVar("zr_volume_default",			 "0.5",	"Default volume Zr Sounds. Default '0.5'");
-
-	g_hCvarsList[CVAR_COUNTDOWN_MAM_PATH]							  =	CreateConVar("zr_countdown_files_mam",			 "zr/countdown/",	"Folder referring to the counter sounds. Man.");
-	g_hCvarsList[CVAR_COUNTDOWN_WOMAN_PATH]							  =	CreateConVar("zr_countdown_files_woman",			 "zr/countdown/female/",	"Folder referring to the counter sounds. Woman.");
-
-	g_hCvarsList[CVAR_ROUNDEND_HUMANS_WIN]							  =	CreateConVar("zr_files_humans_win",			 "roundend/humanswin/",	"Folder referring to the sounds of the round end. Humans win.");
-	g_hCvarsList[CVAR_ROUNDEND_ZOMBIE_WIN]							  =	CreateConVar("zr_files_zombie_win",			 "roundend/zombiewin/",	"Folder referring to the sounds of the round end. Zombie win.");
-
-	g_hCvarsList[CVAR_ZOMBIES_SOUNDS_FILES]							  =	CreateConVar("zr_files_zombie_sounds",			 "zr/",	"Folder referring to the sounds of zombies.");
-	
-	g_hCvarsList[CVAR_KNOCKBACK_MULTIPLIER]	 =	CreateConVar("zr_knockback_multiplier",	"1.0",			"Multiplier for knockback");
 	
 	// Auto-generate config file if it doesn't exist, then execute.
 	AutoExecConfig(true, "zombiereloaded", "sourcemod/zombiereloaded");
@@ -591,7 +512,7 @@ CvarsCreate()
  * 
  * @param unhook	If true, cvars will be unhooked, false to hook cvars.
  */
-CvarsHook(bool:unhook = false)
+Action CvarsHook(bool unhook = false)
 {
 	// If unhook is true, then continue.
 	if (unhook)
@@ -627,7 +548,7 @@ CvarsHook(bool:unhook = false)
  * @param oldvalue  The value before the attempted change.
  * @param newvalue  The new value.
  */
-public CvarsHookLocked(Handle:cvar, const String:oldvalue[], const String:newvalue[])
+public void CvarsHookLocked(Handle cvar, const char[] oldvalue, const char[] newvalue)
 {
 	// If cvar is mp_autoteambalance, then continue.
 	if (cvar == g_hAutoTeamBalance)
@@ -669,13 +590,13 @@ public CvarsHookLocked(Handle:cvar, const String:oldvalue[], const String:newval
  * @param oldvalue  The value before the attempted change.
  * @param newvalue  The new value.
 
-public CvarsHookRestartGame(Handle:cvar, const String:oldvalue[], const String:newvalue[])
+public void CvarsHookRestartGame(Handle cvar, const char[] oldvalue, const char[] newvalue)
 {
 	// Prevent round restart.
 	SetConVarInt(cvar, 0);
 	
 	// If value was invalid or 0, then stop.
-	new Float:delay = StringToFloat(newvalue);
+	float delay = StringToFloat(newvalue);
 	if (delay <= 0)
 	{
 		return;

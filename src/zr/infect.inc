@@ -48,8 +48,8 @@
 /**
  * @section Global variables to store infect timer handles.
  */
-new Handle:tInfect = INVALID_HANDLE;
-new Handle:tInfectCountdown = INVALID_HANDLE;
+Handle tInfect = INVALID_HANDLE;
+Handle tInfectCountdown = INVALID_HANDLE;
 /**
  * @endsection
  */
@@ -57,12 +57,13 @@ new Handle:tInfectCountdown = INVALID_HANDLE;
 /**
  * Infection countdown data pack.
  */
-new Handle:hInfectCountdownData = INVALID_HANDLE;
+Handle hInfectCountdownData = INVALID_HANDLE;
 
 /**
  * Array for flagging client as zombie.
  */
-new bool:bZombie[MAXPLAYERS + 1];
+bool bZombie[MAXPLAYERS + 1];
+
 
 /**
  * @section bInfectImmune indexes
@@ -76,7 +77,7 @@ new bool:bZombie[MAXPLAYERS + 1];
 /**
  * Array for flagging client to be protected. (See defines above)
  */
-new bool:bInfectImmune[MAXPLAYERS + 1][2];
+bool bInfectImmune[MAXPLAYERS + 1][2];
 
 /**
  * Available mother zombie infection modes.
@@ -92,7 +93,7 @@ enum InfectMode
 /**
  * Map is ending.
  */
-InfectOnMapEnd()
+void InfectOnMapEnd()
 {
 	// Reset timers. Infect timers are invalidated on a map change if they are
 	// still running.
@@ -102,77 +103,13 @@ InfectOnMapEnd()
 }
 
 /**
- * Loads downloadable content data for infect module.
- */
-InfectSoundsLoad()
-{
-	// Get infection sound.
-	decl String:ContMamCache[PLATFORM_MAX_PATH];
-	decl String:ContWomCache[PLATFORM_MAX_PATH];
-	decl String:ContMamPath[PLATFORM_MAX_PATH];
-	decl String:ContWomPath[PLATFORM_MAX_PATH];
-
-	GetConVarString(g_hCvarsList[CVAR_COUNTDOWN_MAM_PATH], ContMamCache, sizeof(ContMamCache));
-	GetConVarString(g_hCvarsList[CVAR_COUNTDOWN_WOMAN_PATH], ContWomCache, sizeof(ContWomCache));
-
-	// Prepend sound/ to the path.
-	Format(ContMamPath, sizeof(ContMamPath), "sound/%s", ContMamCache);
-	Format(ContWomPath, sizeof(ContWomPath), "sound/%s", ContWomCache);
-
-	
-	decl String:s_SoundsFile[64], String:s_PreCachePath[PLATFORM_MAX_PATH];
-
-	new FileType:f_SoundsFileType, Handle:h_SoundsDir = OpenDirectory(ContMamPath);
-
-	if (h_SoundsDir == INVALID_HANDLE)
-	{
-		return;
-	}
-
-	while(ReadDirEntry(h_SoundsDir, s_SoundsFile, sizeof(s_SoundsFile), f_SoundsFileType))     
-	{
-		if(f_SoundsFileType == FileType_File)
-		{
-			Format(s_PreCachePath, sizeof(s_PreCachePath), "%s%s", ContMamPath, s_SoundsFile);
-
-			// Add sound file to downloads table.
-			AddFileToDownloadsTable(s_PreCachePath);
-
-			//Precache Sound
-			ReplaceString(s_PreCachePath, sizeof(s_PreCachePath), "sound/", "");
-
-			PrecacheSound(s_PreCachePath);
-		}
-	}
-	CloseHandle(h_SoundsDir);
-
-	Handle:h_SoundsDir = OpenDirectory(ContWomPath);
-
-	while(ReadDirEntry(h_SoundsDir, s_SoundsFile, sizeof(s_SoundsFile), f_SoundsFileType))     
-	{
-		if(f_SoundsFileType == FileType_File)
-		{
-			Format(s_PreCachePath, sizeof(s_PreCachePath), "%s%s", ContWomPath, s_SoundsFile);
-
-			// Add sound file to downloads table.
-			AddFileToDownloadsTable(s_PreCachePath);
-
-			//Precache Sound
-			ReplaceString(s_PreCachePath, sizeof(s_PreCachePath), "sound/", "");
-
-			PrecacheSound(s_PreCachePath);
-		}
-	}
-	CloseHandle(h_SoundsDir);
-}
-
-/**
  * Create commands specific to infect here.
  */
-InfectOnCommandsCreate()
+void InfectOnCommandsCreate()
 {
 	RegConsoleCmd("zr_infect", InfectInfectCommand, "Infect a client. Usage: zr_infect <filter> [respawn - 1/0]");
 	RegConsoleCmd("zr_human", InfectHumanCommand, "Turn a client into a human. Usage: zr_human <filter> [respawn - 1/0]");
+	RegConsoleCmd(SAYHOOKS_KEYWORD_ZALONE, InfectAloneCommand, "Enables zombie with alone in the round.");
 }
 
 /**
@@ -180,7 +117,7 @@ InfectOnCommandsCreate()
  * 
  * @param client	The client index.  
  */
-InfectClientInit(client)
+void InfectClientInit(int client)
 {
 	// Reset infect immunity flags.
 	bInfectImmune[client][INFECT_TYPE_MOTHER] = false;
@@ -192,7 +129,7 @@ InfectClientInit(client)
  * 
  * @param client	The client index.
  */
-InfectOnClientDisconnect(client)
+void InfectOnClientDisconnect(int client)
 {
 	// If client is still connecting, then stop.
 	if (!IsClientInGame(client))
@@ -213,8 +150,8 @@ InfectOnClientDisconnect(client)
 	}
 	
 	// Initialize count variables
-	new zombiecount;
-	new humancount;
+	int zombiecount;
+	int humancount;
 	
 	// Count valid clients.
 	ZRCountValidClients(zombiecount, humancount);
@@ -255,10 +192,10 @@ InfectOnClientDisconnect(client)
 	}
 	
 	// Create eligible player list.
-	new Handle:arrayEligibleClients = INVALID_HANDLE;
+	Handle arrayEligibleClients = INVALID_HANDLE;
 	
 	// Create eligible client list, with no mother infect immunities
-	new eligibleclients = ZRCreateEligibleClientList(arrayEligibleClients, true, true, true);
+	int eligibleclients = ZRCreateEligibleClientList(arrayEligibleClients, true, true, true);
 	
 	// If there are no eligible client's then stop.
 	if (!eligibleclients)
@@ -269,10 +206,10 @@ InfectOnClientDisconnect(client)
 	}
 	
 	// Get a random valid array index.
-	new randindex = Math_GetRandomInt(0, eligibleclients - 1);
+	int randindex = Math_GetRandomInt(0, eligibleclients - 1);
 	
 	// Get the client stored in the random array index.
-	new randclient = GetArrayCell(arrayEligibleClients, randindex);
+	int randclient = GetArrayCell(arrayEligibleClients, randindex);
 	
 	// Infect player.
 	InfectHumanToZombie(randclient);
@@ -290,7 +227,7 @@ InfectOnClientDisconnect(client)
  * @param client	The client index.
  * @param team	  The team index. 
  */
-InfectOnClientTeam(client, team)
+void InfectOnClientTeam(int client, int team)
 {
 	// If client isn't joining spec, then stop.
 	if (team != CS_TEAM_SPECTATOR)
@@ -307,7 +244,7 @@ InfectOnClientTeam(client, team)
  * 
  * @param client	The client index.
  */
-InfectOnClientSpawn(client)
+void InfectOnClientSpawn(int client)
 {
 	// Disable zombie flag on client.
 	bZombie[client] = false;
@@ -329,7 +266,7 @@ InfectOnClientSpawn(client)
  * @param client	The client index.
  * @param attacker  The attacker index.
  */
-InfectOnClientDeath(client, attacker)
+void InfectOnClientDeath(int client, int attacker)
 {
 	// If attacker isn't valid, then stop.
 	if (!ZRIsClientValid(attacker))
@@ -350,8 +287,8 @@ InfectOnClientDeath(client, attacker)
 	}
 	
 	// Add kill bonus to attacker's score.
-	new bonus = ClassGetKillBonus(client);
-	new score = ToolsClientScore(attacker, true, false);
+	int bonus = ClassGetKillBonus(client);
+	int score = ToolsClientScore(attacker, true, false);
 	ToolsClientScore(attacker, true, true, score + bonus);
 }
 
@@ -362,7 +299,7 @@ InfectOnClientDeath(client, attacker)
  * @param attacker	  The attacker index.
  * @param weapon		The weapon used.
  */
-InfectOnClientHurt(client, attacker, const String:weapon[])
+void InfectOnClientHurt(int client, int attacker, const char[] weapon)
 {
 	// If attacker isn't valid, then stop.
 	if (!ZRIsClientValid(attacker))
@@ -408,7 +345,7 @@ InfectOnClientHurt(client, attacker, const String:weapon[])
 /**
  * The round is starting.
  */
-InfectOnRoundStart()
+void InfectOnRoundStart()
 {
 	// Stop infect timers if running.
 	ZREndTimer(tInfect);
@@ -424,7 +361,7 @@ InfectOnRoundStart()
 /**
  * The freeze time is ending.
  */
-InfectOnRoundFreezeEnd()
+void InfectOnRoundFreezeEnd()
 {
 	// Stop infect timers if running.
 	ZREndTimer(tInfect);
@@ -440,11 +377,11 @@ InfectOnRoundFreezeEnd()
 	}
 	
 	// Get min and max times.
-	new Float:infectspawntimemin = GetConVarFloat(g_hCvarsList[CVAR_INFECT_SPAWNTIME_MIN]);
-	new Float:infectspawntimemax = GetConVarFloat(g_hCvarsList[CVAR_INFECT_SPAWNTIME_MAX]);
+	float infectspawntimemin = GetConVarFloat(g_hCvarsList[CVAR_INFECT_SPAWNTIME_MIN]);
+	float infectspawntimemax = GetConVarFloat(g_hCvarsList[CVAR_INFECT_SPAWNTIME_MAX]);
 	
 	// Pick random time between min and max.
-	new Float:randomtime = GetRandomFloat(infectspawntimemin, infectspawntimemax);
+	float randomtime = GetRandomFloat(infectspawntimemin, infectspawntimemax);
 	
 	// Round to the nearest whole number (and convert back to a float) so the countdown is synched with it.
 	float(RoundToNearest(randomtime));
@@ -452,7 +389,7 @@ InfectOnRoundFreezeEnd()
 	tInfect = CreateTimer(randomtime, InfectMotherZombie, _, TIMER_FLAG_NO_MAPCHANGE);
 	
 	// Check cvar and start a countdown timer if enabled.
-	new bool:countdown = GetConVarBool(g_hCvarsList[CVAR_INFECT_MZOMBIE_COUNTDOWN]);
+	bool countdown = GetConVarBool(g_hCvarsList[CVAR_INFECT_MZOMBIE_COUNTDOWN]);
 	if (countdown && randomtime > 1.0)
 	{
 		// Stop old countdown timer, if it exists.
@@ -472,14 +409,14 @@ InfectOnRoundFreezeEnd()
 /**
  * The round is ending.
  */
-public Action:InfectOnRoundEnd()
+public Action InfectOnRoundEnd()
 {
 	// Stop infect timers if running.
 	ZREndTimer(tInfect);
 	ZREndTimer(tInfectCountdown);
 	
 	// x = client index.
-	for (new x = 1; x <=  MaxClients; x++)
+	for (int x = 1; x <=  MaxClients; x++)
 	{
 		// If client isn't in-game, then stop.
 		if (!IsClientInGame(x))
@@ -497,14 +434,14 @@ public Action:InfectOnRoundEnd()
  * 
  * @param timer	 The timer handle.  
  */ 
-public Action:InfectMotherZombie(Handle:timer)
+public Action InfectMotherZombie(Handle timer)
 {
 	// Reset timer handle.
 	tInfect = INVALID_HANDLE;
 	
 	// Create eligible player list.
-	new Handle:arrayEligibleClients = INVALID_HANDLE;
-	new eligibleclients = ZRCreateEligibleClientList(arrayEligibleClients, true, true, true);
+	Handle arrayEligibleClients = INVALID_HANDLE;
+	int eligibleclients = ZRCreateEligibleClientList(arrayEligibleClients, true, true, true);
 	
 	// If there are no eligible client's then stop.
 	if (!eligibleclients)
@@ -520,18 +457,17 @@ public Action:InfectMotherZombie(Handle:timer)
 	// Move all clients to CT.
 	InfectMoveAllToCT();
 	
-	new mothercount;
-	new ratio = GetConVarInt(g_hCvarsList[CVAR_INFECT_MZOMBIE_RATIO]);
-	new min = GetConVarInt(g_hCvarsList[CVAR_INFECT_MZOMBIE_MIN]);
-	new max = GetConVarInt(g_hCvarsList[CVAR_INFECT_MZOMBIE_MAX]);
+	int mothercount;
+	int ratio = GetConVarInt(g_hCvarsList[CVAR_INFECT_MZOMBIE_RATIO]);
+	int min = GetConVarInt(g_hCvarsList[CVAR_INFECT_MZOMBIE_MIN]);
+	int max = GetConVarInt(g_hCvarsList[CVAR_INFECT_MZOMBIE_MAX]);
 	
 	// Count valid human clients.
-	new humancount;
+	int humancount;
 	ZRCountValidClients(_, humancount, _, true);
 	
 	// Get and validate infection mode. This will also log a warning on error.
-	new InfectMode:mode = InfectGetModeOrFail();
-	RoundStartForceteamsInfect();
+	InfectMode mode = InfectGetModeOrFail();
 	
 	// Apply infection mode.
 	switch (mode)
@@ -588,7 +524,7 @@ public Action:InfectMotherZombie(Handle:timer)
 	}
 	
 	// Infect players.
-	for (new n = 0; n < mothercount; n++)
+	for (int n = 0; n < mothercount; n++)
 	{
 		// Recount eligible clients.
 		eligibleclients = GetArraySize(arrayEligibleClients);
@@ -600,10 +536,10 @@ public Action:InfectMotherZombie(Handle:timer)
 		}
 		
 		// Get a random array index.
-		new i = Math_GetRandomInt(0, eligibleclients - 1);
+		int i = Math_GetRandomInt(0, eligibleclients - 1);
 		
 		// Get the client stored in the random array index.
-		new client = GetArrayCell(arrayEligibleClients, i);
+		int client = GetArrayCell(arrayEligibleClients, i);
 		
 		// Infect player.
 		InfectHumanToZombie(client, _, true);
@@ -622,10 +558,10 @@ public Action:InfectMotherZombie(Handle:timer)
 /**
  * Moves all alive clients to the CT team.
  */
-InfectMoveAllToCT()
+void InfectMoveAllToCT()
 {
 	// Move all clients to CT
-	for (new client = 1; client <= MaxClients; client++)
+	for (int client = 1; client <= MaxClients; client++)
 	{
 		// If client isn't in-game, then stop.
 		if (!IsClientInGame(client))
@@ -653,12 +589,12 @@ InfectMoveAllToCT()
  *
  * @return				  Number of clients remaining.
  */
-InfectRemoveImmuneClients(Handle:clientList, bool:keepLastPlayer = true)
+int InfectRemoveImmuneClients(Handle clientList, bool keepLastPlayer = true)
 {
-	new len = GetArraySize(clientList);
+	int len = GetArraySize(clientList);
 	
 	// Loop though client list.
-	for (new i = 0; i < len; i++)
+	for (int i = 0; i < len; i++)
 	{
 		// Stop pruning if there is only one player left.
 		if (keepLastPlayer && len <= 1)
@@ -667,7 +603,7 @@ InfectRemoveImmuneClients(Handle:clientList, bool:keepLastPlayer = true)
 		}
 		
 		// Get client.
-		new client = GetArrayCell(clientList, i);
+		int client = GetArrayCell(clientList, i);
 		
 		// Check if client is immune from mother zombie infection.
 		if (bInfectImmune[client][INFECT_TYPE_MOTHER])
@@ -694,9 +630,9 @@ InfectRemoveImmuneClients(Handle:clientList, bool:keepLastPlayer = true)
  * 
  * @param timer	 The timer handle.  
  */ 
-public Action:InfectCountdown(Handle:timer)
+public Action InfectCountdown(Handle timer)
 {
-	new bool:countdown = GetConVarBool(g_hCvarsList[CVAR_INFECT_MZOMBIE_COUNTDOWN]);
+	bool countdown = GetConVarBool(g_hCvarsList[CVAR_INFECT_MZOMBIE_COUNTDOWN]);
 	if (!countdown)
 	{
 		InfectStopCountdown();
@@ -705,8 +641,8 @@ public Action:InfectCountdown(Handle:timer)
 	
 	// Read the info from the datapack.
 	ResetPack(hInfectCountdownData);
-	new Float:length = ReadPackFloat(hInfectCountdownData);
-	new Float:counter = ReadPackFloat(hInfectCountdownData);
+	float length = ReadPackFloat(hInfectCountdownData);
+	float counter = ReadPackFloat(hInfectCountdownData);
 	
 	// Check if the countdown has finished.
 	if (counter >= length)
@@ -715,47 +651,10 @@ public Action:InfectCountdown(Handle:timer)
 		return Plugin_Stop;
 	}
 
-	// Get infection sound.
-	decl String:ContMamCache[PLATFORM_MAX_PATH];
-	decl String:ContWomCache[PLATFORM_MAX_PATH];
-	decl String:ContMamPath[PLATFORM_MAX_PATH];
-	decl String:ContWomPath[PLATFORM_MAX_PATH];
-
-	GetConVarString(g_hCvarsList[CVAR_COUNTDOWN_MAM_PATH], ContMamCache, sizeof(ContMamCache));
-	GetConVarString(g_hCvarsList[CVAR_COUNTDOWN_WOMAN_PATH], ContWomCache, sizeof(ContWomCache));
+	int counter_int = RoundToNearest(length - counter);
 	
-	new counter_int = RoundToNearest(length - counter);
-	
-	Format(ContMamPath, sizeof(ContMamPath), "%s%i.mp3", ContMamCache, counter_int);
-	Format(ContWomPath, sizeof(ContWomPath), "%s%i.mp3", ContWomCache, counter_int);
-	
-	if(counter_int <= 10 && counter_int >= 1)
-	{
-		for (new i = 1; i <= MaxClients; i++)
-		{
-			if (IsClientInGame(i) && !IsFakeClient(i))
-			{
-				// Select Voice Client CountDown
-				float selectedVoice = GetIntCountdownCookie(i);
-				
-				// Select Volume Client CountDown
-				float selectedVolume = GetClientVolume(i);
-				
-				if(selectedVoice == 1)
-				{
-					EmitSoundToClient(i, ContMamPath, SOUND_FROM_PLAYER, SNDCHAN_AUTO, _, _, selectedVolume);
-				}
-				if(selectedVoice == 2)
-				{
-					EmitSoundToClient(i, ContWomPath, SOUND_FROM_PLAYER, SNDCHAN_AUTO, _, _, selectedVolume);
-				}
-				else
-				{
-				}
-			}
-		}
-	}
-	
+	// Api Contdown Sounds
+	APIOnCountDownTick(counter_int);
 	// Print the countdown text to the clients.
 	TranslationPrintCenterTextAll(false, "Infect countdown", counter_int);
 	
@@ -772,7 +671,7 @@ public Action:InfectCountdown(Handle:timer)
 /**
  * Stops the infection countdown timer.
  */
-InfectStopCountdown()
+void InfectStopCountdown()
 {	
 	// Kill the timer.
 	ZREndTimer(tInfectCountdown);
@@ -795,11 +694,24 @@ InfectStopCountdown()
  * @param respawnoverride   (Optional) Set to true to override respawn cvar.
  * @param respawn		   (Optional) Value to override with.
  */
-InfectHumanToZombie(client, attacker = -1, bool:motherinfect = false, bool:respawnoverride = false, bool:respawn = false)
+void InfectHumanToZombie(int client, int attacker = -1, bool motherinfect = false, bool respawnoverride = false, bool respawn = false)
 {
+	// Infect Alone Cvar 
+	float playersalone = GetConVarFloat(g_hCvarsList[CVAR_INFECT_NO_ALONE_INFECTION_PLAYERS]);
+
+	// Infect Alone Block if ...
+	if(fnGetPlaying() < playersalone && g_bBlockInfctAlone)
+	{
+		// Print message to client.
+		TranslationPrintToChat(client, "No alone Infection");
+
+		// Stop coundown, if running.
+		InfectStopCountdown();
+		return;
+	}
+
 	// Forward pre-event to modules.
-	new Action:result = APIOnClientInfect(client, attacker, motherinfect, respawnoverride, respawn);
-	new Float:playersalone = GetConVarFloat(g_hCvarsList[CVAR_INFECT_NO_ALONE_INFECTION_PLAYERS]);
+	Action result = APIOnClientInfect(client, attacker, motherinfect, respawnoverride, respawn);
 	
 	// Check if infection should be blocked.
 	if (result == Plugin_Handled)
@@ -807,20 +719,11 @@ InfectHumanToZombie(client, attacker = -1, bool:motherinfect = false, bool:respa
 		return;
 	}
 
-	if(fnGetPlaying() < playersalone)
-	{
-		// Print message to client.
-		TranslationPrintToChat(client, "No alone Infection");
-		// Stop coundown, if running.
-		InfectStopCountdown();
-		return;
-	}
-	
 	// Mark player as zombie.
 	bZombie[client] = true;
 	
 	// Check if consecutive infection protection is enabled.
-	new bool:infectconsecutiveblock = GetConVarBool(g_hCvarsList[CVAR_INFECT_CONSECUTIVE_BLOCK]);
+	bool infectconsecutiveblock = GetConVarBool(g_hCvarsList[CVAR_INFECT_CONSECUTIVE_BLOCK]);
 	if (infectconsecutiveblock)
 	{
 		// If this is a mother infect, flag the player as immune for next mother
@@ -848,7 +751,7 @@ InfectHumanToZombie(client, attacker = -1, bool:motherinfect = false, bool:respa
 	if (ZRIsClientValid(attacker))
 	{
 		// Create and send custom player_death event.
-		new Handle:event = CreateEvent("player_death");
+		Handle event = CreateEvent("player_death");
 		if (event != INVALID_HANDLE)
 		{
 			SetEventInt(event, "userid", GetClientUserId(client));
@@ -871,11 +774,11 @@ InfectHumanToZombie(client, attacker = -1, bool:motherinfect = false, bool:respa
 	}
 	
 	// Get a list of all client's weapon indexes.
-	new weapons[WeaponsSlot];
+	int weapons[WeaponsSlot];
 	WeaponsGetClientWeapons(client, weapons);
 	
 	// Check if weapons drop is enabled.
-	new bool:weaponsdrop = GetConVarBool(g_hCvarsList[CVAR_INFECT_WEAPONS_DROP]);
+	bool weaponsdrop = GetConVarBool(g_hCvarsList[CVAR_INFECT_WEAPONS_DROP]);
 	
 	// This must be after the event forwarding because it fixes a problem caused by changing models in ClassOnClientInfected.
 	// Remove all weapons but knife.
@@ -888,7 +791,7 @@ InfectHumanToZombie(client, attacker = -1, bool:motherinfect = false, bool:respa
 	// If respawn is enabled, then teleport mother zombie back to spawnpoint.
 	if (motherinfect)
 	{
-		new bool:zombierespawn = GetConVarBool(g_hCvarsList[CVAR_INFECT_MZOMBIE_RESPAWN]);
+		bool zombierespawn = GetConVarBool(g_hCvarsList[CVAR_INFECT_MZOMBIE_RESPAWN]);
 		if(zombierespawn)
 		{
 			ZTeleTeleportClient(client);
@@ -910,21 +813,19 @@ InfectHumanToZombie(client, attacker = -1, bool:motherinfect = false, bool:respa
 	ClassOnClientInfected(client, motherinfect); //troca de classe
 	RoundEndOnClientInfected();
 	DamageOnClientInfected(client, motherinfect);
-	SEffectsOnClientInfected(client);
 	ZTeleOnClientInfected(client);
-	ZHPOnClientInfected(client);
 	APIOnClientInfected(client, attacker, motherinfect, respawnoverride, respawn);
 	ImmunityOnClientInfected(client);
 	ClassApplyNoarmorZombie(client);
 }
 
 // Count Players.
-stock fnGetPlaying()
+stock int fnGetPlaying()
 {
-	new iPlaysNum;
+	int iPlaysNum;
 	iPlaysNum = 0;
 	
-	for(new i=1; i<=MaxClients; i++)
+	for(int i=1; i<=MaxClients; i++)
 	{
 		if(IsClientInGame(i) && IsClientConnected(i))
 		{
@@ -943,10 +844,10 @@ stock fnGetPlaying()
  * @param respawn	   Teleport client back to spawn if true.
  * @param protect	   Start spawn protection on new human.
  */
-InfectZombieToHuman(client, bool:respawn = false, bool:protect = false)
+void InfectZombieToHuman(int client, bool respawn = false, bool protect = false)
 {
 	// Forward pre-event to modules.
-	new Action:result = APIOnClientHuman(client, respawn, protect);
+	Action result = APIOnClientHuman(client, respawn, protect);
 	
 	// Check if action should be blocked.
 	if (result == Plugin_Handled)
@@ -972,7 +873,7 @@ InfectZombieToHuman(client, bool:respawn = false, bool:protect = false)
 	ZTeleOnClientInfected(client);
 	
 	// Give human a new knife. (If you leave the old one there will be glitches with the knife positioning)
-	new knife = GetPlayerWeaponSlot(client, _:Slot_Melee);
+	int knife = GetPlayerWeaponSlot(client, view_as<int>(Slot_Melee));
 	if (knife != -1)
 	{
 		RemovePlayerItem(client, knife);
@@ -993,7 +894,6 @@ InfectZombieToHuman(client, bool:respawn = false, bool:protect = false)
 	}
 	
 	// Forward event to modules.
-	SEffectsOnClientHuman(client);
 	APIOnClientHumanPost(client, respawn, protect);
 	ImmunityOnClientHuman(client);
 }
@@ -1001,25 +901,22 @@ InfectZombieToHuman(client, bool:respawn = false, bool:protect = false)
 /**
  * Updates score for attacker and victim. Applies health gain for attacker.
  */
-InfectUpdateScore(attacker, victim)
+void InfectUpdateScore(int attacker, int victim)
 {
 	// Give client's infector a point.
-	new score = ToolsClientScore(attacker, true, false);
+	int score = ToolsClientScore(attacker, true, false);
 	ToolsClientScore(attacker, true, true, ++score);
 	
 	// Add a death to the zombie's score.
-	new deaths = ToolsClientScore(victim, false, false);
+	int deaths = ToolsClientScore(victim, false, false);
 	ToolsClientScore(victim, false, true, ++deaths);
 	
 	// Apply infect HP gain.
-	new healthgain = ClassGetHealthInfectGain(attacker);
-	new health = GetClientHealth(attacker);
+	int healthgain = ClassGetHealthInfectGain(attacker);
+	int health = GetClientHealth(attacker);
 	
 	// Set attacker's new health.
 	SetEntityHealth(attacker, health + healthgain);
-	
-	// Forward event to modules.
-	ZHPOnHealthInfectGain(attacker);
 }
 
 /**
@@ -1027,38 +924,38 @@ InfectUpdateScore(attacker, victim)
  * 
  * @param client	The client index.
  */
-InfectFireEffects(client)
+void InfectFireEffects(int client)
 {
 	// Initialize vector variables.
-	new Float:clientloc[3];
-	new Float:direction[3] = {0.0, 0.0, 0.0};
+	float clientloc[3];
+	float direction[3] = {0.0, 0.0, 0.0};
 	
 	// Get client's position.
 	GetClientAbsOrigin(client, clientloc);
 	clientloc[2] += 30;
 	
-	new bool:explosion = GetConVarBool(g_hCvarsList[CVAR_INFECT_EXPLOSION]);
+	bool explosion = GetConVarBool(g_hCvarsList[CVAR_INFECT_EXPLOSION]);
 	if (explosion)
 	{
 		// Initialize explosion flags variable.
-		new flags;
+		int flags;
 		
 		// Set "nofireball" flag if fireball is disabled.
-		new bool:fireball = GetConVarBool(g_hCvarsList[CVAR_INFECT_FIREBALL]);
+		bool fireball = GetConVarBool(g_hCvarsList[CVAR_INFECT_FIREBALL]);
 		if (!fireball)
 		{
 			flags = flags | EXP_NOFIREBALL;
 		}
 		
 		// Set "nosmoke" flag if smoke is disabled.
-		new bool:smoke = GetConVarBool(g_hCvarsList[CVAR_INFECT_SMOKE]);
+		bool smoke = GetConVarBool(g_hCvarsList[CVAR_INFECT_SMOKE]);
 		if (!smoke)
 		{
 			flags = flags | EXP_NOSMOKE;
 		}
 		
 		// Set "nosparks" flag if sparks are disabled.
-		new bool:sparks = GetConVarBool(g_hCvarsList[CVAR_INFECT_SPARKS]);
+		bool sparks = GetConVarBool(g_hCvarsList[CVAR_INFECT_SPARKS]);
 		if (!sparks)
 		{
 			flags = flags | EXP_NOSPARKS;
@@ -1068,11 +965,8 @@ InfectFireEffects(client)
 		VEffectsCreateExplosion(clientloc, flags);
 	}
 	
-	// Emit scream sound if enabled.
-	ZombieSoundsScream(client);
-	
 	// If energy splash effect is enabled, then continue.
-	new bool:esplash = GetConVarBool(g_hCvarsList[CVAR_INFECT_ESPLASH]);
+	bool esplash = GetConVarBool(g_hCvarsList[CVAR_INFECT_ESPLASH]);
 	if (esplash)
 	{
 		// Create energy splash effect.
@@ -1080,13 +974,13 @@ InfectFireEffects(client)
 	}
 	
 	// If shake effect is enabled, then continue.
-	new bool:shake = GetConVarBool(g_hCvarsList[CVAR_INFECT_SHAKE]);
+	bool shake = GetConVarBool(g_hCvarsList[CVAR_INFECT_SHAKE]);
 	if (shake)
 	{
 		// Get shake info.
-		new Float:shakeamp = GetConVarFloat(g_hCvarsList[CVAR_INFECT_SHAKE_AMP]);
-		new Float:shakefrequency = GetConVarFloat(g_hCvarsList[CVAR_INFECT_SHAKE_FREQUENCY]);
-		new Float:shakeduration = GetConVarFloat(g_hCvarsList[CVAR_INFECT_SHAKE_DURATION]);
+		float shakeamp = GetConVarFloat(g_hCvarsList[CVAR_INFECT_SHAKE_AMP]);
+		float shakefrequency = GetConVarFloat(g_hCvarsList[CVAR_INFECT_SHAKE_FREQUENCY]);
+		float shakeduration = GetConVarFloat(g_hCvarsList[CVAR_INFECT_SHAKE_DURATION]);
 		
 		// Shake client's screen.
 		VEffectsShakeClientScreen(client, shakeamp, shakefrequency, shakeduration);
@@ -1098,20 +992,20 @@ InfectFireEffects(client)
  *  
  * @param client	The client index.
  */
-InfectMenuClients(client)
+void InfectMenuClients(int client)
 {
 	// Create menu handle.
-	new Handle:menu_infect_clients = CreateMenu(InfectMenuClientsHandle);
+	Handle menu_infect_clients = CreateMenu(InfectMenuClientsHandle);
 	
 	// Set client as translation target.
 	SetGlobalTransTarget(client);
 	
-	decl String:title[MENU_LINE_TITLE_LENGTH];
-	decl String:clientoption[MENU_LINE_REG_LENGTH];
-	decl String:clientuserid[8];
+	char title[MENU_LINE_TITLE_LENGTH];
+	char clientoption[MENU_LINE_REG_LENGTH];
+	char clientuserid[8];
 	
 	// x = Client index.
-	for (new x = 1; x <= MaxClients; x++)
+	for (int x = 1; x <= MaxClients; x++)
 	{
 		// If client isn't in-game, then stop.
 		if (!IsClientInGame(x))
@@ -1160,13 +1054,13 @@ InfectMenuClients(client)
  * @param client				The client index.
  * @param slot				  The slot index selected (starting from 0).
  */ 
-public InfectMenuClientsHandle(Handle:menu_infect_clients, MenuAction:action, client, slot)
+public int InfectMenuClientsHandle(Handle menu_infect_clients, MenuAction action, int client, int slot)
 {
 	// Client selected an option.
 	if (action == MenuAction_Select)
 	{
 		// Get selected client index.
-		new target = MenuGetClientIndex(menu_infect_clients, slot);
+		int target = MenuGetClientIndex(menu_infect_clients, slot);
 		
 		// If target has left the server, then stop.
 		if (!target)
@@ -1177,7 +1071,7 @@ public InfectMenuClientsHandle(Handle:menu_infect_clients, MenuAction:action, cl
 		}
 		
 		// Create an array with a single slot and set target to it.
-		new targets[1];
+		int targets[1];
 		targets[0] = target;
 		
 		// Toggle infect on the client.
@@ -1216,7 +1110,7 @@ public InfectMenuClientsHandle(Handle:menu_infect_clients, MenuAction:action, cl
  * @param client	The client index.
  * @return		  True if the client has been infected, false otherwise.
  */	
-bool:InfectIsClientInfected(client)
+bool InfectIsClientInfected(int client)
 {
 	// If client is invalid, then stop.
 	if (!ZRIsClientValid(client))
@@ -1234,7 +1128,7 @@ bool:InfectIsClientInfected(client)
  * @param client	The client index.
  * @return		  True if the client is a human, false otherwise.
  */
-bool:InfectIsClientHuman(client)
+bool InfectIsClientHuman(int client)
 {
 	// If client is invalid, then stop.
 	if (!ZRIsClientValid(client))
@@ -1255,9 +1149,9 @@ bool:InfectIsClientHuman(client)
  * @param respawnoverride   (Optional) True to override respawn cvar.
  * @param respawn		   (Optional) True to respawn client on infect.
  */
-stock InfectManualInfect(client, targets[], count, bool:respawnoverride = false, bool:respawn = false)
+stock void InfectManualInfect(int client, int[] targets, int count, bool respawnoverride = false, bool respawn = false)
 {
-	new bool:zombiespawned = g_bZombieSpawned;
+	bool zombiespawned = g_bZombieSpawned;
 	
 	// If zombie hasn't spawned, then make targetted player(s) mother zombies.
 	if (!zombiespawned)
@@ -1270,7 +1164,7 @@ stock InfectManualInfect(client, targets[], count, bool:respawnoverride = false,
 		}
 		
 		// Move all clients to CT
-		for (new x = 1; x <= MaxClients; x++)
+		for (int x = 1; x <= MaxClients; x++)
 		{
 			// If client isn't in-game, then stop.
 			if (!IsClientInGame(x))
@@ -1292,10 +1186,10 @@ stock InfectManualInfect(client, targets[], count, bool:respawnoverride = false,
 		g_bZombieSpawned = true;
 	}
 	
-	decl String:targetname[MAX_NAME_LENGTH];
+	char targetname[MAX_NAME_LENGTH];
 	
 	// x = Client index.
-	for (new x = 0; x < count; x++)
+	for (int x = 0; x < count; x++)
 	{
 		// Get client's name for later use.
 		GetClientName(targets[x], targetname, sizeof(targetname));
@@ -1348,12 +1242,12 @@ stock InfectManualInfect(client, targets[], count, bool:respawnoverride = false,
  * @param respawn   (Optional) True to respawn client upon changing to human.
  * @param protect   (Optional) True to protect client upon changing to human.
  */
-stock InfectManualHuman(client, targets[], count, bool:respawn = false, bool:protect = false)
+stock void InfectManualHuman(int client, int[] targets, int count, bool respawn = false, bool protect = false)
 {
-	decl String:targetname[MAX_NAME_LENGTH];
+	char targetname[MAX_NAME_LENGTH];
 	
 	// x = Client index.
-	for (new x = 0; x < count; x++)
+	for (int x = 0; x < count; x++)
 	{
 		// Get client's name for later use.
 		GetClientName(targets[x], targetname, sizeof(targetname));
@@ -1390,7 +1284,7 @@ stock InfectManualHuman(client, targets[], count, bool:respawn = false, bool:pro
  * @param client	The client index.
  * @param argc	  Argument count.
  */
-public Action:InfectInfectCommand(client, argc)
+public Action InfectInfectCommand(int client, int argc)
 {
 	// Check if privileged.
 	if (!ZRIsClientPrivileged(client, OperationType_Generic))
@@ -1406,8 +1300,10 @@ public Action:InfectInfectCommand(client, argc)
 		return Plugin_Handled;
 	}
 	
-	decl String:target[MAX_NAME_LENGTH], String:targetname[MAX_NAME_LENGTH];
-	new targets[MAXPLAYERS], bool:tn_is_ml, result;
+	char target[MAX_NAME_LENGTH], targetname[MAX_NAME_LENGTH];
+	int targets[MAXPLAYERS];
+	bool tn_is_ml;
+	int result;
 	
 	// Get targetname.
 	GetCmdArg(1, target, sizeof(target));
@@ -1423,16 +1319,16 @@ public Action:InfectInfectCommand(client, argc)
 	}
 	
 	// Get respawn parameter.
-	decl String:strRespawn[8];
+	char strRespawn[8];
 	GetCmdArg(2, strRespawn, sizeof(strRespawn));
 	
-	new bool:respawnoverride, bool:respawn;
+	bool respawnoverride, respawn;
 		
 	// If parameter exists then cast it into a bool and feed it to infect function.
 	if (strRespawn[0])
 	{
 		respawnoverride = true;
-		respawn = bool:StringToInt(strRespawn);
+		respawn = view_as<bool>(StringToInt(strRespawn));
 	}
 	
 	// Infect player.
@@ -1448,7 +1344,7 @@ public Action:InfectInfectCommand(client, argc)
  * @param client	The client index.
  * @param argc	  Argument count.
  */
-public Action:InfectHumanCommand(client, argc)
+public Action InfectHumanCommand(int client, int argc)
 {
 	// Check if privileged.
 	if (!ZRIsClientPrivileged(client, OperationType_Generic))
@@ -1464,8 +1360,10 @@ public Action:InfectHumanCommand(client, argc)
 		return Plugin_Handled;
 	}
 	
-	decl String:target[MAX_NAME_LENGTH], String:targetname[MAX_NAME_LENGTH];
-	new targets[MAXPLAYERS], bool:tn_is_ml, result;
+	char target[MAX_NAME_LENGTH], targetname[MAX_NAME_LENGTH];
+	int targets[MAXPLAYERS];
+	bool tn_is_ml;
+	int result;
 	
 	// Get targetname.
 	GetCmdArg(1, target, sizeof(target));
@@ -1481,13 +1379,13 @@ public Action:InfectHumanCommand(client, argc)
 	}
 	
 	// Get respawn&protect parameters
-	decl String:strRespawn[8], String:strProtect[8];
+	char strRespawn[8], strProtect[8];
 	GetCmdArg(2, strRespawn, sizeof(strRespawn));
 	GetCmdArg(3, strProtect, sizeof(strProtect));
 	
 	// If parameter exists then cast it into a bool and feed it to "humanize" function.
-	new bool:respawn = (strRespawn[0]) ? (bool:StringToInt(strRespawn)) : false;
-	new bool:protect = (strProtect[0]) ? (bool:StringToInt(strProtect)) : false;
+	bool respawn = (strRespawn[0]) ? (view_as<bool>(StringToInt(strRespawn))) : false;
+	bool protect = (strProtect[0]) ? (view_as<bool>(StringToInt(strProtect))) : false;
 	
 	// Turn client into human.
 	InfectManualHuman(client, targets, result, respawn, protect);
@@ -1502,7 +1400,7 @@ public Action:InfectHumanCommand(client, argc)
  *
  * @return		  Infection mode or InfectMode_Invalid on error.
  */
-InfectMode:InfectStringToMode(const String:mode[])
+InfectMode InfectStringToMode(const char[] mode)
 {
 	if (strlen(mode) == 0)
 	{
@@ -1530,15 +1428,15 @@ InfectMode:InfectStringToMode(const String:mode[])
  *
  * @return  Infection mode or InfectMode_Invalid on error.
  */
-InfectMode:InfectGetModeOrFail()
+InfectMode InfectGetModeOrFail()
 {
-	new String:modeName[16];
+	char modeName[16];
 	GetConVarString(g_hCvarsList[CVAR_INFECT_MZOMBIE_MODE], modeName, sizeof(modeName));
 	
-	new InfectMode:mode = InfectStringToMode(modeName);
-	new ratio = GetConVarInt(g_hCvarsList[CVAR_INFECT_MZOMBIE_RATIO]);
-	new min = GetConVarInt(g_hCvarsList[CVAR_INFECT_MZOMBIE_MIN]);
-	new max = GetConVarInt(g_hCvarsList[CVAR_INFECT_MZOMBIE_MAX]);
+	InfectMode mode = InfectStringToMode(modeName);
+	int ratio = GetConVarInt(g_hCvarsList[CVAR_INFECT_MZOMBIE_RATIO]);
+	int min = GetConVarInt(g_hCvarsList[CVAR_INFECT_MZOMBIE_MIN]);
+	int max = GetConVarInt(g_hCvarsList[CVAR_INFECT_MZOMBIE_MAX]);
 	
 	// Validate.
 	switch (mode)
@@ -1565,7 +1463,7 @@ InfectMode:InfectGetModeOrFail()
 		}
 		case InfectMode_Range:
 		{
-			new bool:failed = false;
+			bool failed = false;
 			if (min <= 0)
 			{
 				LogEvent(false, LogType_Error, LOG_CORE_EVENTS, LogModule_Infect, "Config Validation", "Warning: Invalid infection range (\"%d\"). Cvar zr_infect_mzombie_min must be nonzero and positive. Falling back to one mother zombie.", min);
@@ -1592,13 +1490,54 @@ InfectMode:InfectGetModeOrFail()
 	return mode;
 }
 
-public Action:CheckRoundEnd(Handle timer)
+public Action CheckRoundEnd(Handle timer)
 {
 	// Allow round end after zombie spawned
 	if (tInfect == INVALID_HANDLE || g_bZombieSpawned)
 	{
 		ServerCommand("mp_ignore_round_win_conditions 0");
+		if(!g_bForceTeamsstarted) g_bForceTeamsstarted = true;
 		return Plugin_Stop;
 	}
 	return Plugin_Continue;
+}
+
+// Infect Alone On map Satart
+void InfectOnMapStart()
+{
+	if (!g_bBlockInfctAlone)
+	{
+		//Ifnfect Alone Bool
+		g_bBlockInfctAlone = true;
+	}
+}
+
+/**
+ * Command callback (zalone)
+ * Enable or disable repeated kill detector.
+ * 
+ * @param client	The client index.
+ * @param argc	  Argument count.
+ */
+public Action InfectAloneCommand(int client, int args)
+{
+	// Check if privileged.
+	if (!ZRIsClientPrivileged(client, OperationType_Generic))
+	{
+		TranslationReplyToCommand(client, "No access to command");
+		return Plugin_Handled;
+	}
+
+	if (g_bBlockInfctAlone)
+	{
+		TranslationReplyToCommand(client, "Infect Alone on");
+		g_bBlockInfctAlone = false;
+	}
+	else
+	{
+		TranslationReplyToCommand(client, "Infect Alone off");
+		g_bBlockInfctAlone = true;
+	}
+
+	return Plugin_Handled;
 }
