@@ -88,40 +88,40 @@ void CvarsCreate()
 	// ===========================
 
 	// Voice
-	g_hCvarsList.CVAR_VOICE					  =	CreateConVar("zr_voice",				    "0",							"(Incomplete) Modify sv_alltalk to obey zombie/human teams instead of t/ct.");
+	g_hCvarsList.CVAR_VOICE					  =	CreateConVar("zrs_voice",				    "0",							"(Incomplete) Modify sv_alltalk to obey zombie/human teams instead of t/ct.");
 
 	//CountDown Sounds
-	g_hCvarsList.CVAR_COUNTDOWN_MAM_PATH		  =	CreateConVar("zr_countdown_files_mam",	    "zr/countdown/",				"Folder referring to the counter sounds. Man.");
-	g_hCvarsList.CVAR_COUNTDOWN_WOMAN_PATH		  =	CreateConVar("zr_countdown_files_woman",     "zr/countdown/female/",			"Folder referring to the counter sounds. Woman.");
+	g_hCvarsList.CVAR_COUNTDOWN_MAM_PATH		  =	CreateConVar("zrs_countdown_files_mam",	    "zr/countdown/",				"Folder referring to the counter sounds. Man.");
+	g_hCvarsList.CVAR_COUNTDOWN_WOMAN_PATH		  =	CreateConVar("zrs_countdown_files_woman",     "zr/countdown/female/",			"Folder referring to the counter sounds. Woman.");
 
 	// Zombie Sounds
-	g_hCvarsList.CVAR_INFECT_SOUND			  =	CreateConVar("zr_infect_sound",				 "fz_scream1.mp3",   			"Sound, relative to [zr_files_zombie_sounds] folder, to play from player on infection. ['\"\"' = No sound]");
-	g_hCvarsList.CVAR_SEFFECTS_MOAN			  =	CreateConVar("zr_seffects_moan",		     "30.0",					 	"Time between emission of a moan sound from a zombie.");
-	g_hCvarsList.CVAR_SEFFECTS_GROAN			  =	CreateConVar("zr_seffects_groan",		     "5",							"The probability that a groan sound will be emitted from a zombie when shot. ['100' = 1% chance | '50' = 2% chance | '1' = 100% chance]");
-	g_hCvarsList.CVAR_SEFFECTS_DEATH			  =	CreateConVar("zr_seffects_death",		     "1",							"Emit a death sound when a zombie dies.");
-	g_hCvarsList.CVAR_SEFFECTS_COMMAND_LIMIT	  =	CreateConVar("zr_seffects_command_limit",    "4",							"Number of sound commands allowed within the time span, or total limit if time span is disabled. ['0' = Disable sound command limit]");
-	g_hCvarsList.CVAR_SEFFECTS_COMMAND_TIMESPAN	  =	CreateConVar("zr_seffects_command_timespan", "10",					   		"Time span for sound command limiter (in seconds). ['0' = Disable time span check | positive number = Time span]");
-	g_hCvarsList.CVAR_ZOMBIES_SOUNDS_FILES		  =	CreateConVar("zr_files_zombie_sounds",		 "zr/",							"Folder referring to the sounds of zombies.");
+	g_hCvarsList.CVAR_INFECT_SOUND			  =	CreateConVar("zrs_infect_sound",				 "fz_scream1.mp3",   			"Sound, relative to [zrs_files_zombie_sounds] folder, to play from player on infection. ['\"\"' = No sound]");
+	g_hCvarsList.CVAR_SEFFECTS_MOAN			  =	CreateConVar("zrs_seffects_moan",		     "30.0",					 	"Time between emission of a moan sound from a zombie.");
+	g_hCvarsList.CVAR_SEFFECTS_GROAN			  =	CreateConVar("zrs_seffects_groan",		     "5",							"The probability that a groan sound will be emitted from a zombie when shot. ['100' = 1% chance | '50' = 2% chance | '1' = 100% chance]");
+	g_hCvarsList.CVAR_SEFFECTS_DEATH			  =	CreateConVar("zrs_seffects_death",		     "1",							"Emit a death sound when a zombie dies.");
+	g_hCvarsList.CVAR_SEFFECTS_COMMAND_LIMIT	  =	CreateConVar("zrs_seffects_command_limit",    "4",							"Number of sound commands allowed within the time span, or total limit if time span is disabled. ['0' = Disable sound command limit]");
+	g_hCvarsList.CVAR_SEFFECTS_COMMAND_TIMESPAN	  =	CreateConVar("zrs_seffects_command_timespan", "10",					   		"Time span for sound command limiter (in seconds). ['0' = Disable time span check | positive number = Time span]");
+	g_hCvarsList.CVAR_ZOMBIES_SOUNDS_FILES		  =	CreateConVar("zrs_files_zombie_sounds",		 "zr/",							"Folder referring to the sounds of zombies.");
 
 	// Ambient Sounds
-	g_hCvarsList.CVAR_AMBIENTSOUNDS			  =	CreateConVar("zr_ambientsounds",		      "1",							"Play an ambient sound to all players during gameplay.");
-	g_hCvarsList.CVAR_AMBIENTSOUNDS_FILE		  =	CreateConVar("zr_ambientsounds_file",	  	  "ambient/zr/zr_ambience.mp3", "Sound file, relative to \"sound\" folder, to play as ambience.  This file is automatically downloaded to clients. [Dependency: zr_ambientsounds]");
-	g_hCvarsList.CVAR_AMBIENTSOUNDS_LENGTH		  =	CreateConVar("zr_ambientsounds_length",		  "60.0",						"Length of the ambient sound. [Dependency: zr_ambientsounds]");
-	g_hCvarsList.CVAR_AMBIENTSOUNDS_VOLUME		  =	CreateConVar("zr_ambientsounds_volume",	 	  "0.8",						"Volume of the ambient sound. [1.0 = Max volume | 0.0001 = Not audible | Dependency: zr_ambientsounds]");
+	g_hCvarsList.CVAR_AMBIENTSOUNDS			  =	CreateConVar("zrs_ambientsounds",		      "1",							"Play an ambient sound to all players during gameplay.");
+	g_hCvarsList.CVAR_AMBIENTSOUNDS_FILE		  =	CreateConVar("zrs_ambientsounds_file",	  	  "ambient/zr/zr_ambience.mp3", "Sound file, relative to \"sound\" folder, to play as ambience.  This file is automatically downloaded to clients. [Dependency: zrs_ambientsounds]");
+	g_hCvarsList.CVAR_AMBIENTSOUNDS_LENGTH		  =	CreateConVar("zrs_ambientsounds_length",		  "60.0",						"Length of the ambient sound. [Dependency: zrs_ambientsounds]");
+	g_hCvarsList.CVAR_AMBIENTSOUNDS_VOLUME		  =	CreateConVar("zrs_ambientsounds_volume",	 	  "0.8",						"Volume of the ambient sound. [1.0 = Max volume | 0.0001 = Not audible | Dependency: zrs_ambientsounds]");
 	// Round End Sounds
-	g_hCvarsList.CVAR_ROUNDEND_HUMANS_WIN		  =	CreateConVar("zr_files_humans_win",			  "roundend/humanswin/",		"Folder referring to the sounds of the round end. Humans win.");
-	g_hCvarsList.CVAR_ROUNDEND_ZOMBIE_WIN		  =	CreateConVar("zr_files_zombie_win",			  "roundend/zombiewin/",		"Folder referring to the sounds of the round end. Zombie win.");
+	g_hCvarsList.CVAR_ROUNDEND_HUMANS_WIN		  =	CreateConVar("zrs_files_humans_win",			  "roundend/humanswin/",		"Folder referring to the sounds of the round end. Humans win.");
+	g_hCvarsList.CVAR_ROUNDEND_ZOMBIE_WIN		  =	CreateConVar("zrs_files_zombie_win",			  "roundend/zombiewin/",		"Folder referring to the sounds of the round end. Zombie win.");
 
 	// ===========================
 	// Voice ZrSounds (module)
 	// ===========================
 
-	g_hCvarsList.CVAR_ZOMBIES_SOUNDS			  =	CreateConVar("zr_zombies_sounds",	 		  "1",						    "Enable/disable togle sounds Zombies. Default '1'");
-	g_hCvarsList.CVAR_ZOMBIES_SOUNDS_DEFAULT	  =	CreateConVar("zr_zombies_sounds_enable",	  "1",							"Enable/disable sounds Zombies. Default '1'");
-	g_hCvarsList.CVAR_ROUNDEND_SOUNDS			  =	CreateConVar("zr_roundend_sounds",	 		  "1",	 						"Enable/disable togle sounds roundend. Default '1'");
-	g_hCvarsList.CVAR_ROUNDEND_SOUNDS_DEFAULT	  =	CreateConVar("zr_roundend_sounds_enable",	  "1",							"Enable/disable sounds roundend. Default '1'");	
-	g_hCvarsList.CVAR_VOICECOUNT_DEFAULT		  =	CreateConVar("zr_voice_count_default",		  "1",							"Default countdown voice. ['1' = Mem  | '2' = Woman!] Default 1");
-	g_hCvarsList.CVAR_VOLUME_DEFAULT			  =	CreateConVar("zr_volume_default",			  "0.5",						"Default volume Zr Sounds. Default '0.5'");
+	g_hCvarsList.CVAR_ZOMBIES_SOUNDS			  =	CreateConVar("zrs_zombies_sounds",	 		  "1",						    "Enable/disable togle sounds Zombies. Default '1'");
+	g_hCvarsList.CVAR_ZOMBIES_SOUNDS_DEFAULT	  =	CreateConVar("zrs_zombies_sounds_enable",	  "1",							"Enable/disable sounds Zombies. Default '1'");
+	g_hCvarsList.CVAR_ROUNDEND_SOUNDS			  =	CreateConVar("zrs_roundend_sounds",	 		  "1",	 						"Enable/disable togle sounds roundend. Default '1'");
+	g_hCvarsList.CVAR_ROUNDEND_SOUNDS_DEFAULT	  =	CreateConVar("zrs_roundend_sounds_enable",	  "1",							"Enable/disable sounds roundend. Default '1'");	
+	g_hCvarsList.CVAR_VOICECOUNT_DEFAULT		  =	CreateConVar("zrs_voice_count_default",		  "1",							"Default countdown voice. ['1' = Mem  | '2' = Woman!] Default 1");
+	g_hCvarsList.CVAR_VOLUME_DEFAULT			  =	CreateConVar("zrs_volume_default",			  "0.5",						"Default volume Zr Sounds. Default '0.5'");
 
 	// Auto-generate config file if it doesn't exist, then execute.
 	AutoExecConfig(true, "zombiereloaded_sounds", "sourcemod/zombiereloaded");
