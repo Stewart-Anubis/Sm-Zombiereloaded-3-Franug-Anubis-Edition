@@ -50,7 +50,7 @@ Handle g_hOverlayEnabledCookie = INVALID_HANDLE;
 void ClassOverlayOnCommandsHook()
 {
 	char togglecmds[CLASSOVERLAY_TOGGLE_MAX_CMDS * CLASSOVERLAY_TOGGLE_MAX_LENGTH];
-	GetConVarString(g_hCvarsList[CVAR_CLASSES_OVERLAY_TOGGLECMDS], togglecmds, sizeof(togglecmds));
+	Format(togglecmds, sizeof(togglecmds), g_hCvarsList.g_sCVAR_CLASSES_OVERLAY_TOGGLECMDS);
 	
 	// Array to store commands.
 	char arrayCmds[CLASSOVERLAY_TOGGLE_MAX_CMDS][CLASSOVERLAY_TOGGLE_MAX_LENGTH];
@@ -85,9 +85,6 @@ void ClassOverlayOnCookiesCreate()
  */
 void ClassOverlayOnCookiesCached(int client)
 {
-	// Get overlay toggle cvar values.
-	bool overlaytoggle = GetConVarBool(g_hCvarsList[CVAR_CLASSES_OVERLAY_TOGGLE]);
-	bool overlaydefault = GetConVarBool(g_hCvarsList[CVAR_CLASSES_OVERLAY_DEFAULT]);
 	
 	// Get ZHP enabled cookie value.
 	char overlayenabled[8];
@@ -97,7 +94,7 @@ void ClassOverlayOnCookiesCached(int client)
 	if (!overlayenabled[0])
 	{
 		// Set cookie to default value from cvar.
-		bool overlayvalue = overlaytoggle ? overlaydefault : true;
+		bool overlayvalue = g_hCvarsList.g_bCVAR_CLASSES_OVERLAY_TOGGLE ? g_hCvarsList.g_bCVAR_CLASSES_OVERLAY_DEFAULT : true;
 		CookiesSetClientCookieBool(client, g_hOverlayEnabledCookie, overlayvalue);
 	}
 }
@@ -128,15 +125,14 @@ public int ClassOverlayInitialize(int client, const char[] overlay)
 	}
 	
 	// If overlay toggle is enabled and class has an overlay, then send center text.
-	bool overlaytoggle = GetConVarBool(g_hCvarsList[CVAR_CLASSES_OVERLAY_TOGGLE]);
 	
 	char overlaypath[PLATFORM_MAX_PATH];
 	ClassGetOverlayPath(client, overlaypath, sizeof(overlaypath));
 	
-	if (overlaytoggle && overlaypath[0])
+	if (g_hCvarsList.g_bCVAR_CLASSES_OVERLAY_TOGGLE && overlaypath[0])
 	{
 		char togglecmds[CLASSOVERLAY_TOGGLE_MAX_CMDS * CLASSOVERLAY_TOGGLE_MAX_LENGTH];
-		GetConVarString(g_hCvarsList[CVAR_CLASSES_OVERLAY_TOGGLECMDS], togglecmds, sizeof(togglecmds));
+		Format(togglecmds, sizeof(togglecmds), g_hCvarsList.g_sCVAR_CLASSES_OVERLAY_TOGGLECMDS);
 		
 		TranslationPrintHintText(client, "Classes overlay toggle", togglecmds);
 	}
@@ -162,8 +158,7 @@ public Action ClassOverlayEnableCommand(int client, int argc)
 	}
 	
 	// If overlay toggle is disabled, then stop.
-	bool overlaytoggle = GetConVarBool(g_hCvarsList[CVAR_CLASSES_OVERLAY_TOGGLE]);
-	if (!overlaytoggle)
+	if (!g_hCvarsList.g_bCVAR_CLASSES_OVERLAY_TOGGLE)
 	{
 		return;
 	}

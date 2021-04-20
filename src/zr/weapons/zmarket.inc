@@ -185,8 +185,7 @@ void ZMarketOnClientSpawnPost(int client)
 void ZMarketCheckRebuy(int client)
 {
 	// If auto-rebuy is disabled, then ensure it is also disabled on the client as well.
-	bool zmarketrebuyauto = GetConVarBool(g_hCvarsList[CVAR_WEAPONS_ZMARKET_REBUY_AUTO]);
-	if (!zmarketrebuyauto)
+	if (!g_hCvarsList.g_bCVAR_WEAPONS_ZMARKET_REBUY_AUTO)
 	{
 		CookiesSetClientCookieBool(client, g_hZMarketAutoRebuyCookie, false);
 	}
@@ -271,8 +270,7 @@ int ZMarketGetPurchaseCount(int client, const char[] weapon)
 bool ZMarketMenuMain(int client)
 {
 	// If weapons module is disabled, then stop.
-	bool weapons = GetConVarBool(g_hCvarsList[CVAR_WEAPONS]);
-	if (!weapons)
+	if (!g_hCvarsList.g_bCVAR_WEAPONS)
 	{
 		// Telle client feature is disabled.
 		TranslationPrintToChat(client, "Feature is disabled");
@@ -280,8 +278,7 @@ bool ZMarketMenuMain(int client)
 	}
 	
 	// If ZMarket module is disabled, then stop.
-	bool zmarket = GetConVarBool(g_hCvarsList[CVAR_WEAPONS_ZMARKET]);
-	if (!zmarket)
+	if (!g_hCvarsList.g_bCVAR_WEAPONS_ZMARKET)
 	{
 		// Telle client feature is disabled.
 		TranslationPrintToChat(client, "Feature is disabled");
@@ -293,10 +290,6 @@ bool ZMarketMenuMain(int client)
 	
 	// Set translation target as client.
 	SetGlobalTransTarget(client);
-	
-	// If rebuy is enabled, then add it to the menu.
-	bool zmarketrebuy = GetConVarBool(g_hCvarsList[CVAR_WEAPONS_ZMARKET_REBUY]);
-	bool zmarketrebuyauto = GetConVarBool(g_hCvarsList[CVAR_WEAPONS_ZMARKET_REBUY_AUTO]);
 	
 	// Add "Get Current Loadout" option.
 	char title[MENU_LINE_TITLE_LENGTH];
@@ -320,10 +313,10 @@ bool ZMarketMenuMain(int client)
 	
 	// Add formatted options to menu.
 	SetMenuTitle(menu_zmarket_main, title);
-	AddMenuItem(menu_zmarket_main, "Get Loadout", getloadout, MenuGetItemDraw(zmarketrebuy || zmarketrebuyauto));
-	AddMenuItem(menu_zmarket_main, "View Loadout", viewloadout, MenuGetItemDraw(zmarketrebuy || zmarketrebuyauto));
-	AddMenuItem(menu_zmarket_main, "Rebuy", rebuy, MenuGetItemDraw(zmarketrebuy || zmarketrebuyauto));
-	AddMenuItem(menu_zmarket_main, "Auto-Rebuy", rebuyauto, MenuGetItemDraw(zmarketrebuyauto));
+	AddMenuItem(menu_zmarket_main, "Get Loadout", getloadout, MenuGetItemDraw(g_hCvarsList.g_bCVAR_WEAPONS_ZMARKET_REBUY || g_hCvarsList.g_bCVAR_WEAPONS_ZMARKET_REBUY_AUTO));
+	AddMenuItem(menu_zmarket_main, "View Loadout", viewloadout, MenuGetItemDraw(g_hCvarsList.g_bCVAR_WEAPONS_ZMARKET_REBUY || g_hCvarsList.g_bCVAR_WEAPONS_ZMARKET_REBUY_AUTO));
+	AddMenuItem(menu_zmarket_main, "Rebuy", rebuy, MenuGetItemDraw(g_hCvarsList.g_bCVAR_WEAPONS_ZMARKET_REBUY || g_hCvarsList.g_bCVAR_WEAPONS_ZMARKET_REBUY_AUTO));
+	AddMenuItem(menu_zmarket_main, "Auto-Rebuy", rebuyauto, MenuGetItemDraw(g_hCvarsList.g_bCVAR_WEAPONS_ZMARKET_REBUY_AUTO));
 	AddMenuItem(menu_zmarket_main, "Weapons List", weaponslist);
 	
 	// Set exit back button.
@@ -811,8 +804,7 @@ stock bool ZMarketEquip(int client, const char[] weapon, bool rebuy = false)
 		return false;
 	}
 	
-	bool zmarketbuyzone = GetConVarBool(g_hCvarsList[CVAR_WEAPONS_ZMARKET_BUYZONE]);
-	if (!rebuy && zmarketbuyzone && !WeaponsIsClientInBuyZone(client))
+	if (!rebuy && g_hCvarsList.g_bCVAR_WEAPONS_ZMARKET_BUYZONE && !WeaponsIsClientInBuyZone(client))
 	{
 		// Update cookie with new weapon.
 		ZMarketSetRebuyCookie(client, slot, weapon);
@@ -1143,8 +1135,7 @@ void ZMarketRebuy(int client, bool autorebuy = false)
 		return;
 	}
 	
-	bool zmarketbuyzone = GetConVarBool(g_hCvarsList[CVAR_WEAPONS_ZMARKET_BUYZONE]);
-	if (!autorebuy && zmarketbuyzone && !WeaponsIsClientInBuyZone(client))
+	if (!autorebuy && g_hCvarsList.g_bCVAR_WEAPONS_ZMARKET_BUYZONE && !WeaponsIsClientInBuyZone(client))
 	{
 		TranslationPrintToChat(client, "Weapons zmarket buyzone");
 		return;
@@ -1175,8 +1166,7 @@ void ZMarketRebuy(int client, bool autorebuy = false)
 void ZMarketToggleAutoRebuy(int client)
 {
 	// If auto-rebuy is disabled, then stop.
-	bool zmarketrebuyauto = GetConVarBool(g_hCvarsList[CVAR_WEAPONS_ZMARKET_REBUY_AUTO]);
-	if (!zmarketrebuyauto)
+	if (!g_hCvarsList.g_bCVAR_WEAPONS_ZMARKET_REBUY_AUTO)
 	{
 		return;
 	}

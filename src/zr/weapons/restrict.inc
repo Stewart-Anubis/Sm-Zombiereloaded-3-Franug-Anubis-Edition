@@ -198,8 +198,7 @@ void RestrictOnClientSpawn(int client)
  */
 void RestrictOnRoundEnd()
 {
-	bool restrictzombieequip = GetConVarBool(g_hCvarsList[CVAR_WEAPONS_RESTRICT_ENDEQUIP]);
-	if (!restrictzombieequip)
+	if (!g_hCvarsList.g_bCVAR_WEAPONS_RESTRICT_ENDEQUIP)
 	{
 		return;
 	}
@@ -630,15 +629,13 @@ public Action RestrictCanUse(int client, int weapon)
 	}
 	
 	// If weapons module is disabled, then stop.
-	bool weapons = GetConVarBool(g_hCvarsList[CVAR_WEAPONS]);
-	if (!weapons)
+	if (!g_hCvarsList.g_bCVAR_WEAPONS)
 	{
 		return ACTION_CONTINUE;
 	}
 	
 	// If restrict module is disabled, then stop.
-	bool restrict = GetConVarBool(g_hCvarsList[CVAR_WEAPONS_RESTRICT]);
-	if (!restrict)
+	if (!g_hCvarsList.g_bCVAR_WEAPONS_RESTRICT)
 	{
 		return ACTION_CONTINUE;
 	}
@@ -688,8 +685,7 @@ public Action RestrictCommand(int client, int argc)
 	}
 	
 	// If weapons module is disabled, then stop.
-	bool weapons = GetConVarBool(g_hCvarsList[CVAR_WEAPONS]);
-	if (!weapons)
+	if (!g_hCvarsList.g_bCVAR_WEAPONS)
 	{
 		// Tell client command is disabled.
 		TranslationReplyToCommand(client, "Feature is disabled");
@@ -697,8 +693,7 @@ public Action RestrictCommand(int client, int argc)
 	}
 	
 	// If restrict module is disabled, then stop.
-	bool restrict = GetConVarBool(g_hCvarsList[CVAR_WEAPONS_RESTRICT]);
-	if (!restrict)
+	if (!g_hCvarsList.g_bCVAR_WEAPONS_RESTRICT)
 	{
 		// Tell client command is disabled.
 		TranslationReplyToCommand(client, "Feature is disabled");
@@ -749,8 +744,7 @@ public Action UnrestrictCommand(int client, int argc)
 	}
 	
 	// If weapons module is disabled, then stop.
-	bool weapons = GetConVarBool(g_hCvarsList[CVAR_WEAPONS]);
-	if (!weapons)
+	if (!g_hCvarsList.g_bCVAR_WEAPONS)
 	{
 		// Tell client command is disabled.
 		TranslationReplyToCommand(client, "Feature is disabled");
@@ -758,8 +752,7 @@ public Action UnrestrictCommand(int client, int argc)
 	}
 	
 	// If restrict module is disabled, then stop.
-	bool restrict = GetConVarBool(g_hCvarsList[CVAR_WEAPONS_RESTRICT]);
-	if (!restrict)
+	if (!g_hCvarsList.g_bCVAR_WEAPONS_RESTRICT)
 	{
 		// Tell client command is disabled.
 		TranslationReplyToCommand(client, "Feature is disabled");

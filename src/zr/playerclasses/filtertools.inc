@@ -945,11 +945,6 @@ stock bool ClassFlagFilterMatch(int index, int require, int deny, int cachetype)
  */
 bool ClassAllowSelection(int client, int team = -1, filter[ClassFilter] = ClassNoFilter)
 {
-	// Get selection settings.
-	bool zombie = GetConVarBool(g_hCvarsList[CVAR_CLASSES_ZOMBIE_SELECT]);
-	bool human = GetConVarBool(g_hCvarsList[CVAR_CLASSES_HUMAN_SELECT]);
-	bool admin = GetConVarBool(g_hCvarsList[CVAR_CLASSES_ADMIN_SELECT]);
-	
 	// Since admin mode classes are optional they must be counted to verify
 	// that they exist.
 	bool adminexist;
@@ -971,16 +966,16 @@ bool ClassAllowSelection(int client, int team = -1, filter[ClassFilter] = ClassN
 		{
 			case ZR_CLASS_TEAM_ZOMBIES:
 			{
-				return zombie;
+				return g_hCvarsList.g_bCVAR_CLASSES_ZOMBIE_SELECT;
 			}
 			case ZR_CLASS_TEAM_HUMANS:
 			{
-				return human;
+				return g_hCvarsList.g_bCVAR_CLASSES_HUMAN_SELECT;
 			}
 			case ZR_CLASS_TEAM_ADMINS:
 			{
 				// Player must be admin to select admin mode classes.
-				return admin && isadmin && adminexist;
+				return g_hCvarsList.g_bCVAR_CLASSES_ADMIN_SELECT && isadmin && adminexist;
 			}
 		}
 		
@@ -990,7 +985,7 @@ bool ClassAllowSelection(int client, int team = -1, filter[ClassFilter] = ClassN
 	else
 	{
 		// Check zombie and human.
-		return zombie || human;
+		return g_hCvarsList.g_bCVAR_CLASSES_ZOMBIE_SELECT || g_hCvarsList.g_bCVAR_CLASSES_HUMAN_SELECT;
 	}
 }
 
@@ -1294,15 +1289,15 @@ stock int ClassGetDefaultSpawnClass(int teamid, filter[ClassFilter] = ClassNoSpe
 	{
 		case ZR_CLASS_TEAM_ZOMBIES:
 		{
-			GetConVarString(g_hCvarsList[CVAR_CLASSES_DEFAULT_ZOMBIE], classname, sizeof(classname));
+			Format(classname, sizeof(classname), g_hCvarsList.g_sCVAR_CLASSES_DEFAULT_ZOMBIE);
 		}
 		case ZR_CLASS_TEAM_HUMANS:
 		{
-			GetConVarString(g_hCvarsList[CVAR_CLASSES_DEFAULT_HUMAN], classname, sizeof(classname));
+			Format(classname, sizeof(classname), g_hCvarsList.g_sCVAR_CLASSES_DEFAULT_HUMAN);
 		}
 		case ZR_CLASS_TEAM_ADMINS:
 		{
-			GetConVarString(g_hCvarsList[CVAR_CLASSES_DEFAULT_ADMIN_MODE], classname, sizeof(classname));
+			Format(classname, sizeof(classname), g_hCvarsList.g_sCVAR_CLASSES_DEFAULT_ADMIN_MODE);
 		}
 		default:
 		{

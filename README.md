@@ -5,7 +5,7 @@
 * Sorry for my English.
 
 * Author Greyscale | Richard Helgeby and Franc1sco franug, Anubis Edition
-* Version = 3.7 Anubis edition
+* Version = 3.7-A Anubis edition
 
 ### Update
 

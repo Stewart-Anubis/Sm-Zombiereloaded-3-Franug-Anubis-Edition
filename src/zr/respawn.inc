@@ -117,32 +117,23 @@ void RespawnOnClientDeath(int client, int attacker, const char[] weapon)
 	}
 	
 	// If respawn is disabled, stop here.
-	bool respawn = GetConVarBool(g_hCvarsList[CVAR_RESPAWN]);
-	if (!respawn)
+	if (!g_hCvarsList.g_bCVAR_RESPAWN)
 	{
 		return;
 	}
-	// If repeatkill is disabled, stop here.
-	bool repeatkill = GetConVarBool(g_hCvarsList[CVAR_RESPEATKILL]);
-	
-	// Start respawn timer.
-	float delay = GetConVarFloat(g_hCvarsList[CVAR_RESPAWN_DELAY]);
-	
-	// Start repeatkill timer.
-	float repeatkilltime = GetConVarFloat(g_hCvarsList[CVAR_RESPEATKILL_TIME]);
 
 	// Disabled respawn Repeatkill.	
 	if (g_bBlockRespawn)
 		return;
 
 	// If repeatkill is enabled.	
-	if (repeatkill)
+	if (g_hCvarsList.g_bCVAR_REPEATKILL)
 	{
 		if (client && !attacker && StrEqual(weapon, "trigger_hurt"))
 		{
 			float fGameTime = GetGameTime();
 		
-			if (fGameTime - g_fDeathTime[client] - delay < repeatkilltime)
+			if (fGameTime - g_fDeathTime[client] - g_hCvarsList.g_fCVAR_RESPAWN_DELAY < g_hCvarsList.g_fCVAR_REPEATKILL_TIME)
 			{
 				TranslationPrintToChatAll(true, false, "Repeat killer detected");
 				g_bBlockRespawn = true;
@@ -155,7 +146,7 @@ void RespawnOnClientDeath(int client, int attacker, const char[] weapon)
 	// Respawn.
 	if (!g_bBlockRespawn)
 	{
-		tRespawn[client] = CreateTimer(delay, RespawnTimer, client, TIMER_FLAG_NO_MAPCHANGE);
+		tRespawn[client] = CreateTimer(g_hCvarsList.g_fCVAR_RESPAWN_DELAY, RespawnTimer, client, TIMER_FLAG_NO_MAPCHANGE);
 	}
 }
 /**
@@ -219,8 +210,7 @@ bool RespawnSpawnClient(int client, bool zombie = false, bool zombieIfSuicide = 
 	// Restore respawn condition.
 	RespawnRestoreCondition(condition, zombie, zombieIfSuicide);
 	
-	bool ragdollremove = GetConVarBool(g_hCvarsList[CVAR_VEFFECTS_RAGDOLL_REMOVE]);
-	if (!ragdollremove)
+	if (!g_hCvarsList.g_bCVAR_VEFFECTS_RAGDOLL_REMOVE)
 	{
 		// Detatch ragdoll so it's not removed on respawn.
 		RagdollResetClientRagdoll(client);
@@ -283,14 +273,8 @@ public Action RespawnTimer(Handle timer, any client)
 		return;
 	}
 	
-	// Get whether player should respawn as zombie.
-	bool zombie = GetConVarBool(g_hCvarsList[CVAR_RESPAWN_TEAM_ZOMBIE]);
-	
-	// Get whether zombies died by suicide should respawn as zombies.
-	bool zombieIfSuicide = GetConVarBool(g_hCvarsList[CVAR_RESPAWN_TEAM_ZOMBIE_WORLD]);
-	
 	// Spawn player.
-	RespawnSpawnClient(client, zombie, zombieIfSuicide);
+	RespawnSpawnClient(client, g_hCvarsList.g_bCVAR_RESPAWN_TEAM_ZOMBIE, g_hCvarsList.g_bCVAR_RESPAWN_TEAM_ZOMBIE_WORLD);
 }
 
 /**

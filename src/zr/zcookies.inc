@@ -65,17 +65,11 @@ void ZCookiesMenuMain(int client)
 	Format(overlay, sizeof(overlay), "%t", "ZCookies menu main overlay", overlayenabled);
 	Format(zmarket, sizeof(zmarket), "%t", "ZCookies zmarket loadout");
 	
-	// Get conditional values for each option.
-	bool weapons = GetConVarBool(g_hCvarsList[CVAR_WEAPONS]);							   // For auto-rebuy.
-	bool zmarketrebuyauto = GetConVarBool(g_hCvarsList[CVAR_WEAPONS_ZMARKET_REBUY_AUTO]);   // For auto-rebuy.
-	bool overlaytoggle = GetConVarBool(g_hCvarsList[CVAR_CLASSES_OVERLAY_TOGGLE]);		  // For class overlay.
-	bool zmarketenabled = GetConVarBool(g_hCvarsList[CVAR_WEAPONS_ZMARKET]);				// For ZMarket loadout.
-	
 	// Add items to menu.
 	SetMenuTitle(zcookies_menu_main, title);
-	AddMenuItem(zcookies_menu_main, "autorebuy", autorebuy, MenuGetItemDraw(weapons && zmarketrebuyauto));
-	AddMenuItem(zcookies_menu_main, "overlay", overlay, MenuGetItemDraw(overlaytoggle));
-	AddMenuItem(zcookies_menu_main, "zmarket", zmarket, MenuGetItemDraw(zmarketenabled));
+	AddMenuItem(zcookies_menu_main, "autorebuy", autorebuy, MenuGetItemDraw(g_hCvarsList.g_bCVAR_WEAPONS && g_hCvarsList.g_bCVAR_WEAPONS_ZMARKET_REBUY_AUTO));
+	AddMenuItem(zcookies_menu_main, "overlay", overlay, MenuGetItemDraw(g_hCvarsList.g_bCVAR_CLASSES_OVERLAY_TOGGLE));
+	AddMenuItem(zcookies_menu_main, "zmarket", zmarket, MenuGetItemDraw(g_hCvarsList.g_bCVAR_WEAPONS_ZMARKET));
 	
 	// Create a "Back" button to the main menu.
 	SetMenuExitBackButton(zcookies_menu_main, true);
@@ -112,8 +106,7 @@ public int ZCookiesMenuMainHandle(Handle menu, MenuAction action, int client, in
 			case 1:
 			{
 				// If overlay toggle is disabled, then stop.
-				bool overlaytoggle = GetConVarBool(g_hCvarsList[CVAR_CLASSES_OVERLAY_TOGGLE]);
-				if (overlaytoggle)
+				if (g_hCvarsList.g_bCVAR_CLASSES_OVERLAY_TOGGLE)
 				{
 					// Toggle current overlay channel, retrieve new value, and update cookie.
 					bool overlayenabled = OverlaysClientSetChannelState(client, OVERLAYS_CHANNEL_CLASSES, true, true);

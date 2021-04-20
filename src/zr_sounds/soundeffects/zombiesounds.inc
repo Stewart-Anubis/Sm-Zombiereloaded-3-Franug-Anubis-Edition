@@ -140,7 +140,7 @@ void ZombieSoundsOnClientDeath(int client)
 	}
 	
 	// If death sound cvar is disabled, then stop.
-	if (!g_bDeaths)
+	if (!g_hCvarsList.g_bCVAR_SEFFECTS_DEATH)
 	{
 		return;
 	}
@@ -166,13 +166,13 @@ void ZombieSoundsOnClientHurt(int client)
 	}
 	
 	// Get groan factor, if 0, then stop.
-	if (!g_iGroan)
+	if (!g_hCvarsList.g_iCVAR_SEFFECTS_GROAN)
 	{
 		return;
 	}
 	
 	// 1 in 'groan' chance of groaning.
-	if (GetRandomInt(1, g_iGroan) == 1)
+	if (GetRandomInt(1, g_hCvarsList.g_iCVAR_SEFFECTS_GROAN) == 1)
 	{
 		// Get random groan sound.
 		char sound[SOUND_MAX_PATH];
@@ -190,7 +190,7 @@ void ZombieSoundsOnClientHurt(int client)
 void ZombieSoundsOnClientInfected(int client)
 {
 	// If interval is set to 0, then stop.
-	if (!g_fInterval)
+	if (!g_hCvarsList.g_fCVAR_SEFFECTS_MOAN)
 	{
 		return;
 	}
@@ -202,7 +202,7 @@ void ZombieSoundsOnClientInfected(int client)
 	}
 	
 	// Start repeating timer.
-	tSEffectsMoan[client] = CreateTimer(g_fInterval, ZombieSoundsMoanTimer, client, TIMER_FLAG_NO_MAPCHANGE|TIMER_REPEAT);
+	tSEffectsMoan[client] = CreateTimer(g_hCvarsList.g_fCVAR_SEFFECTS_MOAN, ZombieSoundsMoanTimer, client, TIMER_FLAG_NO_MAPCHANGE|TIMER_REPEAT);
 }
 
 /**
@@ -250,7 +250,7 @@ bool ZombieSoundsGetRandomSound(char[] sound, ZombieSounds soundtype)
 			int randsound = GetRandomInt(soundmin, soundmax);
 
 			// Format random index into sound path.
-			Format(sound, SOUND_MAX_PATH, "%szombie_voice_idle%d.mp3", g_cSounds_Path, randsound);
+			Format(sound, SOUND_MAX_PATH, "%szombie_voice_idle%d.mp3", g_hCvarsList.g_sCVAR_ZOMBIES_SOUNDS_FILES, randsound);
 		}
 		// Find groan sound. (zombie shot)
 		case Groan:
@@ -263,7 +263,7 @@ bool ZombieSoundsGetRandomSound(char[] sound, ZombieSounds soundtype)
 			int randsound = GetRandomInt(soundmin, soundmax);
 
 			// Format random index into sound path.
-			Format(sound, SOUND_MAX_PATH, "%szombie_pain%d.mp3", g_cSounds_Path, randsound);
+			Format(sound, SOUND_MAX_PATH, "%szombie_pain%d.mp3", g_hCvarsList.g_sCVAR_ZOMBIES_SOUNDS_FILES, randsound);
 		}
 		// Find death sound.
 		case Death:
@@ -276,7 +276,7 @@ bool ZombieSoundsGetRandomSound(char[] sound, ZombieSounds soundtype)
 			int randsound = GetRandomInt(soundmin, soundmax);
 
 			// Format random index into sound path.
-			Format(sound, SOUND_MAX_PATH, "%szombie_die%d.mp3", g_cSounds_Path, randsound);
+			Format(sound, SOUND_MAX_PATH, "%szombie_die%d.mp3", g_hCvarsList.g_sCVAR_ZOMBIES_SOUNDS_FILES, randsound);
 		}
 		// Invalid case given.
 		default:
@@ -338,10 +338,10 @@ void ZombieSoundsScream(int client)
 {
 	char SoundFile[PLATFORM_MAX_PATH];
 
-	Format(SoundFile, sizeof(SoundFile), "%s%s", g_cSounds_Path, g_cSoundScream);
+	Format(SoundFile, sizeof(SoundFile), "%s%s", g_hCvarsList.g_sCVAR_ZOMBIES_SOUNDS_FILES, g_hCvarsList.g_sCVAR_INFECT_SOUND);
 	
 	// If cvar contains path, then continue.
-	if (g_cSoundScream[0])
+	if (g_hCvarsList.g_sCVAR_INFECT_SOUND[0])
 	{
 		// Emit infect sound from infected client.
 		SEffectsEmitSoundFromClient(client, SoundFile);
@@ -359,9 +359,9 @@ void ZombieSoundsCmdTimerCheck(int client)
 	if (g_hSEffectsCommandTimer[client] == INVALID_HANDLE)
 	{
 		// Only create timer if time span is enabled.
-		if (g_fTimespan > 0.0)
+		if (g_hCvarsList.g_fCVAR_SEFFECTS_COMMAND_TIMESPAN > 0.0)
 		{
-			g_hSEffectsCommandTimer[client] = CreateTimer(g_fTimespan, ZombieSoundsCmdTimer, client, TIMER_FLAG_NO_MAPCHANGE | TIMER_REPEAT);
+			g_hSEffectsCommandTimer[client] = CreateTimer(g_hCvarsList.g_fCVAR_SEFFECTS_COMMAND_TIMESPAN, ZombieSoundsCmdTimer, client, TIMER_FLAG_NO_MAPCHANGE | TIMER_REPEAT);
 		}
 	}
 }
@@ -396,8 +396,8 @@ void ZombieSoundsResetCmdTimers()
  */
 bool ZombieSoundsCommandAllowed(int client)
 {
-	if (g_ilimitc <= 0 ||
-		g_SEffectsCommandCount[client] < g_ilimitc)
+	if (g_hCvarsList.g_iCVAR_SEFFECTS_COMMAND_LIMIT <= 0 ||
+		g_SEffectsCommandCount[client] < g_hCvarsList.g_iCVAR_SEFFECTS_COMMAND_LIMIT)
 	{
 		return true;
 	}

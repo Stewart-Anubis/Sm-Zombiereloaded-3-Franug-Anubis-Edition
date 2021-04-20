@@ -90,8 +90,7 @@ stock void RoundStartKillObjectives()
 // Forceteams Force move client!
 void RoundStartSpawnForceteams(int client) 
 {
-	bool b_cForceTeam = GetConVarBool(g_hCvarsList[CVAR_FORCETEAMS]);
-	if(!b_cForceTeam || g_bForceTeamsstarted) return;
+	if(!g_hCvarsList.g_bCVAR_FORCETEAMS || g_bForceTeamsstarted) return;
 	if(GetClientTeam(client) == CS_TEAM_T) CS_SwitchTeam(client, CS_TEAM_CT);
 }
 // Force teams Enable!

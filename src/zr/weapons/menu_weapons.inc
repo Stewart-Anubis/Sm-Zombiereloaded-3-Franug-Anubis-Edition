@@ -38,8 +38,7 @@ int g_iWeaponsCurType[MAXPLAYERS + 1];
 bool WeaponsMenuMain(int client)
 {
 	// If weapons module is disabled, then stop.
-	bool weapons = GetConVarBool(g_hCvarsList[CVAR_WEAPONS]);
-	if (!weapons)
+	if (!g_hCvarsList.g_bCVAR_WEAPONS)
 	{
 		return false;
 	}
@@ -59,8 +58,8 @@ bool WeaponsMenuMain(int client)
 	
 	// Draw items, make unselectable if module is disabled.
 	SetMenuTitle(menu_weapons_main, title);
-	AddMenuItem(menu_weapons_main, "restrict", restrict, MenuGetItemDraw(GetConVarBool(g_hCvarsList[CVAR_WEAPONS_RESTRICT])));
-	AddMenuItem(menu_weapons_main, "zmarket", zmarket, MenuGetItemDraw(GetConVarBool(g_hCvarsList[CVAR_WEAPONS_ZMARKET])));
+	AddMenuItem(menu_weapons_main, "restrict", restrict, MenuGetItemDraw(g_hCvarsList.g_bCVAR_WEAPONS_RESTRICT));
+	AddMenuItem(menu_weapons_main, "zmarket", zmarket, MenuGetItemDraw(g_hCvarsList.g_bCVAR_WEAPONS_ZMARKET));
 	
 	// Create a "Back" button to the weapons main menu.
 	SetMenuExitBackButton(menu_weapons_main, true);
@@ -363,7 +362,7 @@ void WeaponsMenuZMarket(int client)
 	
 	// Get "yes" or "no" settings from respective cvar.
 	char buyzonesetting[MENU_LINE_SMALL_LENGTH];
-	ConfigBoolToSetting(GetConVarBool(g_hCvarsList[CVAR_WEAPONS_ZMARKET_BUYZONE]), buyzonesetting, sizeof(buyzonesetting), true, client);
+	ConfigBoolToSetting(g_hCvarsList.g_bCVAR_WEAPONS_ZMARKET_BUYZONE, buyzonesetting, sizeof(buyzonesetting), true, client);
 	
 	SetGlobalTransTarget(client);
 	
@@ -403,8 +402,7 @@ public int WeaponsMenuZMarketHandle(Handle menu_weapons_market, MenuAction actio
 			case 0:
 			{
 				// Toggle cvar.
-				bool zmarketbuyzone = GetConVarBool(g_hCvarsList[CVAR_WEAPONS_ZMARKET_BUYZONE]);
-				SetConVarBool(g_hCvarsList[CVAR_WEAPONS_ZMARKET_BUYZONE], !zmarketbuyzone);
+				SetConVarBool(CVAR_WEAPONS_ZMARKET_BUYZONE, !g_hCvarsList.g_bCVAR_WEAPONS_ZMARKET_BUYZONE);
 			}
 		}
 		

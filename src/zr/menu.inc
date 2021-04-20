@@ -56,7 +56,7 @@ void MenuOnCommandsCreate()
  */
 public Action ZMenuCommand(int client, int argc)
 {
-	if (!GetConVarBool(g_hCvarsList[CVAR_ZMENU_ENABLED]))
+	if (!g_hCvarsList.g_bCVAR_ZMENU_ENABLED)
 	{
 		return Plugin_Continue;
 	}

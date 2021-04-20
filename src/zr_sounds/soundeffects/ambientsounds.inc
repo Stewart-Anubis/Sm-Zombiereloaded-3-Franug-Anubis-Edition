@@ -66,7 +66,7 @@ void AmbientSoundsOnRoundStart()
 		bAmbientSoundsIsPlaying[x] = false;
 	}
 	// Restart ambient sound for all clients.
-	if (g_bAmbientSounds) AmbientSoundsRestart();
+	if (g_hCvarsList.g_bCVAR_AMBIENTSOUNDS) AmbientSoundsRestart();
 }
 
 /**
@@ -82,13 +82,13 @@ void AmbientSoundsOnRoundEnd()
 	}
 
 	// If ambience is disabled, then stop.
-	if (!g_bAmbientSounds)
+	if (!g_hCvarsList.g_bCVAR_AMBIENTSOUNDS)
 	{
 		return;
 	}
 
 	// Stop sound before playing again.
-	SEffectsStopAmbientSound(g_cSoundAbient);
+	SEffectsStopAmbientSound(g_hCvarsList.g_sCVAR_AMBIENTSOUNDS_FILE);
 }
 
 /**
@@ -99,7 +99,7 @@ void AmbientSoundsOnRoundEnd()
 public Action AmbientSoundsOnClientSpawnPost(Handle abstime, any client)
 {
 	// If ambience is disabled, then stop.
-	if (!g_bAmbientSounds)
+	if (!g_hCvarsList.g_bCVAR_AMBIENTSOUNDS)
 	{
 		return;
 	}
@@ -111,7 +111,7 @@ public Action AmbientSoundsOnClientSpawnPost(Handle abstime, any client)
 	}
 
 	// Emit ambient sound.
-	SEffectsEmitAmbientSound(g_cSoundAbient, g_fAmbientVolume, client);
+	SEffectsEmitAmbientSound(g_hCvarsList.g_sCVAR_AMBIENTSOUNDS_FILE, g_hCvarsList.g_fCVAR_AMBIENTSOUNDS_VOLUME, client);
 }
 
 /**
@@ -127,13 +127,13 @@ void AmbientSoundsRestart()
 	}
 	
 	// If ambience is disabled, then stop.
-	if (!g_bAmbientSounds)
+	if (!g_hCvarsList.g_bCVAR_AMBIENTSOUNDS)
 	{
 		return;
 	}
 	
 	// Start ambient sounds timer.
-	tAmbientSounds = CreateTimer(g_fAmbientLength, AmbientSoundsTimer, _, TIMER_FLAG_NO_MAPCHANGE);
+	tAmbientSounds = CreateTimer(g_hCvarsList.g_fCVAR_AMBIENTSOUNDS_LENGTH, AmbientSoundsTimer, _, TIMER_FLAG_NO_MAPCHANGE);
 }
 
 /**
@@ -144,17 +144,17 @@ void AmbientSoundsRestart()
 public Action AmbientSoundsTimer(Handle timer)
 {
 	// If ambience is disabled, then stop.
-	if (!g_bAmbientSounds)
+	if (!g_hCvarsList.g_bCVAR_AMBIENTSOUNDS)
 	{
 		return;
 	}
 	
 	// Stop sound before playing again.
-	SEffectsStopAmbientSound(g_cSoundAbient);
+	SEffectsStopAmbientSound(g_hCvarsList.g_sCVAR_AMBIENTSOUNDS_FILE);
 	
 	// Emit ambient sound.
-	SEffectsEmitAmbientSound(g_cSoundAbient, g_fAmbientVolume);
+	SEffectsEmitAmbientSound(g_hCvarsList.g_sCVAR_AMBIENTSOUNDS_FILE, g_hCvarsList.g_fCVAR_AMBIENTSOUNDS_VOLUME);
 	
 	// Start new timer with sound length as delay.
-	tAmbientSounds = CreateTimer(g_fAmbientLength, AmbientSoundsTimer, _, TIMER_FLAG_NO_MAPCHANGE);
+	tAmbientSounds = CreateTimer(g_hCvarsList.g_fCVAR_AMBIENTSOUNDS_LENGTH, AmbientSoundsTimer, _, TIMER_FLAG_NO_MAPCHANGE);
 }

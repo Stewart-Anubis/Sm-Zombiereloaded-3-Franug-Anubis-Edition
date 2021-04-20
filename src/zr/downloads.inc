@@ -40,7 +40,7 @@ void DownloadsLoad()
 	
 	// Get downloads file path.
 	char pathdownloads[PLATFORM_MAX_PATH];
-	bool exists = ConfigGetCvarFilePath(CVAR_CONFIG_PATH_DOWNLOADS, pathdownloads);
+	bool exists = ConfigGetCvarFilePath(g_hCvarsList.g_sCVAR_CONFIG_PATH_DOWNLOADS, pathdownloads);
 	
 	// If file doesn't exist, then log and stop.
 	if (!exists)

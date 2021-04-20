@@ -480,11 +480,8 @@ public void ClassPreThinkPost(int client)
 
 public void ClassApplyNoarmorZombie(int client)
 {
-	// If Noarmor is disabled, stop here.
-	bool zrnoarmor = GetConVarBool(g_hCvarsList[CVAR_INFECT_NOARMOR_ZOMBIE]);
-
 	// If Noarmor is enabled.	
-	if (zrnoarmor)
+	if (g_hCvarsList.g_bCVAR_INFECT_NOARMOR_ZOMBIE)
 	{
 		if (IsPlayerAlive(client))
 		{
@@ -526,8 +523,7 @@ void Class_OnPlayerRunCmd(int client, float vel[3])
 bool ClassApplyArms(int client, int classindex, int cachetype = ZR_CLASS_CACHE_PLAYER)
 {
 	// If Class Arms is disabled, then stop.
-	bool arms = GetConVarBool(g_hCvarsList[CVAR_CLASSES_ARMS]);
-	if (!arms)
+	if (!g_hCvarsList.g_bCVAR_CLASSES_ARMS)
 	{		
 		return false;
 	}

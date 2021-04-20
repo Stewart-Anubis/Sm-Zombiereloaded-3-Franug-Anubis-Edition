@@ -33,8 +33,8 @@ public int ZR_OnContdownWarningTick(int tick)
 		char ContMamPath[PLATFORM_MAX_PATH];
 		char ContWomPath[PLATFORM_MAX_PATH];
 
-		Format(ContMamPath, sizeof(ContMamPath), "%s%i.mp3", g_cMam_Path, tick);
-		Format(ContWomPath, sizeof(ContWomPath), "%s%i.mp3", g_cWom_Path, tick);
+		Format(ContMamPath, sizeof(ContMamPath), "%s%i.mp3", g_hCvarsList.g_sCVAR_COUNTDOWN_MAM_PATH, tick);
+		Format(ContWomPath, sizeof(ContWomPath), "%s%i.mp3", g_hCvarsList.g_sCVAR_COUNTDOWN_WOMAN_PATH, tick);
 
 		for (int i = 1; i <= MaxClients; i++)
 		{

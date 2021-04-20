@@ -342,7 +342,6 @@ public int ClassMenuSelectHandle(Handle menu, MenuAction action, int client, int
 {
 	char className[MENU_LINE_REG_LENGTH];
 	int classIndex;
-	bool autoclose = GetConVarBool(g_hCvarsList[CVAR_CLASSES_MENU_AUTOCLOSE]);
 	
 	switch (action)
 	{
@@ -377,7 +376,7 @@ public int ClassMenuSelectHandle(Handle menu, MenuAction action, int client, int
 	}
 	
 	// Redisplay the main class menu if autoclose is disabled.
-	if (!autoclose)
+	if (!g_hCvarsList.g_bCVAR_CLASSES_MENU_AUTOCLOSE)
 	{
 		ClassMenuMain(client);
 	}

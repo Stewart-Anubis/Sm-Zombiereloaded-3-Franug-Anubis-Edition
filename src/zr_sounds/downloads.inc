@@ -46,8 +46,8 @@ void ContDownSoundsLoad()
 	char ContWomPath[PLATFORM_MAX_PATH];
 
 	// Prepend sound/ to the path.
-	Format(ContMamPath, sizeof(ContMamPath), "sound/%s", g_cMam_Path);
-	Format(ContWomPath, sizeof(ContWomPath), "sound/%s", g_cWom_Path);
+	Format(ContMamPath, sizeof(ContMamPath), "sound/%s", g_hCvarsList.g_sCVAR_COUNTDOWN_MAM_PATH);
+	Format(ContWomPath, sizeof(ContWomPath), "sound/%s", g_hCvarsList.g_sCVAR_COUNTDOWN_WOMAN_PATH);
 
 	
 	char s_SoundsFile[64], s_PreCachePath[PLATFORM_MAX_PATH];
@@ -115,7 +115,7 @@ void ZombiesSoundsLoad()
 	char ZombiesSoundsPath[PLATFORM_MAX_PATH];
 
 	// Prepend sound/ to the path.
-	Format(ZombiesSoundsPath, sizeof(ZombiesSoundsPath), "sound/%s", g_cSounds_Path);
+	Format(ZombiesSoundsPath, sizeof(ZombiesSoundsPath), "sound/%s", g_hCvarsList.g_sCVAR_ZOMBIES_SOUNDS_FILES);
 
 	char s_SoundsFile[64], s_PreCachePath[PLATFORM_MAX_PATH];
 
@@ -158,8 +158,8 @@ void RoundEndSoundsLoad()
 	char ZombieWinPath[PLATFORM_MAX_PATH];
 
 	// Prepend sound/ to the path.
-	Format(HumansWinPath, sizeof(HumansWinPath), "sound/%s", g_cHumWin_Path);
-	Format(ZombieWinPath, sizeof(ZombieWinPath), "sound/%s", g_cZomWin_Path);
+	Format(HumansWinPath, sizeof(HumansWinPath), "sound/%s", g_hCvarsList.g_sCVAR_ROUNDEND_HUMANS_WIN);
+	Format(ZombieWinPath, sizeof(ZombieWinPath), "sound/%s", g_hCvarsList.g_sCVAR_ROUNDEND_ZOMBIE_WIN);
 
 	
 	char s_SoundsFile[64], s_PreCachePath[PLATFORM_MAX_PATH];
@@ -224,14 +224,14 @@ void RoundEndSoundsLoad()
 void AmbientSoundsLoad()
 {
 	// If ambience is disabled, then stop.
-	if (!g_bAmbientSounds)
+	if (!g_hCvarsList.g_bCVAR_AMBIENTSOUNDS)
 	{
 		return;
 	}
 	
 	// Get ambient sound file.
 	char sound[PLATFORM_MAX_PATH];
-	Format(sound, sizeof(sound), "sound/%s", g_cSoundAbient);
+	Format(sound, sizeof(sound), "sound/%s", g_hCvarsList.g_sCVAR_AMBIENTSOUNDS_FILE);
 	
 	// If file doesn't exist, then log error and stop.
 	if (!FileExists(sound, true))

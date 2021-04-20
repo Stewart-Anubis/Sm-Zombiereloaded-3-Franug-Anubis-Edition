@@ -28,31 +28,54 @@
 /**
  * List of cvars used by the plugin.
  */
+
+ConVar CVAR_VOICE;
+ConVar CVAR_COUNTDOWN_MAM_PATH;
+ConVar CVAR_COUNTDOWN_WOMAN_PATH;
+ConVar CVAR_INFECT_SOUND;
+ConVar CVAR_SEFFECTS_MOAN;
+ConVar CVAR_SEFFECTS_GROAN;
+ConVar CVAR_SEFFECTS_DEATH;
+ConVar CVAR_SEFFECTS_COMMAND_LIMIT;
+ConVar CVAR_SEFFECTS_COMMAND_TIMESPAN;
+ConVar CVAR_ZOMBIES_SOUNDS_FILES;
+ConVar CVAR_AMBIENTSOUNDS;
+ConVar CVAR_AMBIENTSOUNDS_FILE;
+ConVar CVAR_AMBIENTSOUNDS_LENGTH;
+ConVar CVAR_AMBIENTSOUNDS_VOLUME;
+ConVar CVAR_ROUNDEND_HUMANS_WIN;
+ConVar CVAR_ROUNDEND_ZOMBIE_WIN;
+ConVar CVAR_ZOMBIES_SOUNDS;
+ConVar CVAR_ZOMBIES_SOUNDS_DEFAULT;
+ConVar CVAR_ROUNDEND_SOUNDS;
+ConVar CVAR_ROUNDEND_SOUNDS_DEFAULT;
+ConVar CVAR_VOICECOUNT_DEFAULT;
+ConVar CVAR_VOLUME_DEFAULT; 
+
 enum struct CvarsList
 {
-	ConVar CVAR_ENABLE;
-	ConVar CVAR_VOICE;
-	ConVar CVAR_COUNTDOWN_MAM_PATH;
-	ConVar CVAR_COUNTDOWN_WOMAN_PATH;
-	ConVar CVAR_INFECT_SOUND;
-	ConVar CVAR_SEFFECTS_MOAN;
-	ConVar CVAR_SEFFECTS_GROAN;
-	ConVar CVAR_SEFFECTS_DEATH;
-	ConVar CVAR_SEFFECTS_COMMAND_LIMIT;
-	ConVar CVAR_SEFFECTS_COMMAND_TIMESPAN;
-	ConVar CVAR_ZOMBIES_SOUNDS_FILES;
-	ConVar CVAR_AMBIENTSOUNDS;
-	ConVar CVAR_AMBIENTSOUNDS_FILE;
-	ConVar CVAR_AMBIENTSOUNDS_LENGTH;
-	ConVar CVAR_AMBIENTSOUNDS_VOLUME;
-	ConVar CVAR_ROUNDEND_HUMANS_WIN;
-	ConVar CVAR_ROUNDEND_ZOMBIE_WIN;
-	ConVar CVAR_ZOMBIES_SOUNDS;
-	ConVar CVAR_ZOMBIES_SOUNDS_DEFAULT;
-	ConVar CVAR_ROUNDEND_SOUNDS;
-	ConVar CVAR_ROUNDEND_SOUNDS_DEFAULT;
-	ConVar CVAR_VOICECOUNT_DEFAULT;
-	ConVar CVAR_VOLUME_DEFAULT;
+	bool g_bCVAR_VOICE;
+	char g_sCVAR_COUNTDOWN_MAM_PATH[PLATFORM_MAX_PATH];
+	char g_sCVAR_COUNTDOWN_WOMAN_PATH[PLATFORM_MAX_PATH];
+	char g_sCVAR_INFECT_SOUND[PLATFORM_MAX_PATH];
+	float g_fCVAR_SEFFECTS_MOAN;
+	int g_iCVAR_SEFFECTS_GROAN;
+	bool g_bCVAR_SEFFECTS_DEATH;
+	int g_iCVAR_SEFFECTS_COMMAND_LIMIT;
+	float g_fCVAR_SEFFECTS_COMMAND_TIMESPAN;
+	char g_sCVAR_ZOMBIES_SOUNDS_FILES[PLATFORM_MAX_PATH];
+	bool g_bCVAR_AMBIENTSOUNDS;
+	char g_sCVAR_AMBIENTSOUNDS_FILE[PLATFORM_MAX_PATH];
+	float g_fCVAR_AMBIENTSOUNDS_LENGTH;
+	float g_fCVAR_AMBIENTSOUNDS_VOLUME;
+	char g_sCVAR_ROUNDEND_HUMANS_WIN[PLATFORM_MAX_PATH];
+	char g_sCVAR_ROUNDEND_ZOMBIE_WIN[PLATFORM_MAX_PATH];
+	bool g_bCVAR_ZOMBIES_SOUNDS;
+	bool g_bCVAR_ZOMBIES_SOUNDS_DEFAULT;
+	bool g_bCVAR_ROUNDEND_SOUNDS;
+	bool g_bCVAR_ROUNDEND_SOUNDS_DEFAULT;
+	int g_iCVAR_VOICECOUNT_DEFAULT;
+	float g_fCVAR_VOLUME_DEFAULT;
 }
 
 /**
@@ -88,67 +111,121 @@ void CvarsCreate()
 	// ===========================
 
 	// Voice
-	g_hCvarsList.CVAR_VOICE					  =	CreateConVar("zrs_voice",				    "0",							"(Incomplete) Modify sv_alltalk to obey zombie/human teams instead of t/ct.");
+	CVAR_VOICE					  =	CreateConVar("zrs_voice",				    "0",							"(Incomplete) Modify sv_alltalk to obey zombie/human teams instead of t/ct.");
 
 	//CountDown Sounds
-	g_hCvarsList.CVAR_COUNTDOWN_MAM_PATH		  =	CreateConVar("zrs_countdown_files_mam",	    "zr/countdown/",				"Folder referring to the counter sounds. Man.");
-	g_hCvarsList.CVAR_COUNTDOWN_WOMAN_PATH		  =	CreateConVar("zrs_countdown_files_woman",     "zr/countdown/female/",			"Folder referring to the counter sounds. Woman.");
+	CVAR_COUNTDOWN_MAM_PATH		  =	CreateConVar("zrs_countdown_files_mam",	    "zr/countdown/",				"Folder referring to the counter sounds. Man.");
+	CVAR_COUNTDOWN_WOMAN_PATH		  =	CreateConVar("zrs_countdown_files_woman",     "zr/countdown/female/",			"Folder referring to the counter sounds. Woman.");
 
 	// Zombie Sounds
-	g_hCvarsList.CVAR_INFECT_SOUND			  =	CreateConVar("zrs_infect_sound",				 "fz_scream1.mp3",   			"Sound, relative to [zrs_files_zombie_sounds] folder, to play from player on infection. ['\"\"' = No sound]");
-	g_hCvarsList.CVAR_SEFFECTS_MOAN			  =	CreateConVar("zrs_seffects_moan",		     "30.0",					 	"Time between emission of a moan sound from a zombie.");
-	g_hCvarsList.CVAR_SEFFECTS_GROAN			  =	CreateConVar("zrs_seffects_groan",		     "5",							"The probability that a groan sound will be emitted from a zombie when shot. ['100' = 1% chance | '50' = 2% chance | '1' = 100% chance]");
-	g_hCvarsList.CVAR_SEFFECTS_DEATH			  =	CreateConVar("zrs_seffects_death",		     "1",							"Emit a death sound when a zombie dies.");
-	g_hCvarsList.CVAR_SEFFECTS_COMMAND_LIMIT	  =	CreateConVar("zrs_seffects_command_limit",    "4",							"Number of sound commands allowed within the time span, or total limit if time span is disabled. ['0' = Disable sound command limit]");
-	g_hCvarsList.CVAR_SEFFECTS_COMMAND_TIMESPAN	  =	CreateConVar("zrs_seffects_command_timespan", "10",					   		"Time span for sound command limiter (in seconds). ['0' = Disable time span check | positive number = Time span]");
-	g_hCvarsList.CVAR_ZOMBIES_SOUNDS_FILES		  =	CreateConVar("zrs_files_zombie_sounds",		 "zr/",							"Folder referring to the sounds of zombies.");
+	CVAR_INFECT_SOUND			  =	CreateConVar("zrs_infect_sound",				 "fz_scream1.mp3",   			"Sound, relative to [zrs_files_zombie_sounds] folder, to play from player on infection. ['\"\"' = No sound]");
+	CVAR_SEFFECTS_MOAN			  =	CreateConVar("zrs_seffects_moan",		     "30.0",					 	"Time between emission of a moan sound from a zombie.");
+	CVAR_SEFFECTS_GROAN			  =	CreateConVar("zrs_seffects_groan",		     "5",							"The probability that a groan sound will be emitted from a zombie when shot. ['100' = 1% chance | '50' = 2% chance | '1' = 100% chance]");
+	CVAR_SEFFECTS_DEATH			  =	CreateConVar("zrs_seffects_death",		     "1",							"Emit a death sound when a zombie dies.");
+	CVAR_SEFFECTS_COMMAND_LIMIT	  =	CreateConVar("zrs_seffects_command_limit",    "4",							"Number of sound commands allowed within the time span, or total limit if time span is disabled. ['0' = Disable sound command limit]");
+	CVAR_SEFFECTS_COMMAND_TIMESPAN	  =	CreateConVar("zrs_seffects_command_timespan", "10",					   		"Time span for sound command limiter (in seconds). ['0' = Disable time span check | positive number = Time span]");
+	CVAR_ZOMBIES_SOUNDS_FILES		  =	CreateConVar("zrs_files_zombie_sounds",		 "zr/",							"Folder referring to the sounds of zombies.");
 
 	// Ambient Sounds
-	g_hCvarsList.CVAR_AMBIENTSOUNDS			  =	CreateConVar("zrs_ambientsounds",		      "1",							"Play an ambient sound to all players during gameplay.");
-	g_hCvarsList.CVAR_AMBIENTSOUNDS_FILE		  =	CreateConVar("zrs_ambientsounds_file",	  	  "ambient/zr/zr_ambience.mp3", "Sound file, relative to \"sound\" folder, to play as ambience.  This file is automatically downloaded to clients. [Dependency: zrs_ambientsounds]");
-	g_hCvarsList.CVAR_AMBIENTSOUNDS_LENGTH		  =	CreateConVar("zrs_ambientsounds_length",		  "60.0",						"Length of the ambient sound. [Dependency: zrs_ambientsounds]");
-	g_hCvarsList.CVAR_AMBIENTSOUNDS_VOLUME		  =	CreateConVar("zrs_ambientsounds_volume",	 	  "0.8",						"Volume of the ambient sound. [1.0 = Max volume | 0.0001 = Not audible | Dependency: zrs_ambientsounds]");
+	CVAR_AMBIENTSOUNDS			  =	CreateConVar("zrs_ambientsounds",		      "1",							"Play an ambient sound to all players during gameplay.");
+	CVAR_AMBIENTSOUNDS_FILE		  =	CreateConVar("zrs_ambientsounds_file",	  	  "ambient/zr/zr_ambience.mp3", "Sound file, relative to \"sound\" folder, to play as ambience.  This file is automatically downloaded to clients. [Dependency: zrs_ambientsounds]");
+	CVAR_AMBIENTSOUNDS_LENGTH		  =	CreateConVar("zrs_ambientsounds_length",		  "60.0",						"Length of the ambient sound. [Dependency: zrs_ambientsounds]");
+	CVAR_AMBIENTSOUNDS_VOLUME		  =	CreateConVar("zrs_ambientsounds_volume",	 	  "0.8",						"Volume of the ambient sound. [1.0 = Max volume | 0.0001 = Not audible | Dependency: zrs_ambientsounds]");
 	// Round End Sounds
-	g_hCvarsList.CVAR_ROUNDEND_HUMANS_WIN		  =	CreateConVar("zrs_files_humans_win",			  "roundend/humanswin/",		"Folder referring to the sounds of the round end. Humans win.");
-	g_hCvarsList.CVAR_ROUNDEND_ZOMBIE_WIN		  =	CreateConVar("zrs_files_zombie_win",			  "roundend/zombiewin/",		"Folder referring to the sounds of the round end. Zombie win.");
+	CVAR_ROUNDEND_HUMANS_WIN		  =	CreateConVar("zrs_files_humans_win",			  "roundend/humanswin/",		"Folder referring to the sounds of the round end. Humans win.");
+	CVAR_ROUNDEND_ZOMBIE_WIN		  =	CreateConVar("zrs_files_zombie_win",			  "roundend/zombiewin/",		"Folder referring to the sounds of the round end. Zombie win.");
 
 	// ===========================
 	// Voice ZrSounds (module)
 	// ===========================
 
-	g_hCvarsList.CVAR_ZOMBIES_SOUNDS			  =	CreateConVar("zrs_zombies_sounds",	 		  "1",						    "Enable/disable togle sounds Zombies. Default '1'");
-	g_hCvarsList.CVAR_ZOMBIES_SOUNDS_DEFAULT	  =	CreateConVar("zrs_zombies_sounds_enable",	  "1",							"Enable/disable sounds Zombies. Default '1'");
-	g_hCvarsList.CVAR_ROUNDEND_SOUNDS			  =	CreateConVar("zrs_roundend_sounds",	 		  "1",	 						"Enable/disable togle sounds roundend. Default '1'");
-	g_hCvarsList.CVAR_ROUNDEND_SOUNDS_DEFAULT	  =	CreateConVar("zrs_roundend_sounds_enable",	  "1",							"Enable/disable sounds roundend. Default '1'");	
-	g_hCvarsList.CVAR_VOICECOUNT_DEFAULT		  =	CreateConVar("zrs_voice_count_default",		  "1",							"Default countdown voice. ['1' = Mem  | '2' = Woman!] Default 1");
-	g_hCvarsList.CVAR_VOLUME_DEFAULT			  =	CreateConVar("zrs_volume_default",			  "0.5",						"Default volume Zr Sounds. Default '0.5'");
+	CVAR_ZOMBIES_SOUNDS			  =	CreateConVar("zrs_zombies_sounds",	 		  "1",						    "Enable/disable togle sounds Zombies. Default '1'");
+	CVAR_ZOMBIES_SOUNDS_DEFAULT	  =	CreateConVar("zrs_zombies_sounds_enable",	  "1",							"Enable/disable sounds Zombies. Default '1'");
+	CVAR_ROUNDEND_SOUNDS			  =	CreateConVar("zrs_roundend_sounds",	 		  "1",	 						"Enable/disable togle sounds roundend. Default '1'");
+	CVAR_ROUNDEND_SOUNDS_DEFAULT	  =	CreateConVar("zrs_roundend_sounds_enable",	  "1",							"Enable/disable sounds roundend. Default '1'");	
+	CVAR_VOICECOUNT_DEFAULT		  =	CreateConVar("zrs_voice_count_default",		  "1",							"Default countdown voice. ['1' = Mem  | '2' = Woman!] Default 1");
+	CVAR_VOLUME_DEFAULT			  =	CreateConVar("zrs_volume_default",			  "0.5",						"Default volume Zr Sounds. Default '0.5'");
+
+	// ===========================
+	// Convar Load
+	// ===========================
+
+	g_hCvarsList.g_bCVAR_VOICE = CVAR_VOICE.BoolValue;
+	GetConVarString(CVAR_COUNTDOWN_MAM_PATH, g_hCvarsList.g_sCVAR_COUNTDOWN_MAM_PATH, sizeof(g_hCvarsList.g_sCVAR_COUNTDOWN_MAM_PATH));
+	GetConVarString(CVAR_COUNTDOWN_WOMAN_PATH, g_hCvarsList.g_sCVAR_COUNTDOWN_WOMAN_PATH, sizeof(g_hCvarsList.g_sCVAR_COUNTDOWN_WOMAN_PATH));
+	GetConVarString(CVAR_INFECT_SOUND, g_hCvarsList.g_sCVAR_INFECT_SOUND, sizeof(g_hCvarsList.g_sCVAR_INFECT_SOUND));
+	g_hCvarsList.g_fCVAR_SEFFECTS_MOAN = CVAR_SEFFECTS_MOAN.FloatValue;
+	g_hCvarsList.g_iCVAR_SEFFECTS_GROAN = CVAR_SEFFECTS_GROAN.IntValue;
+	g_hCvarsList.g_bCVAR_SEFFECTS_DEATH = CVAR_SEFFECTS_DEATH.BoolValue;
+	g_hCvarsList.g_iCVAR_SEFFECTS_COMMAND_LIMIT = CVAR_SEFFECTS_COMMAND_LIMIT.IntValue;
+	g_hCvarsList.g_fCVAR_SEFFECTS_COMMAND_TIMESPAN = CVAR_SEFFECTS_COMMAND_TIMESPAN.FloatValue;
+	GetConVarString(CVAR_ZOMBIES_SOUNDS_FILES, g_hCvarsList.g_sCVAR_ZOMBIES_SOUNDS_FILES, sizeof(g_hCvarsList.g_sCVAR_ZOMBIES_SOUNDS_FILES));
+	g_hCvarsList.g_bCVAR_AMBIENTSOUNDS = CVAR_AMBIENTSOUNDS.BoolValue;
+	GetConVarString(CVAR_AMBIENTSOUNDS_FILE, g_hCvarsList.g_sCVAR_AMBIENTSOUNDS_FILE, sizeof(g_hCvarsList.g_sCVAR_AMBIENTSOUNDS_FILE));
+	g_hCvarsList.g_fCVAR_AMBIENTSOUNDS_LENGTH = CVAR_AMBIENTSOUNDS_LENGTH.FloatValue;
+	g_hCvarsList.g_fCVAR_AMBIENTSOUNDS_VOLUME = CVAR_AMBIENTSOUNDS_VOLUME.FloatValue;
+	GetConVarString(CVAR_ROUNDEND_HUMANS_WIN ,g_hCvarsList.g_sCVAR_ROUNDEND_HUMANS_WIN, sizeof(g_hCvarsList.g_sCVAR_ROUNDEND_HUMANS_WIN));
+	GetConVarString(CVAR_ROUNDEND_ZOMBIE_WIN ,g_hCvarsList.g_sCVAR_ROUNDEND_ZOMBIE_WIN, sizeof(g_hCvarsList.g_sCVAR_ROUNDEND_ZOMBIE_WIN));
+	g_hCvarsList.g_bCVAR_ZOMBIES_SOUNDS = CVAR_ZOMBIES_SOUNDS.BoolValue;
+	g_hCvarsList.g_bCVAR_ZOMBIES_SOUNDS_DEFAULT = CVAR_ZOMBIES_SOUNDS_DEFAULT.BoolValue;
+	g_hCvarsList.g_bCVAR_ROUNDEND_SOUNDS = CVAR_ROUNDEND_SOUNDS.BoolValue;
+	g_hCvarsList.g_bCVAR_ROUNDEND_SOUNDS_DEFAULT = CVAR_ROUNDEND_SOUNDS_DEFAULT.BoolValue;
+	g_hCvarsList.g_iCVAR_VOICECOUNT_DEFAULT = CVAR_VOICECOUNT_DEFAULT.IntValue;
+	g_hCvarsList.g_fCVAR_VOLUME_DEFAULT = CVAR_VOLUME_DEFAULT.FloatValue;
+
+	//ConVarChange
+
+	CVAR_VOICE.AddChangeHook(ConVarChange);
+	CVAR_COUNTDOWN_MAM_PATH.AddChangeHook(ConVarChange);
+	CVAR_COUNTDOWN_WOMAN_PATH.AddChangeHook(ConVarChange);
+	CVAR_INFECT_SOUND.AddChangeHook(ConVarChange);
+	CVAR_SEFFECTS_MOAN.AddChangeHook(ConVarChange);
+	CVAR_SEFFECTS_GROAN.AddChangeHook(ConVarChange);
+	CVAR_SEFFECTS_DEATH.AddChangeHook(ConVarChange);
+	CVAR_SEFFECTS_COMMAND_LIMIT.AddChangeHook(ConVarChange);
+	CVAR_SEFFECTS_COMMAND_TIMESPAN.AddChangeHook(ConVarChange);
+	CVAR_ZOMBIES_SOUNDS_FILES.AddChangeHook(ConVarChange);
+	CVAR_AMBIENTSOUNDS.AddChangeHook(ConVarChange);
+	CVAR_AMBIENTSOUNDS_FILE.AddChangeHook(ConVarChange);
+	CVAR_AMBIENTSOUNDS_LENGTH.AddChangeHook(ConVarChange);
+	CVAR_AMBIENTSOUNDS_VOLUME.AddChangeHook(ConVarChange);
+	CVAR_ROUNDEND_HUMANS_WIN.AddChangeHook(ConVarChange);
+	CVAR_ROUNDEND_ZOMBIE_WIN.AddChangeHook(ConVarChange);
+	CVAR_ZOMBIES_SOUNDS.AddChangeHook(ConVarChange);
+	CVAR_ZOMBIES_SOUNDS_DEFAULT.AddChangeHook(ConVarChange);
+	CVAR_ROUNDEND_SOUNDS.AddChangeHook(ConVarChange);
+	CVAR_ROUNDEND_SOUNDS_DEFAULT.AddChangeHook(ConVarChange);
+	CVAR_VOICECOUNT_DEFAULT.AddChangeHook(ConVarChange);
+	CVAR_VOLUME_DEFAULT.AddChangeHook(ConVarChange);
 
 	// Auto-generate config file if it doesn't exist, then execute.
 	AutoExecConfig(true, "zombiereloaded_sounds", "sourcemod/zombiereloaded");
 }
 
-void CvarsLoad()
+public void ConVarChange(ConVar convar, char[] oldValue, char[] newValue)
 {
-	g_bCvarVoice = GetConVarBool(g_hCvarsList.CVAR_VOICE);
-	GetConVarString(g_hCvarsList.CVAR_COUNTDOWN_MAM_PATH, g_cMam_Path, sizeof(g_cMam_Path));
-	GetConVarString(g_hCvarsList.CVAR_COUNTDOWN_WOMAN_PATH, g_cWom_Path, sizeof(g_cWom_Path));
-	GetConVarString(g_hCvarsList.CVAR_INFECT_SOUND, g_cSoundScream, sizeof(g_cSoundScream));
-	g_fInterval = GetConVarFloat(g_hCvarsList.CVAR_SEFFECTS_MOAN);
-	g_iGroan = GetConVarInt(g_hCvarsList.CVAR_SEFFECTS_GROAN);
-	g_bDeaths = GetConVarBool(g_hCvarsList.CVAR_SEFFECTS_DEATH);
-	g_ilimitc = GetConVarInt(g_hCvarsList.CVAR_SEFFECTS_COMMAND_LIMIT);
-	g_fTimespan = GetConVarFloat(g_hCvarsList.CVAR_SEFFECTS_COMMAND_TIMESPAN);
-	GetConVarString(g_hCvarsList.CVAR_ZOMBIES_SOUNDS_FILES, g_cSounds_Path, sizeof(g_cSounds_Path));
-	g_bAmbientSounds = GetConVarBool(g_hCvarsList.CVAR_AMBIENTSOUNDS);
-	GetConVarString(g_hCvarsList.CVAR_AMBIENTSOUNDS_FILE, g_cSoundAbient, sizeof(g_cSoundAbient));
-	g_fAmbientLength = GetConVarFloat(g_hCvarsList.CVAR_AMBIENTSOUNDS_LENGTH);
-	g_fAmbientVolume = GetConVarFloat(g_hCvarsList.CVAR_AMBIENTSOUNDS_VOLUME);
-	GetConVarString(g_hCvarsList.CVAR_ROUNDEND_HUMANS_WIN, g_cHumWin_Path, sizeof(g_cHumWin_Path));
-	GetConVarString(g_hCvarsList.CVAR_ROUNDEND_ZOMBIE_WIN, g_cZomWin_Path, sizeof(g_cZomWin_Path));
-	g_bZsecvar = GetConVarBool(g_hCvarsList.CVAR_ZOMBIES_SOUNDS);
-	g_bZsed = GetConVarBool(g_hCvarsList.CVAR_ZOMBIES_SOUNDS_DEFAULT);
-	g_bRoundendSdEnable = GetConVarBool(g_hCvarsList.CVAR_ROUNDEND_SOUNDS);
-	g_bZrod = GetConVarBool(g_hCvarsList.CVAR_ROUNDEND_SOUNDS_DEFAULT);
-	g_bZvcd = GetConVarInt(g_hCvarsList.CVAR_VOICECOUNT_DEFAULT);
-	g_cfDefaultVolume = GetConVarFloat(g_hCvarsList.CVAR_VOLUME_DEFAULT);
+	//ConVarChange
+
+	g_hCvarsList.g_bCVAR_VOICE = CVAR_VOICE.BoolValue;
+	GetConVarString(CVAR_COUNTDOWN_MAM_PATH, g_hCvarsList.g_sCVAR_COUNTDOWN_MAM_PATH, sizeof(g_hCvarsList.g_sCVAR_COUNTDOWN_MAM_PATH));
+	GetConVarString(CVAR_COUNTDOWN_WOMAN_PATH, g_hCvarsList.g_sCVAR_COUNTDOWN_WOMAN_PATH, sizeof(g_hCvarsList.g_sCVAR_COUNTDOWN_WOMAN_PATH));
+	GetConVarString(CVAR_INFECT_SOUND, g_hCvarsList.g_sCVAR_INFECT_SOUND, sizeof(g_hCvarsList.g_sCVAR_INFECT_SOUND));
+	g_hCvarsList.g_fCVAR_SEFFECTS_MOAN = CVAR_SEFFECTS_MOAN.FloatValue;
+	g_hCvarsList.g_iCVAR_SEFFECTS_GROAN = CVAR_SEFFECTS_GROAN.IntValue;
+	g_hCvarsList.g_bCVAR_SEFFECTS_DEATH = CVAR_SEFFECTS_DEATH.BoolValue;
+	g_hCvarsList.g_iCVAR_SEFFECTS_COMMAND_LIMIT = CVAR_SEFFECTS_COMMAND_LIMIT.IntValue;
+	g_hCvarsList.g_fCVAR_SEFFECTS_COMMAND_TIMESPAN = CVAR_SEFFECTS_COMMAND_TIMESPAN.FloatValue;
+	GetConVarString(CVAR_ZOMBIES_SOUNDS_FILES, g_hCvarsList.g_sCVAR_ZOMBIES_SOUNDS_FILES, sizeof(g_hCvarsList.g_sCVAR_ZOMBIES_SOUNDS_FILES));
+	g_hCvarsList.g_bCVAR_AMBIENTSOUNDS = CVAR_AMBIENTSOUNDS.BoolValue;
+	GetConVarString(CVAR_AMBIENTSOUNDS_FILE, g_hCvarsList.g_sCVAR_AMBIENTSOUNDS_FILE, sizeof(g_hCvarsList.g_sCVAR_AMBIENTSOUNDS_FILE));
+	g_hCvarsList.g_fCVAR_AMBIENTSOUNDS_LENGTH = CVAR_AMBIENTSOUNDS_LENGTH.FloatValue;
+	g_hCvarsList.g_fCVAR_AMBIENTSOUNDS_VOLUME = CVAR_AMBIENTSOUNDS_VOLUME.FloatValue;
+	GetConVarString(CVAR_ROUNDEND_HUMANS_WIN ,g_hCvarsList.g_sCVAR_ROUNDEND_HUMANS_WIN, sizeof(g_hCvarsList.g_sCVAR_ROUNDEND_HUMANS_WIN));
+	GetConVarString(CVAR_ROUNDEND_ZOMBIE_WIN ,g_hCvarsList.g_sCVAR_ROUNDEND_ZOMBIE_WIN, sizeof(g_hCvarsList.g_sCVAR_ROUNDEND_ZOMBIE_WIN));
+	g_hCvarsList.g_bCVAR_ZOMBIES_SOUNDS = CVAR_ZOMBIES_SOUNDS.BoolValue;
+	g_hCvarsList.g_bCVAR_ZOMBIES_SOUNDS_DEFAULT = CVAR_ZOMBIES_SOUNDS_DEFAULT.BoolValue;
+	g_hCvarsList.g_bCVAR_ROUNDEND_SOUNDS = CVAR_ROUNDEND_SOUNDS.BoolValue;
+	g_hCvarsList.g_bCVAR_ROUNDEND_SOUNDS_DEFAULT = CVAR_ROUNDEND_SOUNDS_DEFAULT.BoolValue;
+	g_hCvarsList.g_iCVAR_VOICECOUNT_DEFAULT = CVAR_VOICECOUNT_DEFAULT.IntValue;
+	g_hCvarsList.g_fCVAR_VOLUME_DEFAULT = CVAR_VOLUME_DEFAULT.FloatValue;
 }

@@ -64,8 +64,7 @@ void RagdollOnOffsetsFound()
 void RagdollOnClientDeath(int client)
 {
 	// If ragdoll removal is disabled, then stop.
-	bool ragdollremove = GetConVarBool(g_hCvarsList[CVAR_VEFFECTS_RAGDOLL_REMOVE]);
-	if (!ragdollremove)
+	if (!g_hCvarsList.g_bCVAR_VEFFECTS_RAGDOLL_REMOVE)
 	{
 		return;
 	}
@@ -78,18 +77,15 @@ void RagdollOnClientDeath(int client)
 		return;
 	}
 	
-	// Get the delay.
-	float dissolvedelay = GetConVarFloat(g_hCvarsList[CVAR_VEFFECTS_RAGDOLL_DELAY]);
-	
 	// If the delay is 0 or less, then remove right now.
-	if (dissolvedelay <= 0)
+	if (g_hCvarsList.g_fCVAR_VEFFECTS_RAGDOLL_DELAY <= 0)
 	{
 		RagdollTimer(INVALID_HANDLE, ragdoll);
 		return;
 	}
 	
 	// Create a timer to remove/dissolve ragdoll.
-	CreateTimer(dissolvedelay, RagdollTimer, ragdoll, TIMER_FLAG_NO_MAPCHANGE);
+	CreateTimer(g_hCvarsList.g_fCVAR_VEFFECTS_RAGDOLL_DELAY, RagdollTimer, ragdoll, TIMER_FLAG_NO_MAPCHANGE);
 }
 
 /**
@@ -100,7 +96,7 @@ void RagdollOnClientDeath(int client)
 void RagdollRemove(int ragdoll)
 {
 	// Get the dissolve type.
-	int dissolve = GetConVarInt(g_hCvarsList[CVAR_VEFFECTS_RAGDOLL_DISSOLVE]);
+	int dissolve = g_hCvarsList.g_iCVAR_VEFFECTS_RAGDOLL_DISSOLVE;
 	
 	if (dissolve == VEFFECTS_RAGDOLL_DISSOLVE_EFFECTLESS)
 	{
@@ -147,8 +143,7 @@ void RagdollRemove(int ragdoll)
 public Action RagdollTimer(Handle timer, any ragdoll)
 {
 	// If ragdoll removal is disabled, then stop.
-	bool ragdollremove = GetConVarBool(g_hCvarsList[CVAR_VEFFECTS_RAGDOLL_REMOVE]);
-	if (!ragdollremove)
+	if (!g_hCvarsList.g_bCVAR_VEFFECTS_RAGDOLL_REMOVE)
 	{
 		return;
 	}

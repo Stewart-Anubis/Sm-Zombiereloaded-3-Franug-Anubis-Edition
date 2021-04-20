@@ -134,24 +134,19 @@ void ZSpawnOnRoundFreezeEnd()
 	}
 	
 	// If zspawn is disabled, then stop.
-	bool zspawn = GetConVarBool(g_hCvarsList[CVAR_ZSPAWN]);
-	if (!zspawn)
+	if (!g_hCvarsList.g_bCVAR_ZSPAWN)
 	{
 		return;
 	}
 	
 	// If timelimit is disabled, then stop.
-	bool zspawntimelimit = GetConVarBool(g_hCvarsList[CVAR_ZSPAWN_TIMELIMIT]);
-	if (!zspawntimelimit)
+	if (!g_hCvarsList.g_bCVAR_ZSPAWN_TIMELIMIT)
 	{
 		return;
 	}
 	
-	// Get timelimit
-	float zspawntime = GetConVarFloat(g_hCvarsList[CVAR_ZSPAWN_TIMELIMIT_TIME]);
-	
 	// Start timer.
-	tZSpawn = CreateTimer(zspawntime, ZSpawnTimer, _, TIMER_FLAG_NO_MAPCHANGE);
+	tZSpawn = CreateTimer(g_hCvarsList.g_fCVAR_ZSPAWN_TIMELIMIT_TIME, ZSpawnTimer, _, TIMER_FLAG_NO_MAPCHANGE);
 }
 
 /**
@@ -181,8 +176,7 @@ void ZSpawnOnRoundEnd()
 bool ZSpawnClient(int client, bool force = false, bool zombie = false)
 {
 	// If zspawn is disabled, then stop.
-	bool zspawn = GetConVarBool(g_hCvarsList[CVAR_ZSPAWN]);
-	if (!force && !zspawn)
+	if (!force && !g_hCvarsList.g_bCVAR_ZSPAWN)
 	{
 		TranslationPrintToChat(client, "Feature is disabled");
 		return false;
@@ -213,8 +207,7 @@ bool ZSpawnClient(int client, bool force = false, bool zombie = false)
 	}
 	
 	// Block if client has already played during this round.
-	int blockrejoin = GetConVarBool(g_hCvarsList[CVAR_ZSPAWN_BLOCK_REJOIN]);
-	if (!force && SteamidCacheClientExists(g_hZSpawnSteamIDCache, client) && blockrejoin)
+	if (!force && SteamidCacheClientExists(g_hZSpawnSteamIDCache, client) && g_hCvarsList.g_bCVAR_ZSPAWN_BLOCK_REJOIN)
 	{
 		// Tell client the command may only be used when joining late.
 		TranslationPrintToChat(client, "ZSpawn double spawn");
@@ -226,25 +219,19 @@ bool ZSpawnClient(int client, bool force = false, bool zombie = false)
 	if (!force)
 	{
 		// Check if zspawn override is enabled, and if so get overidden value.
-		bool teamoverride = GetConVarBool(g_hCvarsList[CVAR_ZSPAWN_TEAM_OVERRIDE]);
-		teamzombie = teamoverride ? GetConVarBool(g_hCvarsList[CVAR_ZSPAWN_TEAM_ZOMBIE]) : GetConVarBool(g_hCvarsList[CVAR_RESPAWN_TEAM_ZOMBIE]);
+		teamzombie = g_hCvarsList.g_bCVAR_ZSPAWN_TEAM_OVERRIDE ? g_hCvarsList.g_bCVAR_ZSPAWN_TEAM_ZOMBIE : g_hCvarsList.g_bCVAR_RESPAWN_TEAM_ZOMBIE;
 		
 		// Block is the time limit is up.
-		bool zspawntimelimit = GetConVarBool(g_hCvarsList[CVAR_ZSPAWN_TIMELIMIT]);
-		if (zspawntimelimit)
+		if (g_hCvarsList.g_bCVAR_ZSPAWN_TIMELIMIT)
 		{
 			if (tZSpawn == INVALID_HANDLE)
 			{
-				int zspawntimelimitzombie = GetConVarInt(g_hCvarsList[CVAR_ZSPAWN_TIMELIMIT_ZOMBIE]);
-				switch(zspawntimelimitzombie)
+				switch(g_hCvarsList.g_iCVAR_ZSPAWN_TIMELIMIT_ZOMBIE)
 				{
 					case -1:
 					{
-						// Get timelimit
-						float zspawntime = GetConVarFloat(g_hCvarsList[CVAR_ZSPAWN_TIMELIMIT_TIME]);
-						
 						// Tell client the timelimit for this command has expired.
-						TranslationPrintToChat(client, "ZSpawn timelimit", RoundToNearest(zspawntime));
+						TranslationPrintToChat(client, "ZSpawn timelimit", RoundToNearest(g_hCvarsList.g_fCVAR_ZSPAWN_TIMELIMIT_TIME));
 						return false;
 					}
 					case 0:
@@ -474,11 +461,8 @@ public Action ZSpawnTimer(Handle timer)
 //Zspawn Auto
 void ZSpawnAutoZspawn(int client)
 {
-	//int client = GetClientOfUserId(GetEventInt(event, "userid"));
-	bool autoz = GetConVarBool(g_hCvarsList[CVAR_AUTO_ZSPAWN]);
-	
 	// If Auto Zspawn is disabled, then stop.
-	if (!autoz || !client || !IsClientInGame(client))
+	if (!g_hCvarsList.g_bCVAR_AUTO_ZSPAWN || !client || !IsClientInGame(client))
 	{
 		// Tell client feature is disabled.
 		TranslationPrintToChat(client, "AutoZspawn is disabled");

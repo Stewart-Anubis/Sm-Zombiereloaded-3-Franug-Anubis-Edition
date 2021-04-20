@@ -97,8 +97,7 @@ void KnockbackOnClientHurt(int client, int attacker, const char[] weapon, int hi
 		TR_GetEndPosition(clientloc);
 	}
 	
-	bool weapons = GetConVarBool(g_hCvarsList[CVAR_WEAPONS]);
-	if (weapons)
+	if (g_hCvarsList.g_bCVAR_WEAPONS)
 	{
 		int weaponindex = WeaponsNameToIndex(weapon);
 		if (weaponindex != -1)
@@ -108,8 +107,7 @@ void KnockbackOnClientHurt(int client, int attacker, const char[] weapon, int hi
 		}
 	}
 	
-	bool hitgroups = GetConVarBool(g_hCvarsList[CVAR_HITGROUPS]);
-	if (hitgroups)
+	if (g_hCvarsList.g_bCVAR_HITGROUPS)
 	{
 		int hitgroupindex = HitgroupToIndex(hitgroup);
 		if (hitgroupindex != -1)
@@ -125,10 +123,10 @@ void KnockbackOnClientHurt(int client, int attacker, const char[] weapon, int hi
 	if (g_Game == Game_CSGO)
 	{
 		// Apply multiplier if client on air
-		if(GetEntPropEnt(client, Prop_Send, "m_hGroundEntity") == -1) knockback *= GetConVarFloat(g_hCvarsList[CVAR_CLASSES_CSGO_KNOCKBACK_AIRMULTIPLIER]);
+		if(GetEntPropEnt(client, Prop_Send, "m_hGroundEntity") == -1) knockback *= g_hCvarsList.g_fCVAR_CLASSES_CSGO_KNOCKBACK_AIRMULTIPLIER;
 	}
 
-	knockback *= GetConVarFloat(g_hCvarsList[CVAR_KNOCKBACK_MULTIPLIER]);
+	knockback *= g_hCvarsList.g_fCVAR_KNOCKBACK_MULTIPLIER;
 	
 	// Apply knockback.
 	KnockbackSetVelocity(client, attackerloc, clientloc, knockback);

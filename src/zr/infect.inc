@@ -376,12 +376,8 @@ void InfectOnRoundFreezeEnd()
 		return;
 	}
 	
-	// Get min and max times.
-	float infectspawntimemin = GetConVarFloat(g_hCvarsList[CVAR_INFECT_SPAWNTIME_MIN]);
-	float infectspawntimemax = GetConVarFloat(g_hCvarsList[CVAR_INFECT_SPAWNTIME_MAX]);
-	
 	// Pick random time between min and max.
-	float randomtime = GetRandomFloat(infectspawntimemin, infectspawntimemax);
+	float randomtime = GetRandomFloat(g_hCvarsList.g_fCVAR_INFECT_SPAWNTIME_MIN, g_hCvarsList.g_fCVAR_INFECT_SPAWNTIME_MAX);
 	
 	// Round to the nearest whole number (and convert back to a float) so the countdown is synched with it.
 	float(RoundToNearest(randomtime));
@@ -389,8 +385,7 @@ void InfectOnRoundFreezeEnd()
 	tInfect = CreateTimer(randomtime, InfectMotherZombie, _, TIMER_FLAG_NO_MAPCHANGE);
 	
 	// Check cvar and start a countdown timer if enabled.
-	bool countdown = GetConVarBool(g_hCvarsList[CVAR_INFECT_MZOMBIE_COUNTDOWN]);
-	if (countdown && randomtime > 1.0)
+	if (g_hCvarsList.g_bCVAR_INFECT_MZOMBIE_COUNTDOWN && randomtime > 1.0)
 	{
 		// Stop old countdown timer, if it exists.
 		InfectStopCountdown();
@@ -458,9 +453,6 @@ public Action InfectMotherZombie(Handle timer)
 	InfectMoveAllToCT();
 	
 	int mothercount;
-	int ratio = GetConVarInt(g_hCvarsList[CVAR_INFECT_MZOMBIE_RATIO]);
-	int min = GetConVarInt(g_hCvarsList[CVAR_INFECT_MZOMBIE_MIN]);
-	int max = GetConVarInt(g_hCvarsList[CVAR_INFECT_MZOMBIE_MAX]);
 	
 	// Count valid human clients.
 	int humancount;
@@ -482,13 +474,13 @@ public Action InfectMotherZombie(Handle timer)
 			// Dynamic mode. Every n-th player is infected.
 			
 			// A ratio of 0 will infect one zombie (to keep backwards compatibility).
-			if (ratio == 0)
+			if (g_hCvarsList.g_iCVAR_INFECT_MZOMBIE_RATIO == 0)
 			{
 				mothercount = 1;
 			}
 			
 			// Calculate number of zombies to infect.
-			mothercount = RoundToNearest(float(humancount) / ratio);
+			mothercount = RoundToNearest(float(humancount) / g_hCvarsList.g_iCVAR_INFECT_MZOMBIE_RATIO);
 			
 			// Require at least one mother zombie.
 			if (mothercount == 0)
@@ -498,16 +490,16 @@ public Action InfectMotherZombie(Handle timer)
 		}
 		case InfectMode_Absolute:
 		{
-			if (ratio > 0)
+			if (g_hCvarsList.g_iCVAR_INFECT_MZOMBIE_RATIO > 0)
 			{
 				// Infect n humans.
-				mothercount = ratio;
+				mothercount = g_hCvarsList.g_iCVAR_INFECT_MZOMBIE_RATIO;
 			}
 			else
 			{
 				// Infect all but n humans. Since ratio already is negative
 				// just add the numbers. (Zero ratio is catched by validator.)
-				mothercount = humancount + ratio;
+				mothercount = humancount + g_hCvarsList.g_iCVAR_INFECT_MZOMBIE_RATIO;
 				
 				// Force at least one mother zombie.
 				if (mothercount == 0)
@@ -519,7 +511,7 @@ public Action InfectMotherZombie(Handle timer)
 		case InfectMode_Range:
 		{
 			// Get a random number between the range.
-			mothercount = Math_GetRandomInt(min, max);
+			mothercount = Math_GetRandomInt(g_hCvarsList.g_iCVAR_INFECT_MZOMBIE_MIN, g_hCvarsList.g_iCVAR_INFECT_MZOMBIE_MAX);
 		}
 	}
 	
@@ -632,8 +624,7 @@ int InfectRemoveImmuneClients(Handle clientList, bool keepLastPlayer = true)
  */ 
 public Action InfectCountdown(Handle timer)
 {
-	bool countdown = GetConVarBool(g_hCvarsList[CVAR_INFECT_MZOMBIE_COUNTDOWN]);
-	if (!countdown)
+	if (!g_hCvarsList.g_bCVAR_INFECT_MZOMBIE_COUNTDOWN)
 	{
 		InfectStopCountdown();
 		return Plugin_Stop;
@@ -696,11 +687,8 @@ void InfectStopCountdown()
  */
 void InfectHumanToZombie(int client, int attacker = -1, bool motherinfect = false, bool respawnoverride = false, bool respawn = false)
 {
-	// Infect Alone Cvar 
-	float playersalone = GetConVarFloat(g_hCvarsList[CVAR_INFECT_NO_ALONE_INFECTION_PLAYERS]);
-
 	// Infect Alone Block if ...
-	if(fnGetPlaying() < playersalone && g_bBlockInfctAlone)
+	if(fnGetPlaying() < g_hCvarsList.g_iCVAR_INFECT_NO_ALONE_INFECTION_PLAYERS && g_bBlockInfctAlone)
 	{
 		// Print message to client.
 		TranslationPrintToChat(client, "No alone Infection");
@@ -723,8 +711,7 @@ void InfectHumanToZombie(int client, int attacker = -1, bool motherinfect = fals
 	bZombie[client] = true;
 	
 	// Check if consecutive infection protection is enabled.
-	bool infectconsecutiveblock = GetConVarBool(g_hCvarsList[CVAR_INFECT_CONSECUTIVE_BLOCK]);
-	if (infectconsecutiveblock)
+	if (g_hCvarsList.g_bCVAR_INFECT_CONSECUTIVE_BLOCK)
 	{
 		// If this is a mother infect, flag the player as immune for next mother
 		// infection. Otherwise do nothing and keep the current flag.
@@ -777,12 +764,9 @@ void InfectHumanToZombie(int client, int attacker = -1, bool motherinfect = fals
 	int weapons[WeaponsSlot];
 	WeaponsGetClientWeapons(client, weapons);
 	
-	// Check if weapons drop is enabled.
-	bool weaponsdrop = GetConVarBool(g_hCvarsList[CVAR_INFECT_WEAPONS_DROP]);
-	
 	// This must be after the event forwarding because it fixes a problem caused by changing models in ClassOnClientInfected.
 	// Remove all weapons but knife.
-	WeaponsRemoveAllClientWeapons(client, weaponsdrop);
+	WeaponsRemoveAllClientWeapons(client, g_hCvarsList.g_bCVAR_INFECT_WEAPONS_DROP);
 	
 	// Switch the player to terrorists.
 	// TODO: A solution to stop confusing bots? Respawn and teleport?
@@ -791,8 +775,7 @@ void InfectHumanToZombie(int client, int attacker = -1, bool motherinfect = fals
 	// If respawn is enabled, then teleport mother zombie back to spawnpoint.
 	if (motherinfect)
 	{
-		bool zombierespawn = GetConVarBool(g_hCvarsList[CVAR_INFECT_MZOMBIE_RESPAWN]);
-		if(zombierespawn)
+		if(g_hCvarsList.g_bCVAR_INFECT_MZOMBIE_RESPAWN)
 		{
 			ZTeleTeleportClient(client);
 		}
@@ -934,29 +917,25 @@ void InfectFireEffects(int client)
 	GetClientAbsOrigin(client, clientloc);
 	clientloc[2] += 30;
 	
-	bool explosion = GetConVarBool(g_hCvarsList[CVAR_INFECT_EXPLOSION]);
-	if (explosion)
+	if (g_hCvarsList.g_bCVAR_INFECT_EXPLOSION)
 	{
 		// Initialize explosion flags variable.
 		int flags;
 		
 		// Set "nofireball" flag if fireball is disabled.
-		bool fireball = GetConVarBool(g_hCvarsList[CVAR_INFECT_FIREBALL]);
-		if (!fireball)
+		if (!g_hCvarsList.g_bCVAR_INFECT_FIREBALL)
 		{
 			flags = flags | EXP_NOFIREBALL;
 		}
 		
 		// Set "nosmoke" flag if smoke is disabled.
-		bool smoke = GetConVarBool(g_hCvarsList[CVAR_INFECT_SMOKE]);
-		if (!smoke)
+		if (!g_hCvarsList.g_bCVAR_INFECT_SMOKE)
 		{
 			flags = flags | EXP_NOSMOKE;
 		}
 		
 		// Set "nosparks" flag if sparks are disabled.
-		bool sparks = GetConVarBool(g_hCvarsList[CVAR_INFECT_SPARKS]);
-		if (!sparks)
+		if (!g_hCvarsList.g_bCVAR_INFECT_SPARKS)
 		{
 			flags = flags | EXP_NOSPARKS;
 		}
@@ -966,24 +945,17 @@ void InfectFireEffects(int client)
 	}
 	
 	// If energy splash effect is enabled, then continue.
-	bool esplash = GetConVarBool(g_hCvarsList[CVAR_INFECT_ESPLASH]);
-	if (esplash)
+	if (g_hCvarsList.g_bCVAR_INFECT_ESPLASH)
 	{
 		// Create energy splash effect.
 		VEffectsCreateEnergySplash(clientloc, direction, true);
 	}
 	
 	// If shake effect is enabled, then continue.
-	bool shake = GetConVarBool(g_hCvarsList[CVAR_INFECT_SHAKE]);
-	if (shake)
+	if (g_hCvarsList.g_bCVAR_INFECT_SHAKE)
 	{
-		// Get shake info.
-		float shakeamp = GetConVarFloat(g_hCvarsList[CVAR_INFECT_SHAKE_AMP]);
-		float shakefrequency = GetConVarFloat(g_hCvarsList[CVAR_INFECT_SHAKE_FREQUENCY]);
-		float shakeduration = GetConVarFloat(g_hCvarsList[CVAR_INFECT_SHAKE_DURATION]);
-		
 		// Shake client's screen.
-		VEffectsShakeClientScreen(client, shakeamp, shakefrequency, shakeduration);
+		VEffectsShakeClientScreen(client, g_hCvarsList.g_fCVAR_INFECT_SHAKE_AMP, g_hCvarsList.g_fCVAR_INFECT_SHAKE_FREQUENCY, g_hCvarsList.g_fCVAR_INFECT_SHAKE_DURATION);
 	}
 }
 
@@ -1430,51 +1402,45 @@ InfectMode InfectStringToMode(const char[] mode)
  */
 InfectMode InfectGetModeOrFail()
 {
-	char modeName[16];
-	GetConVarString(g_hCvarsList[CVAR_INFECT_MZOMBIE_MODE], modeName, sizeof(modeName));
-	
-	InfectMode mode = InfectStringToMode(modeName);
-	int ratio = GetConVarInt(g_hCvarsList[CVAR_INFECT_MZOMBIE_RATIO]);
-	int min = GetConVarInt(g_hCvarsList[CVAR_INFECT_MZOMBIE_MIN]);
-	int max = GetConVarInt(g_hCvarsList[CVAR_INFECT_MZOMBIE_MAX]);
+	InfectMode mode = InfectStringToMode(g_hCvarsList.g_sCVAR_INFECT_MZOMBIE_MODE);
 	
 	// Validate.
 	switch (mode)
 	{
 		case InfectMode_Invalid:
 		{
-			LogEvent(false, LogType_Error, LOG_CORE_EVENTS, LogModule_Infect, "Config Validation", "Warning: Invalid infection mode (\"%s\"). Falling back to one mother zombie.", modeName);
+			LogEvent(false, LogType_Error, LOG_CORE_EVENTS, LogModule_Infect, "Config Validation", "Warning: Invalid infection mode (\"%s\"). Falling back to one mother zombie.", g_hCvarsList.g_sCVAR_INFECT_MZOMBIE_MODE);
 		}
 		case InfectMode_Dynamic:
 		{
-			if (ratio < 0)
+			if (g_hCvarsList.g_iCVAR_INFECT_MZOMBIE_RATIO < 0)
 			{
-				LogEvent(false, LogType_Error, LOG_CORE_EVENTS, LogModule_Infect, "Config Validation", "Warning: Invalid infection ratio (\"%d\"). Must be zero or positive in dynamic mode. Falling back to one mother zombie.", ratio);
+				LogEvent(false, LogType_Error, LOG_CORE_EVENTS, LogModule_Infect, "Config Validation", "Warning: Invalid infection ratio (\"%d\"). Must be zero or positive in dynamic mode. Falling back to one mother zombie.", g_hCvarsList.g_iCVAR_INFECT_MZOMBIE_RATIO);
 				return InfectMode_Invalid;
 			}
 		}
 		case InfectMode_Absolute:
 		{
-			if (ratio == 0)
+			if (g_hCvarsList.g_iCVAR_INFECT_MZOMBIE_RATIO == 0)
 			{
-				LogEvent(false, LogType_Error, LOG_CORE_EVENTS, LogModule_Infect, "Config Validation", "Warning: Invalid infection ratio (\"%d\"). Must be nonzero in absolute mode. Falling back to one mother zombie.", ratio);
+				LogEvent(false, LogType_Error, LOG_CORE_EVENTS, LogModule_Infect, "Config Validation", "Warning: Invalid infection ratio (\"%d\"). Must be nonzero in absolute mode. Falling back to one mother zombie.", g_hCvarsList.g_iCVAR_INFECT_MZOMBIE_RATIO);
 				return InfectMode_Invalid;
 			}
 		}
 		case InfectMode_Range:
 		{
 			bool failed = false;
-			if (min <= 0)
+			if (g_hCvarsList.g_iCVAR_INFECT_MZOMBIE_MIN <= 0)
 			{
-				LogEvent(false, LogType_Error, LOG_CORE_EVENTS, LogModule_Infect, "Config Validation", "Warning: Invalid infection range (\"%d\"). Cvar zr_infect_mzombie_min must be nonzero and positive. Falling back to one mother zombie.", min);
+				LogEvent(false, LogType_Error, LOG_CORE_EVENTS, LogModule_Infect, "Config Validation", "Warning: Invalid infection range (\"%d\"). Cvar zr_infect_mzombie_min must be nonzero and positive. Falling back to one mother zombie.", g_hCvarsList.g_iCVAR_INFECT_MZOMBIE_MIN);
 				failed = true;
 			}
-			if (max <= 0)
+			if (g_hCvarsList.g_iCVAR_INFECT_MZOMBIE_MAX <= 0)
 			{
-				LogEvent(false, LogType_Error, LOG_CORE_EVENTS, LogModule_Infect, "Config Validation", "Warning: Invalid infection range (\"%d\"). Cvar zr_infect_mzombie_max must be nonzero and positive. Falling back to one mother zombie.", max);
+				LogEvent(false, LogType_Error, LOG_CORE_EVENTS, LogModule_Infect, "Config Validation", "Warning: Invalid infection range (\"%d\"). Cvar zr_infect_mzombie_max must be nonzero and positive. Falling back to one mother zombie.", g_hCvarsList.g_iCVAR_INFECT_MZOMBIE_MAX);
 				failed = true;
 			}
-			if (min > max || max < min)
+			if (g_hCvarsList.g_iCVAR_INFECT_MZOMBIE_MIN > g_hCvarsList.g_iCVAR_INFECT_MZOMBIE_MAX || g_hCvarsList.g_iCVAR_INFECT_MZOMBIE_MAX < g_hCvarsList.g_iCVAR_INFECT_MZOMBIE_MIN)
 			{
 				LogEvent(false, LogType_Error, LOG_CORE_EVENTS, LogModule_Infect, "Config Validation", "Warning: Infection range values are overlapping or reversed. Check zr_infect_mzombie_min and zr_infect_mzombie_min. Falling back to one mother zombie.");
 				failed = true;

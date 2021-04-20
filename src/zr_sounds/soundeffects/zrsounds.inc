@@ -94,21 +94,21 @@ void ZrSoundsOnCookiesCached(int client)
 	if (!voiceselect[0])
 	{
 		// Set cookie to default value from cvar.
-		CookiesSetInt(client, g_CountDownCookie, g_bZvcd);
+		CookiesSetInt(client, g_CountDownCookie, g_hCvarsList.g_iCVAR_VOICECOUNT_DEFAULT);
 	}
 	else if(!zombisounde[0])
 		{
 		// Set cookie to default value from cvar.
-		CookiesSetClientCookieBool(client, g_ZombiesECookie, g_bZsed);
+		CookiesSetClientCookieBool(client, g_ZombiesECookie, g_hCvarsList.g_bCVAR_ZOMBIES_SOUNDS_DEFAULT);
 	}
 	else if(!zroundende[0])
 		{
 		// Set cookie to default value from cvar.
-		CookiesSetClientCookieBool(client, g_ZRoundEndCookie, g_bZrod);
+		CookiesSetClientCookieBool(client, g_ZRoundEndCookie, g_hCvarsList.g_bCVAR_ROUNDEND_SOUNDS_DEFAULT);
 	}
 	else if(!volumevalue[0])
 	{
-		FloatToString(g_cfDefaultVolume, volumevalue, sizeof(volumevalue));
+		FloatToString(g_hCvarsList.g_fCVAR_VOLUME_DEFAULT, volumevalue, sizeof(volumevalue));
 		SetClientCookie(client, g_ZrSoundsCookie, volumevalue);
 	}
 }
@@ -161,13 +161,13 @@ void ZSoundsMenuMain(int client)
 	
 	// Add items to menu.
 	SetMenuTitle(zsounds_menu_main, title);
-	AddMenuItem(zsounds_menu_main, "soundzombi", soundzombi, MenuGetItemDraw(g_bZsecvar));
-	AddMenuItem(zsounds_menu_main, "soundrend", soundrend, MenuGetItemDraw(g_bRoundendSdEnable));
+	AddMenuItem(zsounds_menu_main, "soundzombi", soundzombi, MenuGetItemDraw(g_hCvarsList.g_bCVAR_ZOMBIES_SOUNDS));
+	AddMenuItem(zsounds_menu_main, "soundrend", soundrend, MenuGetItemDraw(g_hCvarsList.g_bCVAR_ROUNDEND_SOUNDS));
 	AddMenuItem(zsounds_menu_main, "zrvolume", zrvolume);
 	AddMenuItem(zsounds_menu_main, "coundsound", coundsound);
 
 	// Create a "Back" button to the main menu.
-	SetMenuExitBackButton(zsounds_menu_main, true);
+	SetMenuExitButton(zsounds_menu_main, true);
 	
 	// Display menu to client.
 	DisplayMenu(zsounds_menu_main, client, MENU_TIME_FOREVER);	
@@ -219,13 +219,7 @@ public int ZrSoundsMenuHandler(Handle menu, MenuAction action, int client, int s
 	}
 	// Client closed the menu.
 	if (action == MenuAction_Cancel)
-	{
-		// Client hit "Back" button.
-		if (slot == MenuCancel_ExitBack)
-		{
-			// Re-open main menu.
-			//ZMenuMain(client);
-		}
+	{		// Client hit "Back" button.
 	}
 	// Client exited menu.
 	if (action == MenuAction_End)
@@ -391,7 +385,7 @@ int CounToggle(int client)
 //Toggle Zombis sounds.
 bool ZSEToggle(int client)
 {
-	if (!g_bZsecvar)
+	if (!g_hCvarsList.g_bCVAR_ZOMBIES_SOUNDS)
 	{
 		//Tell client feature is disabled.
 		TranslationPrintToChat(client, "Feature is disabled");
@@ -424,7 +418,7 @@ bool ZSEToggle(int client)
 //Toggle RoundEnd sounds.
 bool ZREToggle(int client)
 {
-	if (!g_bRoundendSdEnable)
+	if (!g_hCvarsList.g_bCVAR_ROUNDEND_SOUNDS)
 	{
 		// Tell client feature is disabled.
 		TranslationPrintToChat(client, "Feature is disabled");

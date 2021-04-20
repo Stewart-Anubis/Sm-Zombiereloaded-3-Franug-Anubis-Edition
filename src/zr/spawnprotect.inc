@@ -69,8 +69,7 @@ void SpawnProtectOnClientSpawnPost(int client)
 	tSpawnProtect[client] = INVALID_HANDLE;
 	
 	// If protect cvar is disabled, then stop.
-	bool protect = GetConVarBool(g_hCvarsList[CVAR_SPAWNPROTECT]);
-	if (!protect)
+	if (!g_hCvarsList.g_bCVAR_SPAWNPROTECT)
 	{
 		return;
 	}
@@ -124,10 +123,6 @@ void SpawnProtectStart(int client)
 		return;
 	}
 	
-	// Get spawn protect attribute cvars.
-	float speed = GetConVarFloat(g_hCvarsList[CVAR_SPAWNPROTECT_SPEED]);
-	int alpha = GetConVarInt(g_hCvarsList[CVAR_SPAWNPROTECT_ALPHA]);
-	
 	// Validate attributes
 	float min;
 	float max;
@@ -144,16 +139,16 @@ void SpawnProtectStart(int client)
 			max = ZR_CLASS_SPEED_PROP_MAX;
 		}
 	}
-	if (speed < min && speed > max)
+	if (g_hCvarsList.g_fCVAR_SPAWNPROTECT_SPEED < min && g_hCvarsList.g_fCVAR_SPAWNPROTECT_SPEED > max)
 	{
 		// Log a warning and abort.
-		LogEvent(false, LogType_Error, LOG_CORE_EVENTS, view_as<LogModules>(LogModule_Config), "Config validation", "Out of range value in cvar zr_spawnprotect_speed (%f). Aborting spawn protection.", speed);
+		LogEvent(false, LogType_Error, LOG_CORE_EVENTS, view_as<LogModules>(LogModule_Config), "Config validation", "Out of range value in cvar zr_spawnprotect_speed (%f). Aborting spawn protection.", g_hCvarsList.g_fCVAR_SPAWNPROTECT_SPEED);
 		return;
 	}
-	if (alpha < ZR_CLASS_ALPHA_INITIAL_MIN && alpha > ZR_CLASS_ALPHA_INITIAL_MAX)
+	if (g_hCvarsList.g_iCVAR_SPAWNPROTECT_ALPHA < ZR_CLASS_ALPHA_INITIAL_MIN && g_hCvarsList.g_iCVAR_SPAWNPROTECT_ALPHA > ZR_CLASS_ALPHA_INITIAL_MAX)
 	{
 		// Log a warning and abort.
-		LogEvent(false, LogType_Error, LOG_CORE_EVENTS, view_as<LogModules>(LogModule_Config), "Config validation", "Out of range value in cvar zr_spawnprotect_alpha (%d). Aborting spawn protection.", alpha);
+		LogEvent(false, LogType_Error, LOG_CORE_EVENTS, view_as<LogModules>(LogModule_Config), "Config validation", "Out of range value in cvar zr_spawnprotect_alpha (%d). Aborting spawn protection.", g_hCvarsList.g_iCVAR_SPAWNPROTECT_ALPHA);
 		return;
 	}
 	
@@ -161,15 +156,14 @@ void SpawnProtectStart(int client)
 	bInfectImmune[client][INFECT_TYPE_NORMAL] = true;
 	
 	// Set spawn protect attributes.
-	ClassApplySpeedEx(client, speed);
-	ToolsSetClientAlpha(client, alpha);
+	ClassApplySpeedEx(client, g_hCvarsList.g_fCVAR_SPAWNPROTECT_SPEED);
+	ToolsSetClientAlpha(client, g_hCvarsList.g_iCVAR_SPAWNPROTECT_ALPHA);
 	
 	// Set time left to zr_protect_time's value.
-	int protect_time = GetConVarInt(g_hCvarsList[CVAR_SPAWNPROTECT_TIME]);
-	pSpawnProtectTime[client] = protect_time;
+	pSpawnProtectTime[client] = g_hCvarsList.g_iCVAR_SPAWNPROTECT_TIME;
 	
 	// Tell client they are being protected.
-	TranslationPrintToChat(client, "Spawn protection begin", protect_time);
+	TranslationPrintToChat(client, "Spawn protection begin", g_hCvarsList.g_iCVAR_SPAWNPROTECT_TIME);
 	
 	// Send time left in a hud message.
 	TranslationPrintHintText(client, "Spawn Protect", pSpawnProtectTime[client]);

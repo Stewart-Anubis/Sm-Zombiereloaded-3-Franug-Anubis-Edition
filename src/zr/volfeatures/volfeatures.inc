@@ -181,7 +181,7 @@ void VolInit()
 void VolLoad()
 {
 	// Cache CVAR value.
-	VolEnabled = GetConVarBool(g_hCvarsList[CVAR_VOL]);
+	VolEnabled = g_hCvarsList.g_bCVAR_VOL;
 }
 
 /**
@@ -278,14 +278,11 @@ bool VolStartUpdateTimer()
 	// Stop timer if it exist.
 	VolStopUpdateTimer();
 	
-	// Get update interval.
-	float interval = GetConVarFloat(g_hCvarsList[CVAR_VOL_UPDATE_INTERVAL]);
-	
 	// Validate interval.
-	if (interval > 0.0)
+	if (g_hCvarsList.g_fCVAR_VOL_UPDATE_INTERVAL > 0.0)
 	{
 		// Create a new timer.
-		hVolUpdateTimer = CreateTimer(interval, Event_VolUpdateTimer, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
+		hVolUpdateTimer = CreateTimer(g_hCvarsList.g_fCVAR_VOL_UPDATE_INTERVAL, Event_VolUpdateTimer, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
 		
 		// Also start the trigger delay timer.
 		VolStartTriggerTimer();
@@ -330,14 +327,11 @@ bool VolStartTriggerTimer()
 	// Make sure existing timer is killed.
 	VolStopTriggerTimer();
 	
-	// Get trigger interval and cache it.
-	VolTriggerInterval = GetConVarFloat(g_hCvarsList[CVAR_VOL_TRIGGER_INTERVAL]);
-	
 	// Validate interval.
-	if (VolTriggerInterval > 0.0)
+	if (g_hCvarsList.g_fCVAR_VOL_TRIGGER_INTERVAL > 0.0)
 	{
 		// Start the timer.
-		hVolTriggerTimer = CreateTimer(VolTriggerInterval, Event_VolTriggerTimer, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
+		hVolTriggerTimer = CreateTimer(g_hCvarsList.g_fCVAR_VOL_TRIGGER_INTERVAL, Event_VolTriggerTimer, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
 		
 		// Trigger timer started.
 		return true;

@@ -51,7 +51,7 @@ void ModelsLoad()
 	
 	// Get models file path.
 	char modelPath[PLATFORM_MAX_PATH];
-	bool exists = ConfigGetCvarFilePath(CVAR_CONFIG_PATH_MODELS, modelPath);
+	bool exists = ConfigGetCvarFilePath(g_hCvarsList.g_sCVAR_CONFIG_PATH_MODELS, modelPath);
 	
 	// If file doesn't exist, then log and stop.
 	if (!exists)
@@ -280,7 +280,7 @@ void ArmsModelsPrecache()
 	
 	// Get Arms config path.
 	char pathclasses[PLATFORM_MAX_PATH];
-	bool exists = ConfigGetCvarFilePath(CVAR_CONFIG_PATH_CLASSES, pathclasses);
+	bool exists = ConfigGetCvarFilePath(g_hCvarsList.g_sCVAR_CONFIG_PATH_CLASSES, pathclasses);
 	
 	// If file doesn't exist, then log and stop.
 	if (!exists)

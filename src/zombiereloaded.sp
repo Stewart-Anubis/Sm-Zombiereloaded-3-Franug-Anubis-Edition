@@ -41,7 +41,7 @@
 #define ACTION_CHANGED	  Plugin_Changed
 #define ACTION_HANDLED	  Plugin_Handled
 
-#define VERSION "3.7 Anubis edition"
+#define VERSION "3.7-A Anubis edition"
 
 bool g_allweapons[MAXPLAYERS + 1];
 

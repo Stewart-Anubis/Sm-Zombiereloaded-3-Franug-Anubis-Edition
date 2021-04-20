@@ -236,7 +236,7 @@ LogModules LogGetModule(const char[] moduleName)
 bool LogCheckFlag(int eventType)
 {
 	// Check if eventType is set.
-	if (GetConVarInt(g_hCvarsList[CVAR_LOG_FLAGS]) & eventType)
+	if (g_hCvarsList.g_iCVAR_LOG_FLAGS & eventType)
 	{
 		return true;
 	}
@@ -283,16 +283,16 @@ bool LogCheckModuleFilter(LogModules module)
 Action LogEvent(bool isConsole = false, LogTypes logType = LogType_Normal, int eventType = LOG_CORE_EVENTS, LogModules module, const char[] description, const char[] text, any ...)
 {
 	// Check filter overrides. Always log fatal errors, and check error override setting on error log types.
-	if ((logType != LogType_Fatal && logType != LogType_Error) || (logType == LogType_Error && !GetConVarBool(g_hCvarsList[CVAR_LOG_ERROR_OVERRIDE])))
+	if ((logType != LogType_Fatal && logType != LogType_Error) || (logType == LogType_Error && !g_hCvarsList.g_bCVAR_LOG_ERROR_OVERRIDE))
 	{
 		// Check if logging is disabled.
-		if (!GetConVarBool(g_hCvarsList[CVAR_LOG]))
+		if (!g_hCvarsList.g_bCVAR_LOG)
 		{
 			return;
 		}
 		
 		// Check if console is ignored.
-		if (isConsole && GetConVarBool(g_hCvarsList[CVAR_LOG_IGNORE_CONSOLE]))
+		if (isConsole && g_hCvarsList.g_bCVAR_LOG_IGNORE_CONSOLE)
 		{
 			return;
 		}
@@ -304,7 +304,7 @@ Action LogEvent(bool isConsole = false, LogTypes logType = LogType_Normal, int e
 		}
 		
 		// Check if module filtering is enabled.
-		if (GetConVarBool(g_hCvarsList[CVAR_LOG_MODULE_FILTER]))
+		if (g_hCvarsList.g_bCVAR_LOG_MODULE_FILTER)
 		{
 			// Check if the specified module is enabled.
 			if (!LogCheckModuleFilter(module))
@@ -348,14 +348,14 @@ Action LogEvent(bool isConsole = false, LogTypes logType = LogType_Normal, int e
 	// Note: The phrase "Literal text" is a blank phrase to pass any string we want into it.
 	
 	// Check if printing log events to admins is enabled.
-	if (GetConVarBool(g_hCvarsList[CVAR_LOG_PRINT_ADMINS]))
+	if (g_hCvarsList.g_bCVAR_LOG_PRINT_ADMINS)
 	{
 		// Print text to admins.
 		TranslationPrintToChatAll(false, true, "Literal text", logbuffer);
 	}
 	
 	// Check if printing log events to public chat is enabled.
-	if (GetConVarBool(g_hCvarsList[CVAR_LOG_PRINT_CHAT]))
+	if (g_hCvarsList.g_bCVAR_LOG_PRINT_CHAT)
 	{
 		// Print text to public chat.
 		TranslationPrintToChatAll(false, false, "Literal text", logbuffer);
@@ -532,7 +532,7 @@ public Action Command_LogList(int client, int argc)
 	buffer[0] = 0;
 	
 	// Module filtering status:
-	Format(linebuffer, sizeof(linebuffer), "%t %t\n\n", "Log Module Filtering", GetConVarBool(g_hCvarsList[CVAR_LOG_MODULE_FILTER]) ? "On" : "Off");
+	Format(linebuffer, sizeof(linebuffer), "%t %t\n\n", "Log Module Filtering", g_hCvarsList.g_bCVAR_LOG_MODULE_FILTER ? "On" : "Off");
 	StrCat(buffer, sizeof(buffer), linebuffer);
 	
 	Format(linebuffer, sizeof(linebuffer), "%-23s %-19s %t\n", phrasemodule, phraseshortname, "Log Status");

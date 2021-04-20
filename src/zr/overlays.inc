@@ -151,14 +151,13 @@ void OverlaysOnRoundStart()
 	}
 	
 	// If antistick is disabled, then stop.
-	float overlaysupdate = GetConVarFloat(g_hCvarsList[CVAR_OVERLAYS_UPDATE_TIME]);
-	if (overlaysupdate <= 0.0)
+	if (g_hCvarsList.g_fCVAR_OVERLAYS_UPDATE_TIME <= 0.0)
 	{
 		return;
 	}
 	
 	// Start repeating timer.
-	tOverlays = CreateTimer(overlaysupdate, OverlaysTimer, _, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+	tOverlays = CreateTimer(g_hCvarsList.g_fCVAR_OVERLAYS_UPDATE_TIME, OverlaysTimer, _, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 }
 
 /**
@@ -198,10 +197,9 @@ Action OverlaysClientUpdateOverlay(int client, OverlaysChannel channel = OVERLAY
 	}
 	
 	// If client doesn't meet DXLevel requirement, then tell client and stop.
-	int minDxLevel = GetConVarInt(g_hCvarsList[CVAR_OVERLAYS_MIN_DXLEVEL]);
-	if (g_iOverlaysDXL[client] < minDxLevel)
+	if (g_iOverlaysDXL[client] < g_hCvarsList.g_iCVAR_OVERLAYS_MIN_DXLEVEL)
 	{
-		TranslationPrintCenterText(client, "Overlays not supported", g_iOverlaysDXL[client], minDxLevel);
+		TranslationPrintCenterText(client, "Overlays not supported", g_iOverlaysDXL[client], g_hCvarsList.g_iCVAR_OVERLAYS_MIN_DXLEVEL);
 		return;
 	}
 	

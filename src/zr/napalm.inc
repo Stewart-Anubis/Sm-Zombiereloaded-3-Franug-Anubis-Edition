@@ -75,12 +75,10 @@ int NapalmOnTakeDamage(int client, int damagetype)
 	if (damagetype & DMG_CSS_BURN)
 	{
 		// Only take action if it isn't disabled, or the option is valid.
-		int douse = GetConVarInt(g_hCvarsList[CVAR_NAPALM_DOUSE]);
-		
-		if (douse > NAPALM_WLEVEL_DRY && douse <= NAPALM_WLEVEL_FULL)
+		if (g_hCvarsList.g_iCVAR_NAPALM_DOUSE > NAPALM_WLEVEL_DRY && g_hCvarsList.g_iCVAR_NAPALM_DOUSE <= NAPALM_WLEVEL_FULL)
 		{
 			// If the client water-level is equal or higher than the given, then we want to extinguish the flame.
-			if (NapalmGetClientWaterLevel(client) >= douse)
+			if (NapalmGetClientWaterLevel(client) >= g_hCvarsList.g_iCVAR_NAPALM_DOUSE)
 			{
 				// Put the fire out.
 				
@@ -150,10 +148,9 @@ void NapalmOnClientHurt(int client, int attacker, const char[] weapon)
 	// If weapon is a grenade, then ignite player.
 	if (StrEqual(weapon, "hegrenade", false))
 	{
-		bool reset = GetConVarBool(g_hCvarsList[CVAR_NAPALM_TIME_RESET]);
 		int flags = GetEntityFlags(client);
 		
-		if (reset || !(flags & FL_ONFIRE))
+		if (g_hCvarsList.g_bCVAR_NAPALM_TIME_RESET || !(flags & FL_ONFIRE))
 		{
 			// This stops the fire before re-ignition.
 			ExtinguishEntity(client);
@@ -184,8 +181,7 @@ void NapalmOnClientDeath(int client)
 void NapalmOnWeaponFire(int client, const char[] weapon)
 {
 	// If grenade fire is disabled, then stop.
-	bool napalmignite = GetConVarBool(g_hCvarsList[CVAR_NAPALM_IGNITE]);
-	if (!napalmignite)
+	if (!g_hCvarsList.g_bCVAR_NAPALM_IGNITE)
 	{
 		return;
 	}

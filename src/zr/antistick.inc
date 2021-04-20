@@ -103,13 +103,11 @@ void AntiStickNoblock()
 
 void OnSpawnAntiStickNoblock(int client)
 {
-	bool noblock_enable = GetConVarBool(g_hCvarsList[CVAR_NOBLOCK]);
-
-	if(!noblock_enable)
+	if(!g_hCvarsList.g_bCVAR_NOBLOCK)
 		return;
 	if(!g_isHooked)
 		return;
-	if(noblock_enable && g_isHooked)
+	if(g_hCvarsList.g_bCVAR_NOBLOCK && g_isHooked)
 	{
 		SetEntData(client, g_offsCollisionGroup, 2, 4, true);
 	}
@@ -163,8 +161,7 @@ void AntiStickOnClientDisconnect(int client)
 public void AntiStickStartTouch(int client, int entity)
 {
 	// If antistick is disabled, then stop.
-	bool antistick = GetConVarBool(g_hCvarsList[CVAR_ANTISTICK]);
-	if (!antistick)
+	if (!g_hCvarsList.g_bCVAR_ANTISTICK)
 	{
 		return;
 	}

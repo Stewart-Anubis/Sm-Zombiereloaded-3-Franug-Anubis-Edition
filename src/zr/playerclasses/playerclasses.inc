@@ -535,7 +535,7 @@ void ClassLoad()
 	
 	// Get weapons config path.
 	char pathclasses[PLATFORM_MAX_PATH];
-	bool exists = ConfigGetCvarFilePath(CVAR_CONFIG_PATH_CLASSES, pathclasses);
+	bool exists = ConfigGetCvarFilePath(g_hCvarsList.g_sCVAR_CONFIG_PATH_CLASSES, pathclasses);
 	
 	// If file doesn't exist, then log and stop.
 	if (!exists)
@@ -718,7 +718,7 @@ ClassSpeedMethods ClassGetSpeedMethod()
 	char speedMethod[16];
 	speedMethod[0] = 0;
 	
-	GetConVarString(g_hCvarsList[CVAR_CLASSES_SPEED_METHOD], speedMethod, sizeof(speedMethod));
+	Format(speedMethod, sizeof(speedMethod), g_hCvarsList.g_sCVAR_CLASSES_SPEED_METHOD);
 	
 	if (StrEqual(speedMethod, "lmv", false))
 	{
@@ -1052,7 +1052,6 @@ void ClassClientSetDefaultIndexes(int client = -1)
 {
 	bool clientvalid = ZRIsClientValid(client);
 	int filter[ClassFilter];
-	bool saveclasses = GetConVarBool(g_hCvarsList[CVAR_CLASSES_SAVE]);
 	
 	int zombieindex;
 	int humanindex;
@@ -1088,7 +1087,7 @@ void ClassClientSetDefaultIndexes(int client = -1)
 	if (clientvalid)
 	{
 		// Get cookie indexes if enabled.
-		if (saveclasses)
+		if (g_hCvarsList.g_bCVAR_CLASSES_SAVE)
 		{
 			zombieindex = CookiesGetInt(client, g_hClassCookieClassSelected[ZR_CLASS_TEAM_ZOMBIES]);
 			humanindex = CookiesGetInt(client, g_hClassCookieClassSelected[ZR_CLASS_TEAM_HUMANS]);
@@ -1207,7 +1206,7 @@ void ClassClientSetDefaultIndexes(int client = -1)
 		ClassReloadPlayerCache(client, humanindex);
 		
 		// Save indexes in cookies if enabled, and not already saved.
-		if (saveclasses)
+		if (g_hCvarsList.g_bCVAR_CLASSES_SAVE)
 		{
 			if (!haszombie)
 			{
@@ -1311,7 +1310,7 @@ ClassSelectResult ClassSelectClientClass(int client, int classIndex, bool applyI
 	
 	// Save selected class index in cookie if enabled.
 	// Note: Saved indexes are increased by one.
-	if (saveIfEnabled && GetConVarBool(g_hCvarsList[CVAR_CLASSES_SAVE]))
+	if (saveIfEnabled && g_hCvarsList.g_bCVAR_CLASSES_SAVE)
 	{
 		CookiesSetInt(client, g_hClassCookieClassSelected[teamid], classIndex + 1);
 	}

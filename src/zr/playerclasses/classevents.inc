@@ -241,11 +241,10 @@ void ClassOnClientSpawn(int client)
 		ClassPlayerInAdminMode[client] = false;
 		
 		// Get random class setting and steam id.
-		bool randomclass = GetConVarBool(g_hCvarsList[CVAR_CLASSES_RANDOM]);
 		GetClientAuthId(client, AuthId_Engine, steamid, sizeof(steamid));
 		
 		// Assign random classes if enabled. Always do it for bots.
-		if (randomclass || StrEqual(steamid, "BOT"))
+		if (g_hCvarsList.g_bCVAR_CLASSES_RANDOM || StrEqual(steamid, "BOT"))
 		{
 			// Setup filtering
 			// ---------------
@@ -278,9 +277,7 @@ void ClassOnClientSpawn(int client)
 		}
 		
 		// Display class menu if either menu cvar is set.
-		bool menuspawn = GetConVarBool(g_hCvarsList[CVAR_CLASSES_MENU_SPAWN]);
-		bool menujoin = GetConVarBool(g_hCvarsList[CVAR_CLASSES_MENU_JOIN]);
-		if (menuspawn || (menujoin && !ClassPlayerSpawned[client]))
+		if (g_hCvarsList.g_bCVAR_CLASSES_MENU_SPAWN || (g_hCvarsList.g_bCVAR_CLASSES_MENU_JOIN && !ClassPlayerSpawned[client]))
 		{
 			ClassPlayerSpawned[client] = true;
 			ClassMenuMain(client);
@@ -293,14 +290,13 @@ void ClassOnClientSpawn(int client)
 	// Note: Class attributes are applied in ClassOnClientSpawnPost.
 	
 	// Check if instant class change cvar is set.
-	float instantspawn = GetConVarFloat(g_hCvarsList[CVAR_CLASSES_CHANGE_TIMELIMIT]);
-	if (instantspawn > 0)
+	if (g_hCvarsList.g_fCVAR_CLASSES_CHANGE_TIMELIMIT > 0)
 	{
 		// Allow instant class change.
 		ClassAllowInstantChange[client] = true;
 		
 		// Create timer to disable instant change.
-		CreateTimer(instantspawn, Event_ClassDisableInstantSpawn, client, TIMER_FLAG_NO_MAPCHANGE);
+		CreateTimer(g_hCvarsList.g_fCVAR_CLASSES_CHANGE_TIMELIMIT, Event_ClassDisableInstantSpawn, client, TIMER_FLAG_NO_MAPCHANGE);
 	}
 	else
 	{
@@ -356,8 +352,6 @@ void ClassOnClientInfected(int client, bool motherzombie = false) //responsavel 
 	int motherindex;
 	int filter[ClassFilter];
 	
-	char motherzombiesetting[64];
-	
 	// Disable class attributes with timers.
 	ClassHealthRegenStop(client);
 	
@@ -371,14 +365,11 @@ void ClassOnClientInfected(int client, bool motherzombie = false) //responsavel 
 		// flags.
 		isadmin = ZRIsClientAdmin(client) ? ZR_CLASS_FLAG_ADMIN_ONLY : 0;
 		
-		// Get default mother zombie setting.
-		GetConVarString(g_hCvarsList[CVAR_CLASSES_DEFAULT_M_ZOMB], motherzombiesetting, sizeof(motherzombiesetting));
-		
-		if (StrEqual(motherzombiesetting, "disabled", false))
+		if (StrEqual(g_hCvarsList.g_sCVAR_CLASSES_DEFAULT_M_ZOMB, "disabled", false))
 		{
 			// Do nothing. Keep current class.
 		}
-		else if (StrEqual(motherzombiesetting, "random", false))
+		else if (StrEqual(g_hCvarsList.g_sCVAR_CLASSES_DEFAULT_M_ZOMB, "random", false))
 		{
 			// Setup filtering
 			// ---------------
@@ -408,7 +399,7 @@ void ClassOnClientInfected(int client, bool motherzombie = false) //responsavel 
 				classindex = motherindex;
 			}
 		}
-		else if (StrEqual(motherzombiesetting, "motherzombies", false))
+		else if (StrEqual(g_hCvarsList.g_sCVAR_CLASSES_DEFAULT_M_ZOMB, "motherzombies", false))
 		{
 			// Setup filtering
 			// ---------------
@@ -448,7 +439,7 @@ void ClassOnClientInfected(int client, bool motherzombie = false) //responsavel 
 		else
 		{
 			// Assume it's a class name. Get index for the specified class name.
-			motherindex = ClassGetIndex(motherzombiesetting);
+			motherindex = ClassGetIndex(g_hCvarsList.g_sCVAR_CLASSES_DEFAULT_M_ZOMB);
 			
 			// Validate index.
 			if (ClassValidateIndex(motherindex))

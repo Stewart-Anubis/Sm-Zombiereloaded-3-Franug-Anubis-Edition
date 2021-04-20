@@ -36,13 +36,13 @@ bool g_bVoice;
 void VoiceOnRoundStart()
 {
 	// If the cvar has changed, then reset the voice permissions.
-	if (g_bVoice != g_bCvarVoice)
+	if (g_bVoice != g_hCvarsList.g_bCVAR_VOICE)
 	{
 		VoiceReset();
 	}
 	
 	// Update g_bVoice with new value.
-	g_bVoice = g_bCvarVoice;
+	g_bVoice = g_hCvarsList.g_bCVAR_VOICE;
 }
 
 /**

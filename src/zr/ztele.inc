@@ -149,8 +149,7 @@ bool ZTeleClient(int client, bool force = false)
 	bool infected = InfectIsClientInfected(client);
 	
 	// If zombie cvar is disabled and the client is a zombie, then stop.
-	bool ztelezombie = GetConVarBool(g_hCvarsList[CVAR_ZTELE_ZOMBIE]);
-	if (!force && infected && !ztelezombie)
+	if (!force && infected && !g_hCvarsList.g_bCVAR_ZTELE_ZOMBIE)
 	{
 		// Tell client they must be human to use this feature.
 		TranslationPrintToChat(client, "Must be human");
@@ -159,7 +158,7 @@ bool ZTeleClient(int client, bool force = false)
 	
 	// If zombie has spawned, get before value, get the after value otherwise.
 	// If the cvar is disabled and the client is a human, then stop.
-	bool ztelehuman = g_bZombieSpawned ? GetConVarBool(g_hCvarsList[CVAR_ZTELE_HUMAN_AFTER]) : GetConVarBool(g_hCvarsList[CVAR_ZTELE_HUMAN_BEFORE]);
+	bool ztelehuman = g_bZombieSpawned ? g_hCvarsList.g_bCVAR_ZTELE_HUMAN_AFTER : g_hCvarsList.g_bCVAR_ZTELE_HUMAN_BEFORE;
 	if (!force && !infected && !ztelehuman)
 	{
 		// Tell client that feature is restricted at this time.
@@ -168,7 +167,7 @@ bool ZTeleClient(int client, bool force = false)
 	}
 	
 	// If the tele limit has been reached, then stop.
-	int ztelemax = infected ? GetConVarInt(g_hCvarsList[CVAR_ZTELE_MAX_ZOMBIE]) : GetConVarInt(g_hCvarsList[CVAR_ZTELE_MAX_HUMAN]);
+	int ztelemax = infected ? g_hCvarsList.g_iCVAR_ZTELE_MAX_ZOMBIE : g_hCvarsList.g_iCVAR_ZTELE_MAX_HUMAN;
 	if (!force && g_iZTeleCount[client] >= ztelemax)
 	{
 		// Tell client that they have already reached their limit.
@@ -200,7 +199,7 @@ bool ZTeleClient(int client, bool force = false)
 	GetClientAbsOrigin(client, g_vecZTeleOrigin[client]);
 	
 	// Set timeleft array to value of respective cvar.
-	g_iZTeleTimeLeft[client] = infected ? GetConVarInt(g_hCvarsList[CVAR_ZTELE_DELAY_ZOMBIE]) : GetConVarInt(g_hCvarsList[CVAR_ZTELE_DELAY_HUMAN]);
+	g_iZTeleTimeLeft[client] = infected ? g_hCvarsList.g_iCVAR_ZTELE_DELAY_ZOMBIE : g_hCvarsList.g_iCVAR_ZTELE_DELAY_HUMAN;
 	if (g_iZTeleTimeLeft[client] > 0)
 	{
 		// Tell client how much time is left until teleport.
@@ -403,18 +402,16 @@ public Action ZTeleTimer(Handle timer, any client)
 		return Plugin_Stop;
 	}
 	
-	bool zteleautocancel = GetConVarBool(g_hCvarsList[CVAR_ZTELE_AUTOCANCEL]);
-	if (zteleautocancel)
+	if (g_hCvarsList.g_bCVAR_ZTELE_AUTOCANCEL)
 	{
 		// If client has been running around after using ZTele, then stop timer.
 		float vecClient[3];
 		GetClientAbsOrigin(client, vecClient);
 		
 		float distance = GetVectorDistance(vecClient, g_vecZTeleOrigin[client]);
-		float autocanceldistance = GetConVarFloat(g_hCvarsList[CVAR_ZTELE_AUTOCANCEL_DISTANCE]);
 		
 		// Convert cvar units
-		float unitdistance = ZRConvertUnitsFloat(autocanceldistance, CONVERSION_FEET_TO_UNITS);
+		float unitdistance = ZRConvertUnitsFloat(g_hCvarsList.g_fCVAR_ZTELE_AUTOCANCEL_DISTANCE, CONVERSION_FEET_TO_UNITS);
 		
 		// Check if distance has been surpassed.
 		if (distance > unitdistance)
@@ -424,7 +421,7 @@ public Action ZTeleTimer(Handle timer, any client)
 			
 			// Tell client teleport has been cancelled.
 			TranslationPrintCenterText(client, "ZTele autocancel centertext");
-			TranslationPrintToChat(client, "ZTele autocancel text", RoundToNearest(autocanceldistance));
+			TranslationPrintToChat(client, "ZTele autocancel text", RoundToNearest(g_hCvarsList.g_fCVAR_ZTELE_AUTOCANCEL_DISTANCE));
 			
 			// Stop timer.
 			return Plugin_Stop;
@@ -447,7 +444,7 @@ public Action ZTeleTimer(Handle timer, any client)
 		g_iZTeleCount[client]++;
 		
 		// Get max teleports per round.
-		int ztelemax = InfectIsClientInfected(client) ? GetConVarInt(g_hCvarsList[CVAR_ZTELE_MAX_ZOMBIE]) : GetConVarInt(g_hCvarsList[CVAR_ZTELE_MAX_HUMAN]);
+		int ztelemax = InfectIsClientInfected(client) ? g_hCvarsList.g_iCVAR_ZTELE_MAX_ZOMBIE : g_hCvarsList.g_iCVAR_ZTELE_MAX_HUMAN;
 		
 		// Tell client spawn protection is over.
 		TranslationPrintCenterText(client, "ZTele countdown end", g_iZTeleCount[client], ztelemax);

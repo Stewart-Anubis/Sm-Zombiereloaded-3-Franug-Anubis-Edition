@@ -46,7 +46,7 @@ enum RoundEndSounds
 
 void RoundEndSoundsStart(int winner)
 {
-	if (!g_bRoundendSdEnable)
+	if (!g_hCvarsList.g_bCVAR_ROUNDEND_SOUNDS)
 	{
 		return;
 	}
@@ -151,13 +151,13 @@ bool RoundEndSoundsGetRandomSound(char[] soundre, RoundEndSounds soundtype)
 		case HumansWinCt:
 		{
 			// Format random index into sound path.
-			Format(soundre, SOUND_MAX_PATH, "%shumans_win%d.mp3", g_cHumWin_Path, randresound);
+			Format(soundre, SOUND_MAX_PATH, "%shumans_win%d.mp3", g_hCvarsList.g_sCVAR_ROUNDEND_HUMANS_WIN, randresound);
 		}
 		// Find ZombisWim sound.
 		case ZombisWimT:
 		{
 			// Format random index into sound path.
-			Format(soundre, SOUND_MAX_PATH, "%szombie_win%d.mp3", g_cZomWin_Path, randresound);
+			Format(soundre, SOUND_MAX_PATH, "%szombie_win%d.mp3", g_hCvarsList.g_sCVAR_ROUNDEND_ZOMBIE_WIN, randresound);
 		}
 		// Invalid case given.
 		default:

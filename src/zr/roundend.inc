@@ -284,8 +284,7 @@ void RoundEndTerminateRound(float delay, RoundEndOutcome outcome = Restart)
 void RoundEndOverlayStart(int winner)
 {
 	// If round end overlays are disabled, then stop.
-	bool overlay = GetConVarBool(g_hCvarsList[CVAR_ROUNDEND_OVERLAY]);
-	if (!overlay)
+	if (!g_hCvarsList.g_bCVAR_ROUNDEND_OVERLAY)
 	{
 		return;
 	}
@@ -297,12 +296,12 @@ void RoundEndOverlayStart(int winner)
 		// Show "zombies win" overlay.
 		case CS_TEAM_T:
 		{
-			GetConVarString(g_hCvarsList[CVAR_ROUNDEND_OVERLAY_ZOMBIE], overlaypath, sizeof(overlaypath));
+			Format(overlaypath, sizeof(overlaypath), g_hCvarsList.g_sCVAR_ROUNDEND_OVERLAY_ZOMBIE);
 		}
 		// Show "humans win" overlay.
 		case CS_TEAM_CT:
 		{
-			GetConVarString(g_hCvarsList[CVAR_ROUNDEND_OVERLAY_HUMAN], overlaypath, sizeof(overlaypath));
+			Format(overlaypath, sizeof(overlaypath), g_hCvarsList.g_sCVAR_ROUNDEND_OVERLAY_HUMAN);
 		}
 		// Show no overlay.
 		default:

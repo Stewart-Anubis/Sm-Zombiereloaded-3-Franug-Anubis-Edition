@@ -75,7 +75,7 @@ void DamageLoad()
 	
 	// Create command callbacks (intercepts) for listed suicide commands.
 	char suicidecmds[DAMAGE_SUICIDE_MAX_CMDS * DAMAGE_SUICIDE_MAX_LENGTH];
-	GetConVarString(g_hCvarsList[CVAR_DAMAGE_SUICIDE_CMDS], suicidecmds, sizeof(suicidecmds));
+	Format(suicidecmds, sizeof(suicidecmds), g_hCvarsList.g_sCVAR_DAMAGE_SUICIDE_CMDS);
 	
 	// Create array to store cmds
 	char arrayCmds[DAMAGE_SUICIDE_MAX_CMDS][DAMAGE_SUICIDE_MAX_LENGTH];
@@ -186,8 +186,7 @@ public Action DamageTraceAttack(int client, int &attacker, int &inflictor, float
 	if (clientzombie == attackerzombie)
 	{
 		// If friendly fire is blocked, then allow damage.
-		bool damageblockff = GetConVarBool(g_hCvarsList[CVAR_DAMAGE_BLOCK_FF]);
-		if (!damageblockff)
+		if (!g_hCvarsList.g_bCVAR_DAMAGE_BLOCK_FF)
 		{
 			return ACTION_CONTINUE;
 		}
@@ -215,8 +214,7 @@ public Action DamageTraceAttack(int client, int &attacker, int &inflictor, float
 	// If damage hitgroups cvar is disabled, then allow damage.
 	// TODO: There are two cvars: zr_hitgroups and zr_damage_hitgroups. Maybe
 	//	   just use zr_hitgroups?
-	bool damagehitgroups = GetConVarBool(g_hCvarsList[CVAR_DAMAGE_HITGROUPS]);
-	if (!damagehitgroups)
+	if (!g_hCvarsList.g_bCVAR_DAMAGE_HITGROUPS)
 	{
 		// Allow damage.
 		return ACTION_CONTINUE;
@@ -331,8 +329,7 @@ public Action DamageOnTakeDamage(int client, int &attacker, int &inflictor, floa
 	else if (damagetype & DMG_CSS_BLAST)
 	{
 		// If blast damage is blocked, then stop.
-		bool damageblockblast = GetConVarBool(g_hCvarsList[CVAR_DAMAGE_BLOCK_BLAST]);
-		if (!damageblockblast)
+		if (!g_hCvarsList.g_bCVAR_DAMAGE_BLOCK_BLAST)
 		{
 			return ACTION_CONTINUE;
 		}
@@ -356,8 +353,7 @@ public Action DamageOnTakeDamage(int client, int &attacker, int &inflictor, floa
 	else if (damagetype & DMG_CSS_BURN)
 	{
 		// If fire damage is blocked, then stop.
-		bool damageblockfire = GetConVarBool(g_hCvarsList[CVAR_DAMAGE_BLOCK_FIRE]);
-		if (!damageblockfire)
+		if (!g_hCvarsList.g_bCVAR_DAMAGE_BLOCK_FIRE)
 		{
 			return ACTION_CONTINUE;
 		}
@@ -403,20 +399,14 @@ public Action DamageOnTakeDamage(int client, int &attacker, int &inflictor, floa
  * @param argc	  The number of arguments in command string.
  */	 
 public Action DamageSuicideIntercept(int client, int argc)
-{
-	// Get suicide interception settings.
-	bool suicideAfterInfect = GetConVarBool(g_hCvarsList[CVAR_SUICIDE_AFTER_INFECT]);
-	bool suicideZombie = GetConVarBool(g_hCvarsList[CVAR_DAMAGE_SUICIDE_ZOMBIE]);
-	bool suicideZombieMother = GetConVarBool(g_hCvarsList[CVAR_DAMAGE_SUICIDE_MZOMBIE]);
-	bool suicideHuman = GetConVarBool(g_hCvarsList[CVAR_DAMAGE_SUICIDE_HUMAN]);
-	
+{	
 	// Check various criterias that will _allow_ the command. If no criterias
 	// match, block it.
 	if(!IsClientInGame(client))
 		return Plugin_Continue;
 	
 	// Check general criterias.
-	if ((suicideAfterInfect && !g_bZombieSpawned) ||	// Check if it should block suicides before mother zombie.
+	if ((g_hCvarsList.g_bCVAR_SUICIDE_AFTER_INFECT && !g_bZombieSpawned) ||	// Check if it should block suicides before mother zombie.
 		!ZRIsClientValid(client) ||					 // Validate client (to stop console).
 		!IsPlayerAlive(client))						 // Check if dead.
 	{
@@ -427,8 +417,8 @@ public Action DamageSuicideIntercept(int client, int argc)
 	// Check zombie criterias.
 	if (InfectIsClientInfected(client))
 	{
-		if (g_bDamageMotherZombie[client] && !suicideZombieMother ||	// Check if suicide is allowed for mother zombies.
-			(!g_bDamageMotherZombie[client] && !suicideZombie))		 // Check if suicide is allowed for regular zombies.
+		if (g_bDamageMotherZombie[client] && !g_hCvarsList.g_bCVAR_DAMAGE_SUICIDE_MZOMBIE ||	// Check if suicide is allowed for mother zombies.
+			!g_bDamageMotherZombie[client] && !g_hCvarsList.g_bCVAR_DAMAGE_SUICIDE_ZOMBIE)		 // Check if suicide is allowed for regular zombies.
 		{
 			// Allow command.
 			return Plugin_Continue;
@@ -437,7 +427,7 @@ public Action DamageSuicideIntercept(int client, int argc)
 	
 	// Check human criterias.
 	// Allow suicide if player is a human and humans can suicide.
-	if (InfectIsClientHuman(client) && !suicideHuman)
+	if (InfectIsClientHuman(client) && !g_hCvarsList.g_bCVAR_DAMAGE_SUICIDE_HUMAN)
 	{
 		// Allow command.
 		return Plugin_Continue;
