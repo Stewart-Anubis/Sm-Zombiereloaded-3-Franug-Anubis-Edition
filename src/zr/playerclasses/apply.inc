@@ -525,7 +525,7 @@ bool ClassApplyArms(int client, int classindex, int cachetype = ZR_CLASS_CACHE_P
 	// If Class Arms is disabled, then stop.
 	if (!g_hCvarsList.g_bCVAR_CLASSES_ARMS)
 	{		
-		return false;
+		return true;
 	}
 	
 	char arms_path[PLATFORM_MAX_PATH];
@@ -540,6 +540,22 @@ bool ClassApplyArms(int client, int classindex, int cachetype = ZR_CLASS_CACHE_P
 		ClassGetArmsPath(classindex, arms_path, sizeof(arms_path), cachetype);
 	}
 
+	if (StrEqual(arms_path, "default", false))
+	{
+		// Do nothing.
+		return true;
+	}
+	else if (StrEqual(arms_path, "no_change", false))
+	{
+		// Do nothing.
+		return true;
+	}
+
+	int ent = GetEntPropEnt(client, Prop_Send, "m_hMyWearables");
+	if(ent != -1)
+	{
+		AcceptEntityInput(ent, "KillHierarchy");
+	}
 	SetEntPropString(client, Prop_Send, "m_szArmsModel", arms_path);
 	
 	return true;

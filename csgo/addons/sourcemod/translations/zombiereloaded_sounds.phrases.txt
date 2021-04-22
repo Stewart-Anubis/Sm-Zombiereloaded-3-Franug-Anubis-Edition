@@ -1,0 +1,173 @@
+"Phrases"
+{
+	// ===========================
+	// Zr Sound (module)
+	// ===========================
+	
+	"Select Countdown"
+	{
+		"en"	  	"Countdown:"
+	}
+
+	"Volume Menu Title"
+	{
+		"en"	  	"[ZR] Volume:"
+	}
+	
+	"Volume Current"
+	{
+		"en"	  	"Current Volume:"
+	}
+
+	"Porcento"
+	{
+		"en"	  	"%"
+	}
+
+	"v100"
+	{
+		"en"	  	"100%"
+	}
+
+	"v75"
+	{
+		"en"	  	"75%"
+	}
+
+	"v50"
+	{
+		"en"	  	"50%"
+	}
+
+	"v25"
+	{
+		"en"	  	"25%"
+	}
+
+	"v10"
+	{
+		"en"	  	"10%"
+	}
+
+	"v05"
+	{
+		"en"	  	"5%"
+	}
+
+	"zr sounds"
+	{
+		"en"	  	"[ZR] Sounds:"
+	}
+	
+	"RoundEnd_Sounds"
+	{
+		"#format"	"{1:s}"
+		"en"		"RoundEnd Sounds: {1}"
+	}
+	
+	"Volume updated"
+	{
+		"en"	  	"Volume will be updated on the next song"
+	}
+	
+	"Volume set to"
+	{
+		"en"	  	"[ZR] Volume set to: %i%"
+	}
+	
+	"voz_1"
+	{
+		"en"	  	"Mem."
+	}
+
+	"voz_2"
+	{
+		"en"	  	"Woman."
+	}
+	
+	"voz_3"
+	{
+		"en"	  	"Disable."
+	}
+	
+	"CountDown select 0"
+	{
+		"en"	  	"CountDown select Mute"
+	}
+
+	"CountDown select 1"
+	{
+		"en"	  	"CountDown select Voice Man"
+	}
+
+	"CountDown select 2"
+	{
+		"en"	  	"CountDown select Voice Woman"
+	}
+
+	"CCountDown select 0"
+	{
+		"en"	  	"[Zr] CountDown select Mute"
+	}
+
+	"CCountDown select 1"
+	{
+		"en"	  	"[Zr] CountDown select Voice Man"
+	}
+
+	"CCountDown select 2"
+	{
+		"en"	  	"[Zr] CountDown select Voice Woman"
+	}
+
+	"zr_volume"
+	{
+		"en" 		"Volume:"
+	}
+	
+	"Zombis sounds enable"
+	{
+		"en" 		"Zombis Sounds Enable."
+	}
+	
+	"Zombis sounds disable"
+	{
+		"en" 		"Zombis Sounds Disable."
+	}
+	
+	"CZombis sounds enable"
+	{
+		"en" 		"[Zr] Zombis Sounds Enable."
+	}
+	
+	"CZombis sounds disable"
+	{
+		"en" 		"[Zr] Zombis Sounds Disable."
+	}
+	
+	"Zombies_Sounds"
+	{
+		"#format"	"{1:s}"
+		"en"		"Zombies Sounds: {1}"
+	}
+	
+	"RoundEnd sounds enable"
+	{
+		"en" 		"RoundEnd Sounds Enable."
+	}
+	
+	"RoundEnd sounds disable"
+	{
+		"en" 		"RoundEnd Sounds Disable."
+	}
+	
+	"CRoundEnd sounds enable"
+	{
+		"en" 		"[Zr] RoundEnd Sounds Enable."
+	}
+	
+	"CRoundEnd sounds disable"
+	{
+		"en" 		"[Zr] RoundEnd Sounds Disable."
+	}
+}

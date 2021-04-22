@@ -75,7 +75,7 @@ void ContDownSoundsLoad()
 	}
 	else if(h_MamSoundsDir == INVALID_HANDLE)
 	{
-		LogError("Invalid Folder %s", ContMamPath);
+		//LogError("Invalid Folder %s", ContMamPath);
 	}
 	CloseHandle(h_MamSoundsDir);
 
@@ -101,7 +101,7 @@ void ContDownSoundsLoad()
 	}
 	else if (h_WomSoundsDir == INVALID_HANDLE)
 	{
-		LogError("Invalid Folder %s", ContWomPath);
+		//LogError("Invalid Folder %s", ContWomPath);
 	}
 	CloseHandle(h_WomSoundsDir);
 }
@@ -143,7 +143,7 @@ void ZombiesSoundsLoad()
 	}
 	else if (h_SoundsDir == INVALID_HANDLE)
 	{
-		LogError("Invalid Folder %s", ZombiesSoundsPath);
+		//LogError("Invalid Folder %s", ZombiesSoundsPath);
 	}
 	CloseHandle(h_SoundsDir);
 }
@@ -187,7 +187,7 @@ void RoundEndSoundsLoad()
 	}
 	else if (h_HumSoundsDir == INVALID_HANDLE)
 	{
-		LogError("Invalid Folder %s", HumansWinPath);
+		//LogError("Invalid Folder %s", HumansWinPath);
 	}
 	CloseHandle(h_HumSoundsDir);
 
@@ -213,7 +213,7 @@ void RoundEndSoundsLoad()
 	}
 	else if (h_ZmSoundsDir == INVALID_HANDLE)
 	{
-		LogError("Invalid Folder %s", ZombieWinPath);
+		//LogError("Invalid Folder %s", ZombieWinPath);
 	}
 	CloseHandle(h_ZmSoundsDir);
 }
@@ -236,7 +236,7 @@ void AmbientSoundsLoad()
 	// If file doesn't exist, then log error and stop.
 	if (!FileExists(sound, true))
 	{
-		LogError("Invalid File %s", sound);
+		//LogError("Invalid File %s", sound);
 		return;
 	}
 

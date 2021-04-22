@@ -107,6 +107,7 @@
 #define ZR_CLASS_DEFAULT_NAME				   "classic"
 #define ZR_CLASS_DEFAULT_DESCRIPTION			"Need brains!!! Arrrrggghh!"
 #define ZR_CLASS_DEFAULT_MODEL_PATH			 "models/player/zh/zh_zombie003.mdl"
+#define ZR_CLASS_DEFAULT_ARMS_MODEL_PATH			 "default"
 #define ZR_CLASS_DEFAULT_MODEL_SKIN_INDEX	   0
 #define ZR_CLASS_DEFAULT_ALPHA_INITIAL		  255
 #define ZR_CLASS_DEFAULT_ALPHA_DAMAGED		  255
@@ -129,7 +130,6 @@
 #define ZR_CLASS_DEFAULT_KNOCKBACK			  2.0
 #define ZR_CLASS_DEFAULT_JUMP_HEIGHT			10.0
 #define ZR_CLASS_DEFAULT_JUMP_DISTANCE		  0.2
-#define ZR_CLASS_DEFAULT_ARMS_MODEL_PATH			 ""
 /**
  * @endsection
  */
@@ -196,6 +196,7 @@
 #define ZR_CLASS_NAME				   (1<<5)
 #define ZR_CLASS_DESCRIPTION			(1<<6)
 #define ZR_CLASS_MODEL_PATH			 (1<<7)
+#define ZR_CLASS_ARMS_MODEL_PATH		  (1<<30)
 #define ZR_CLASS_MODEL_SKIN_INDEX	   (1<<8)
 #define ZR_CLASS_ALPHA_INITIAL		  (1<<9)
 #define ZR_CLASS_ALPHA_DAMAGED		  (1<<10)
@@ -218,7 +219,6 @@
 #define ZR_CLASS_KNOCKBACK			  (1<<27)
 #define ZR_CLASS_JUMP_HEIGHT			(1<<28)
 #define ZR_CLASS_JUMP_DISTANCE		  (1<<29)
-#define ZR_CLASS_ARMS_MODEL_PATH		  (1<<30)
 /**
  * @endsection
  */
@@ -256,6 +256,7 @@ enum ClassAttributes
 	
 	/* Model */
 	String:Class_ModelPath[PLATFORM_MAX_PATH],
+	String:Class_Arms_Path[PLATFORM_MAX_PATH],
 	Class_ModelSkinIndex,
 	Class_AlphaInitial,
 	Class_AlphaDamaged,
@@ -285,8 +286,7 @@ enum ClassAttributes
 	Float:Class_Speed,
 	Float:Class_KnockBack,
 	Float:Class_JumpHeight,
-	Float:Class_JumpDistance,
-	String:Class_Arms_Path[256]
+	Float:Class_JumpDistance
 }
 
 /**
@@ -605,6 +605,9 @@ void ClassLoad()
 		KvGetString(kvClassData, "model_path", model_path, sizeof(model_path), ZR_CLASS_DEFAULT_MODEL_PATH);
 		strcopy(ClassData[ClassCount][Class_ModelPath], PLATFORM_MAX_PATH, model_path);
 		
+		KvGetString(kvClassData, "arms_path", arms_path, sizeof(arms_path), ZR_CLASS_DEFAULT_ARMS_MODEL_PATH);
+		strcopy(ClassData[ClassCount][Class_Arms_Path], PLATFORM_MAX_PATH, arms_path);
+		
 		ClassData[ClassCount][Class_ModelSkinIndex] = KvGetNum(kvClassData, "model_skin_index", ZR_CLASS_DEFAULT_MODEL_SKIN_INDEX);
 		ClassData[ClassCount][Class_AlphaInitial] = KvGetNum(kvClassData, "alpha_initial", ZR_CLASS_DEFAULT_ALPHA_INITIAL);
 		ClassData[ClassCount][Class_AlphaDamaged] = KvGetNum(kvClassData, "alpha_damaged", ZR_CLASS_DEFAULT_ALPHA_DAMAGED);
@@ -641,8 +644,6 @@ void ClassLoad()
 		ClassData[ClassCount][Class_KnockBack] = KvGetFloat(kvClassData, "knockback", ZR_CLASS_DEFAULT_KNOCKBACK);
 		ClassData[ClassCount][Class_JumpHeight] = KvGetFloat(kvClassData, "jump_height", ZR_CLASS_DEFAULT_JUMP_HEIGHT);
 		ClassData[ClassCount][Class_JumpDistance] = KvGetFloat(kvClassData, "jump_distance", ZR_CLASS_DEFAULT_JUMP_DISTANCE);
-		KvGetString(kvClassData, "arms_path", arms_path, sizeof(arms_path), ZR_CLASS_DEFAULT_ARMS_MODEL_PATH);
-		strcopy(ClassData[ClassCount][Class_Arms_Path], 256, arms_path);
 		
 		// Validate class attributes if class is enabled.
 		if (ClassData[ClassCount][Class_Enabled])
