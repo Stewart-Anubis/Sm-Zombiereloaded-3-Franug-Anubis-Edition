@@ -21,9 +21,11 @@
 //                                      1 - Admins only
 //                                      2 - Mother zombies only
 // group                    text        Restrict class to member of this SourceMod group. Leave blank for no restriction.
+// sm_flags		    text	Restrict class to client of this SourceMod admin flag. Leave blank for no restriction.
 // name                     text        The class name used in class menu.
 // description              text        The class description used in class menu.
 // model_path               text        Path to model to use. Relative to cstrike folder.
+// arms_path                text        Path to arms to use. Relative to cstrike folder.
 // model_skin_index         number      Model skin index to use if model support multiple skins. First skin is 0.
 // alpha_initial            number      Initial transparency setting.
 // alpha_damaged            number      Transparency when damaged.
@@ -74,6 +76,7 @@
         "team_default"          "yes"
         "flags"                 "0"
         "group"                 ""
+        "sm_flags"				""	// Write the adminf flag of a sourcemod for vip players ("ao" for instance)
         
         "name"                  "Classic"
         "description"           "Need brains!!! Arrrrggghh!"
@@ -121,6 +124,7 @@
         "team_default"          "no"
         "flags"                 "2"
         "group"                 ""
+        "sm_flags"				""	// Write the adminf flag of a sourcemod for vip players ("ao" for instance)
         
         "name"                  "Mother zombie"
         "description"           "+HP regen | +Speed | +Jump | -Knockback"
@@ -168,6 +172,7 @@
         "team_default"          "no"
         "flags"                 "3"
         "group"                 ""
+        "sm_flags"				""	// Write the adminf flag of a sourcemod for vip players ("ao" for instance)
         
         "name"                  "Admin mother zombie"
         "description"           "+HP regen | +Speed | +Jump | -Knockback"
@@ -221,6 +226,7 @@
         "team_default"          "yes"
         "flags"                 "0"
         "group"                 ""
+        "sm_flags"				""	// Write the adminf flag of a sourcemod for vip players ("ao" for instance)
         
         "name"                  "Humano Normal 1"
         "description"           "Default Counter-Strike settings"
@@ -268,6 +274,7 @@
         "team_default"          "yes"
         "flags"                 "0"
         "group"                 ""      // Write the name of a SourceMod group for vip players ("zr_vip" for instance), then make it in SourceMod.
+        "sm_flags"				""	// Write the adminf flag of a sourcemod for vip players ("ao" for instance)
         
         "name"                  "VIP Human"
         "description"           "Humano Normal 2"
@@ -315,6 +322,7 @@
         "team_default"          "no"
         "flags"                 "1"
         "group"                 ""
+        "sm_flags"				""	// Write the adminf flag of a sourcemod for vip players ("ao" for instance)
         
         "name"                  "Humano Admin"
         "description"           "Human class for admins"

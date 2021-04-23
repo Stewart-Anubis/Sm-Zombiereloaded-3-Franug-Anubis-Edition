@@ -1127,6 +1127,11 @@
 		"pt"		"Jogador pegou fogo \"{1}\" por acampar em uma área restrita (ID: {2})."
 	}
 
+	"Mother zombie infect cycle reset"
+	{
+		"pt"		"O ciclo de infecção da mãe zumbi foi reiniciado"
+	}
+
 	// ===========================
 	// Repeat Kill (module)
 	// ===========================

@@ -903,6 +903,11 @@ stock int ClassModifyString(int classindex, int attributeflag, const char[] valu
 			strcopy(ClassDataCache[classindex][Class_Group], 64, value);
 			return true;
 		}
+		case ZR_CLASS_SM_FLAGS:
+		{
+			strcopy(ClassDataCache[classindex][Class_SM_Flags], 64, value);
+			return true;
+		}
 		case ZR_CLASS_NAME:
 		{
 			strcopy(ClassDataCache[classindex][Class_Name], 64, value);

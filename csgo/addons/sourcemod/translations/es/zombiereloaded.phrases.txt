@@ -1127,6 +1127,11 @@
 		"es"		"Quemado jugador \"{1}\" por campear en una zona restringida (ID: {2})."
 	}
 
+	"Mother zombie infect cycle reset"
+	{
+		"es"		"El ciclo de infección de la madre zombie se ha reiniciado"
+	}
+
 	// ===========================
 	// Repeat Kill (module)
 	// ===========================

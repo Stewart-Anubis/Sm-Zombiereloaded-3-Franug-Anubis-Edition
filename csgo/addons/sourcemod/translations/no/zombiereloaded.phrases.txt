@@ -1127,6 +1127,11 @@
 		"no"		"Satt fyr på \"{1}\" for opphold i sperret område (ID: {2})."
 	}
 
+	"Mother zombie infect cycle reset"
+	{
+		"no"		"Mor zombie infeksjonssyklus er tilbakestilt"
+	}
+
 	// ===========================
 	// Repeat Kill (module)
 	// ===========================

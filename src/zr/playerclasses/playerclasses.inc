@@ -104,6 +104,7 @@
 #define ZR_CLASS_DEFAULT_TEAM_DEFAULT		   "yes"
 #define ZR_CLASS_DEFAULT_FLAGS				  0
 #define ZR_CLASS_DEFAULT_GROUP				  ""
+#define ZR_CLASS_DEFAULT_SM_FLAGS               ""
 #define ZR_CLASS_DEFAULT_NAME				   "classic"
 #define ZR_CLASS_DEFAULT_DESCRIPTION			"Need brains!!! Arrrrggghh!"
 #define ZR_CLASS_DEFAULT_MODEL_PATH			 "models/player/zh/zh_zombie003.mdl"
@@ -193,32 +194,33 @@
 #define ZR_CLASS_TEAM_DEFAULT		   (1<<2)
 #define ZR_CLASS_FLAGS				  (1<<3)
 #define ZR_CLASS_GROUP				  (1<<4)
-#define ZR_CLASS_NAME				   (1<<5)
-#define ZR_CLASS_DESCRIPTION			(1<<6)
-#define ZR_CLASS_MODEL_PATH			 (1<<7)
-#define ZR_CLASS_ARMS_MODEL_PATH		  (1<<30)
-#define ZR_CLASS_MODEL_SKIN_INDEX	   (1<<8)
-#define ZR_CLASS_ALPHA_INITIAL		  (1<<9)
-#define ZR_CLASS_ALPHA_DAMAGED		  (1<<10)
-#define ZR_CLASS_ALPHA_DAMAGE		   (1<<11)
-#define ZR_CLASS_OVERLAY_PATH		   (1<<12)
-#define ZR_CLASS_NVGS				   (1<<13)
-#define ZR_CLASS_FOV					(1<<14)
-#define ZR_CLASS_HAS_NAPALM			 (1<<15)
-#define ZR_CLASS_NAPALM_TIME			(1<<16)
-#define ZR_CLASS_IMMUNITY_MODE		  (1<<17)
-#define ZR_CLASS_IMMUNITY_AMOUNT		(1<<18)
-#define ZR_CLASS_IMMUNITY_COOLDOWN	  (1<<19)
-#define ZR_CLASS_NO_FALL_DAMAGE		 (1<<20)
-#define ZR_CLASS_HEALTH				 (1<<21)
-#define ZR_CLASS_HEALTH_REGEN_INTERVAL  (1<<22)
-#define ZR_CLASS_HEALTH_REGEN_AMOUNT	(1<<23)
-#define ZR_CLASS_HEALTH_INFECT_GAIN	 (1<<24)
-#define ZR_CLASS_KILL_BONUS			 (1<<25)
-#define ZR_CLASS_SPEED				  (1<<26)
-#define ZR_CLASS_KNOCKBACK			  (1<<27)
-#define ZR_CLASS_JUMP_HEIGHT			(1<<28)
-#define ZR_CLASS_JUMP_DISTANCE		  (1<<29)
+#define ZR_CLASS_SM_FLAGS               (1<<5)
+#define ZR_CLASS_NAME				   (1<<6)
+#define ZR_CLASS_DESCRIPTION			(1<<7)
+#define ZR_CLASS_MODEL_PATH			 (1<<8)
+#define ZR_CLASS_ARMS_MODEL_PATH		  (1<<9)
+#define ZR_CLASS_MODEL_SKIN_INDEX	   (1<<10)
+#define ZR_CLASS_ALPHA_INITIAL		  (1<<11)
+#define ZR_CLASS_ALPHA_DAMAGED		  (1<<12)
+#define ZR_CLASS_ALPHA_DAMAGE		   (1<<13)
+#define ZR_CLASS_OVERLAY_PATH		   (1<<14)
+#define ZR_CLASS_NVGS				   (1<<15)
+#define ZR_CLASS_FOV					(1<<16)
+#define ZR_CLASS_HAS_NAPALM			 (1<<17)
+#define ZR_CLASS_NAPALM_TIME			(1<<18)
+#define ZR_CLASS_IMMUNITY_MODE		  (1<<19)
+#define ZR_CLASS_IMMUNITY_AMOUNT		(1<<20)
+#define ZR_CLASS_IMMUNITY_COOLDOWN	  (1<<21)
+#define ZR_CLASS_NO_FALL_DAMAGE		 (1<<22)
+#define ZR_CLASS_HEALTH				 (1<<23)
+#define ZR_CLASS_HEALTH_REGEN_INTERVAL  (1<<24)
+#define ZR_CLASS_HEALTH_REGEN_AMOUNT	(1<<25)
+#define ZR_CLASS_HEALTH_INFECT_GAIN	 (1<<26)
+#define ZR_CLASS_KILL_BONUS			 (1<<27)
+#define ZR_CLASS_SPEED				  (1<<28)
+#define ZR_CLASS_KNOCKBACK			  (1<<29)
+#define ZR_CLASS_JUMP_HEIGHT			(1<<30)
+#define ZR_CLASS_JUMP_DISTANCE		  (1<<31)
 /**
  * @endsection
  */
@@ -250,6 +252,7 @@ enum ClassAttributes
 	bool:Class_TeamDefault,
 	Class_Flags,
 	String:Class_Group[64],
+	String:Class_SM_Flags[64],
 	
 	String:Class_Name[64],
 	String:Class_Description[256],
@@ -564,11 +567,12 @@ void ClassLoad()
 	
 	char name[64];
 	char group[64];
+	char sm_flags[64];
 	char description[256];
 	char model_path[PLATFORM_MAX_PATH];
+	char arms_path[PLATFORM_MAX_PATH];
 	char immunity_mode[32];
 	char overlay_path[PLATFORM_MAX_PATH];
-	char arms_path[256];
 	
 	ClassCount = 0;
 	int failedcount;
@@ -593,6 +597,9 @@ void ClassLoad()
 		
 		KvGetString(kvClassData, "group", group, sizeof(group), ZR_CLASS_DEFAULT_GROUP);
 		strcopy(ClassData[ClassCount][Class_Group], 64, group);
+		
+		KvGetString(kvClassData, "sm_flags", sm_flags, sizeof(sm_flags), ZR_CLASS_DEFAULT_SM_FLAGS);
+		strcopy(ClassData[ClassCount][Class_SM_Flags], 64, sm_flags);
 		
 		KvGetString(kvClassData, "name", name, sizeof(name), ZR_CLASS_DEFAULT_NAME);
 		strcopy(ClassData[ClassCount][Class_Name], 64, name);
@@ -755,11 +762,13 @@ bool ClassReloadDataCache()
 		ClassDataCache[classindex][Class_TeamDefault] = ClassData[classindex][Class_TeamDefault];
 		ClassDataCache[classindex][Class_Flags] = ClassData[classindex][Class_Flags];
 		strcopy(ClassDataCache[classindex][Class_Group], 64, ClassData[classindex][Class_Group]);
+		strcopy(ClassDataCache[classindex][Class_SM_Flags], 64, ClassData[classindex][Class_SM_Flags]);
 		strcopy(ClassDataCache[classindex][Class_Name], 64, ClassData[classindex][Class_Name]);
 		strcopy(ClassDataCache[classindex][Class_Description], 256, ClassData[classindex][Class_Description]);
 		
 		/* Model */
 		strcopy(ClassDataCache[classindex][Class_ModelPath], PLATFORM_MAX_PATH, ClassData[classindex][Class_ModelPath]);
+		strcopy(ClassDataCache[classindex][Class_Arms_Path], PLATFORM_MAX_PATH, ClassData[classindex][Class_Arms_Path]);
 		ClassDataCache[classindex][Class_ModelSkinIndex] = ClassData[classindex][Class_ModelSkinIndex];
 		ClassDataCache[classindex][Class_AlphaInitial] = ClassData[classindex][Class_AlphaInitial];
 		ClassDataCache[classindex][Class_AlphaDamaged] = ClassData[classindex][Class_AlphaDamaged];
@@ -788,7 +797,6 @@ bool ClassReloadDataCache()
 		ClassDataCache[classindex][Class_KnockBack] = ClassData[classindex][Class_KnockBack];
 		ClassDataCache[classindex][Class_JumpHeight] = ClassData[classindex][Class_JumpHeight];
 		ClassDataCache[classindex][Class_JumpDistance] = ClassData[classindex][Class_JumpDistance];
-		strcopy(ClassDataCache[classindex][Class_Arms_Path], 256, ClassData[classindex][Class_Arms_Path]);
 	}
 	
 	return true;
@@ -823,11 +831,13 @@ bool ClassReloadPlayerCache(int client, int classindex, int cachetype = ZR_CLASS
 			ClassPlayerCache[client][Class_TeamDefault] = ClassData[classindex][Class_TeamDefault];
 			ClassPlayerCache[client][Class_Flags] = ClassData[classindex][Class_Flags];
 			strcopy(ClassPlayerCache[client][Class_Group], 64, ClassData[classindex][Class_Group]);
+			strcopy(ClassPlayerCache[client][Class_SM_Flags], 64, ClassData[classindex][Class_SM_Flags]);
 			strcopy(ClassPlayerCache[client][Class_Name], 64, ClassData[classindex][Class_Name]);
 			strcopy(ClassPlayerCache[client][Class_Description], 256, ClassData[classindex][Class_Description]);
 			
 			/* Model */
 			strcopy(ClassPlayerCache[client][Class_ModelPath], PLATFORM_MAX_PATH, ClassData[classindex][Class_ModelPath]);
+			strcopy(ClassPlayerCache[client][Class_Arms_Path], PLATFORM_MAX_PATH, ClassData[classindex][Class_Arms_Path]);
 			ClassPlayerCache[client][Class_ModelSkinIndex] = ClassData[classindex][Class_ModelSkinIndex];
 			ClassPlayerCache[client][Class_AlphaInitial] = ClassData[classindex][Class_AlphaInitial];
 			ClassPlayerCache[client][Class_AlphaDamaged] = ClassData[classindex][Class_AlphaDamaged];
@@ -856,7 +866,6 @@ bool ClassReloadPlayerCache(int client, int classindex, int cachetype = ZR_CLASS
 			ClassPlayerCache[client][Class_KnockBack] = ClassData[classindex][Class_KnockBack];
 			ClassPlayerCache[client][Class_JumpHeight] = ClassData[classindex][Class_JumpHeight];
 			ClassPlayerCache[client][Class_JumpDistance] = ClassData[classindex][Class_JumpDistance];
-			strcopy(ClassPlayerCache[client][Class_Arms_Path], 256, ClassData[classindex][Class_Arms_Path]);
 		}
 		case ZR_CLASS_CACHE_MODIFIED:
 		{
@@ -866,11 +875,13 @@ bool ClassReloadPlayerCache(int client, int classindex, int cachetype = ZR_CLASS
 			ClassPlayerCache[client][Class_TeamDefault] = ClassDataCache[classindex][Class_TeamDefault];
 			ClassPlayerCache[client][Class_Flags] = ClassDataCache[classindex][Class_Flags];
 			strcopy(ClassPlayerCache[client][Class_Group], 64, ClassDataCache[classindex][Class_Group]);
+			strcopy(ClassPlayerCache[client][Class_SM_Flags], 64, ClassDataCache[classindex][Class_SM_Flags]);
 			strcopy(ClassPlayerCache[client][Class_Name], 64, ClassDataCache[classindex][Class_Name]);
 			strcopy(ClassPlayerCache[client][Class_Description], 256, ClassDataCache[classindex][Class_Description]);
 			
 			/* Model */
 			strcopy(ClassPlayerCache[client][Class_ModelPath], PLATFORM_MAX_PATH, ClassDataCache[classindex][Class_ModelPath]);
+			strcopy(ClassPlayerCache[client][Class_Arms_Path], PLATFORM_MAX_PATH, ClassDataCache[classindex][Class_Arms_Path]);
 			ClassPlayerCache[client][Class_ModelSkinIndex] = ClassDataCache[classindex][Class_ModelSkinIndex];
 			ClassPlayerCache[client][Class_AlphaInitial] = ClassDataCache[classindex][Class_AlphaInitial];
 			ClassPlayerCache[client][Class_AlphaDamaged] = ClassDataCache[classindex][Class_AlphaDamaged];
@@ -899,7 +910,6 @@ bool ClassReloadPlayerCache(int client, int classindex, int cachetype = ZR_CLASS
 			ClassPlayerCache[client][Class_KnockBack] = ClassDataCache[classindex][Class_KnockBack];
 			ClassPlayerCache[client][Class_JumpHeight] = ClassDataCache[classindex][Class_JumpHeight];
 			ClassPlayerCache[client][Class_JumpDistance] = ClassDataCache[classindex][Class_JumpDistance];
-			strcopy(ClassPlayerCache[client][Class_Arms_Path], 256, ClassDataCache[classindex][Class_Arms_Path]);
 		}
 		default:
 		{
@@ -1364,6 +1374,10 @@ int ClassDumpData(int index, int cachetype, char[] buffer, int maxlen)
 	Format(attribute, sizeof(attribute), "group:				 \"%s\"\n", format_buffer);
 	cellcount += StrCat(buffer, maxlen, attribute);
 	
+	ClassGetSM_Flags(index, format_buffer, sizeof(format_buffer), cachetype);
+	Format(attribute, sizeof(attribute), "sm_flags:               \"%s\"\n", format_buffer);
+	cellcount += StrCat(buffer, maxlen, attribute);
+	
 	ClassGetName(index, format_buffer, sizeof(format_buffer), cachetype);
 	Format(attribute, sizeof(attribute), "name:				  \"%s\"\n", format_buffer);
 	cellcount += StrCat(buffer, maxlen, attribute);
@@ -1374,6 +1388,10 @@ int ClassDumpData(int index, int cachetype, char[] buffer, int maxlen)
 	
 	ClassGetModelPath(index, format_buffer, sizeof(format_buffer), cachetype);
 	Format(attribute, sizeof(attribute), "model_path:			\"%s\"\n", format_buffer);
+	cellcount += StrCat(buffer, maxlen, attribute);
+	
+	ClassGetArmsPath(index, format_buffer, sizeof(format_buffer), cachetype);
+	Format(attribute, sizeof(attribute), "arms_path:		   \"%s\"\n", format_buffer);
 	cellcount += StrCat(buffer, maxlen, attribute);
 	
 	Format(attribute, sizeof(attribute), "model_skin_index:	  \"%d\"\n", ClassGetModelSkinIndex(index, cachetype));
@@ -1442,10 +1460,6 @@ int ClassDumpData(int index, int cachetype, char[] buffer, int maxlen)
 	cellcount += StrCat(buffer, maxlen, attribute);
 	
 	Format(attribute, sizeof(attribute), "jump_distance:		 \"%f\"\n", ClassGetJumpDistance(index, cachetype));
-	cellcount += StrCat(buffer, maxlen, attribute);
-	
-	ClassGetArmsPath(index, format_buffer, sizeof(format_buffer), cachetype);
-	Format(attribute, sizeof(attribute), "arms_path:		   \"%s\"\n", format_buffer);
 	cellcount += StrCat(buffer, maxlen, attribute);
 	
 	return cellcount;
