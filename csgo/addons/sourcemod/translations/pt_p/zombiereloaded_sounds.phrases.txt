@@ -1,0 +1,134 @@
+"Phrases"
+{
+	// ===========================
+	// Zr Sound (module)
+	// ===========================
+	
+	"Select Countdown"
+	{
+		"pt_p"	  	"Contagem Regressiva Voz:"
+	}
+
+	"Volume Menu Title"
+	{
+		"pt_p"	  	"[ZR] Sounds Volume:"
+	}
+	
+	"Volume Current"
+	{
+		"#format"	"{1:i}"
+		"pt_p"	  	"Volume Atual: {1}%%%"
+	}
+
+	"v100"
+	{
+		"pt_p"	  	"100%"
+	}
+
+	"v75"
+	{
+		"pt_p"	  	"75%"
+	}
+
+	"v50"
+	{
+		"pt_p"	  	"50%"
+	}
+
+	"v25"
+	{
+		"pt_p"	  	"25%"
+	}
+
+	"v10"
+	{
+		"pt_p"	  	"10%"
+	}
+
+	"v05"
+	{
+		"pt_p"	  	"5%"
+	}
+
+	"zr sounds"
+	{
+		"pt_p"	  	"[ZR] Sounds:"
+	}
+	
+	"RoundEnd_Sounds"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"Musicas RoundEnd: {1}"
+	}
+	
+	"Volume updated"
+	{
+		"pt_p"	  	"O volume será atualizado na próxima música."
+	}
+	
+	"Volume set to"
+	{
+		"pt_p"	  	"Volume definido para: %i%."
+	}
+	
+	"voz_1"
+	{
+		"pt_p"	  	"Homem."
+	}
+
+	"voz_2"
+	{
+		"pt_p"	  	"Mulher."
+	}
+	
+	"voz_3"
+	{
+		"pt_p"	  	"Desativado."
+	}
+	
+	"CountDown select 0"
+	{
+		"pt_p"	  	"Contagem Regressiva Sem Som."
+	}
+
+	"CountDown select 1"
+	{
+		"pt_p"	  	"Contagem Regressiva Com Voz Masculina."
+	}
+
+	"CountDown select 2"
+	{
+		"pt_p"	  	"Contagem Regressiva Com Voz Feminina."
+	}
+
+	"zr_volume"
+	{
+		"pt_p" 		"Volume Atual:"
+	}
+	
+	"Zombis sounds enable"
+	{
+		"pt_p" 		"Sons dos Zumbis Ativado."
+	}
+	
+	"Zombis sounds disable"
+	{
+		"pt_p" 		"Sons dos Zumbis Desativado."
+	}
+	
+	"Zombies_Sounds"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"Sons dos Zumbis: {1}"
+	}
+	
+	"RoundEnd sounds enable"
+	{
+		"pt_p" 		"Música do RoundEnd Ativada."
+	}
+	
+	"RoundEnd sounds disable"
+	{
+		"pt_p" 		"Música do RoundEnd Desativada."
+	}
+}

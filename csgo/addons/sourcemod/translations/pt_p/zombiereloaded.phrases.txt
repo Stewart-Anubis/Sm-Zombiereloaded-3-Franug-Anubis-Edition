@@ -1,0 +1,1172 @@
+﻿"Phrases"
+{
+	// ===========================
+	// General (base)
+	// ===========================
+
+	"General round objective"
+	{
+		"pt_p"		"O jogo é @greenHumans vs. Zumbis@default, o objetivo dos zumbis é infectar todos os humanos esfaqueando-os."
+	}
+
+	"General zmenu reminder"
+	{
+		"#format"	"{1:s},{2:s}"
+		"pt_p"		"Para obter ajuda sobre Zumbis: comandos recarregados, digite \"{1}{2}\" no chat."
+	}
+
+	// ===========================
+	// Generic (base)
+	// ===========================
+
+	// General
+
+	"Literal text"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"{1}"
+	}
+	// Set string to "{1}" for all languages.
+
+	"Feature is disabled"
+	{
+		"pt_p"		"Este recurso está atualmente desativado pelo host do servidor."
+	}
+
+	"Not enough money"
+	{
+		"pt_p"		"Você não tem dinheiro suficiente para comprar este item."
+	}
+
+	"Must be player"
+	{
+		"pt_p"		"Este recurso é reservado apenas para jogadores."
+	}
+
+	"Must be admin"
+	{
+		"pt_p"		"Este recurso é reservado apenas para administradores."
+	}
+
+	"No access to command"
+	{
+		"pt_p"		"Você não tem acesso a este comando."
+	}
+
+	"Must be alive"
+	{
+		"pt_p"		"Este recurso requer que você esteja vivo."
+	}
+
+	"Must be dead"
+	{
+		"pt_p"		"Este recurso requer que você esteja morto."
+	}
+
+	"Must be on team"
+	{
+		"pt_p"		"Este recurso requer que você faça parte de uma equipe."
+	}
+
+	"Must be zombie"
+	{
+		"pt_p"		"Este recurso requer que você seja um zumbi."
+	}
+
+	"Must be human"
+	{
+		"pt_p"		"Este recurso requer que você seja um humano."
+	}
+	
+	"Increase by"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"Aumentar em {1}"
+	}
+
+	"Decrease by"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"Diminuir em {1}"
+	}
+
+	"Current Value"
+	{
+		"pt_p"		"Valor atual:"
+	}
+
+	"Zombie"
+	{
+		"pt_p"		"Zumbi"
+	}
+
+	"Human"
+	{
+		"pt_p"		"Humano"
+	}
+
+	// Menu
+
+	"Menu empty"
+	{
+		"pt_p"		"(Vazio)"
+	}
+
+	// ===========================
+	// Config (core)
+	// ===========================
+
+	// Commands
+
+	"Config command reload syntax"
+	{
+		"pt_p"		"Sintaxe: zr_reloadconfig <file alias1> [file alias2] ... - Recarrega um arquivo de configuração."
+	}
+
+	"Config command reload related commands"
+	{
+		"pt_p"		"Comando(s) relacionado(s): zr_config_reloadall"
+	}
+
+	"Config command reload syntax aliases"
+	{
+		"#format"	"{1:s},{2:s},{3:s},{4:s},{5:s}"
+		"pt_p"		"Aliases de arquivo:\n* \"{1}\"\n* \"{2}\"\n* \"{3}\"\n* \"{4}\"\n* \"{5}\""
+	}
+
+	"Config command reload invalid"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"Aliase de arquivo inválido: \"{1}\""
+	}
+
+	"Config command reload not loaded"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"Arquivo de configuração \"{1}\" falhou ao carregar. (Conteúdo de arquivo desativado ou inválido)."
+	}
+
+	"Config command reload all stats begin"
+	{
+		"pt_p"		"Recarregando todos os Zumbis: Arquivos de configuração recarregados...\n------------------------------------------------"
+	}
+
+	"Config command reload all stats successful"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"\"{1}\" - Bem-sucedido."
+	}
+
+	"Config command reload all stats failed"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"\"{1}\" - Fracassado. (Conteúdo de arquivo desativado ou inválido)."
+	}
+
+	// ===========================
+	// Log (core)
+	// ===========================
+
+	"Log Generic Flag"
+	{
+		// Max length: 19 characters.
+		"pt_p"		"Sinalizador genérico:"
+	}
+
+	"Log Value"
+	{
+		// Max length: 7 characters:
+		"pt_p"		"Valor:"
+	}
+
+	"Log Module"
+	{
+		// Max length: 23 characters:
+		"pt_p"		"Módulo:"
+	}
+
+	"Log Status"
+	{
+		"pt_p"		"Status do filtro:"
+	}
+
+	"Log Module Filtering"
+	{
+		"pt_p"		"Filtragem de Módulo:"
+	}
+
+	"Log Module Short Name"
+	{
+		"pt_p"		"Nome curto:"
+	}
+
+	// ===========================
+	// Classes
+	// ===========================
+
+	// General
+
+	"Classes admin mode enabled"
+	{
+		"pt_p"		"O modo Admin está habilitado!"
+	}
+
+	"Classes random assignment"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"Você foi atribuído aleatoriamente ao @green\"{1}\" @defaultclass."
+	}
+
+	// Center Text/HUD
+
+	"Classes overlay toggle"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"Comandos de alternância de sobreposição de classe: {1}"
+	}
+
+	// Menu
+
+	"Classes menu title"
+	{
+		"pt_p"		"Seleção de classe:"
+	}
+
+	"Classes menu active"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"Ativo: {1}"
+	}
+
+	"Classes menu next"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"Próximo spawn: {1}"
+	}
+
+	"Classes menu select zombie"
+	{
+		"pt_p"		"Seleção de classe de zumbis"
+	}
+
+	"Classes menu select human"
+	{
+		"pt_p"		"Seleção de Classe Humana"
+	}
+
+	"Classes menu select admin"
+	{
+		"pt_p"		"Seleção de Classe do Modo de Admin"
+	}
+
+	"Classes menu admin mode toggle"
+	{
+		"pt_p"		"Habilitar modo de administrador"
+	}
+
+	"Classes Menu Team Select Title"
+	{
+		"pt_p"		"Seleção da Equipe:"
+	}
+
+	"Classes Menu Zombies"
+	{
+		"pt_p"		"Zumbis"
+	}
+
+	"Classes Menu Humans"
+	{
+		"pt_p"		"Humanos"
+	}
+
+	"Classes Menu Multiplier Select Title"
+	{
+		"pt_p"		"Seleção de Multiplicador:"
+	}
+
+	"Classes Menu Adjust Value"
+	{
+		"pt_p"		"Ajustar Valor:"
+	}
+
+	// Attributes
+
+	"Classes Attrib Napalm Time"
+	{
+		"pt_p"		"Tempo de Fogo He"
+	}
+
+	"Classes Attrib Health"
+	{
+		"pt_p"		"Saúde"
+	}
+
+	"Classes Attrib Regen Interval"
+	{
+		"pt_p"		"Intervalo de Regeneração de Saúde"
+	}
+
+	"Classes Attrib Regen Amount"
+	{
+		"pt_p"		"Quantidade de Regeneração de Saúde"
+	}
+
+	"Classes Attrib Infect Gain"
+	{
+		"pt_p"		"Infecção - Ganho de Saúde"
+	}
+
+	"Classes Attrib Speed"
+	{
+		"pt_p"		"Velocidade de Corrida"
+	}
+
+	"Classes Attrib Knockback"
+	{
+		"pt_p"		"Knock Back"
+	}
+
+	"Classes Attrib Jump Height"
+	{
+		"pt_p"		"Altura do Salto"
+	}
+
+	"Classes Attrib Jump Distance"
+	{
+		"pt_p"		"Distância do Salto"
+	}
+
+	"Classes Selection Not Allowed"
+	{
+		"pt_p"		"Mudar de classe não é permitido."
+	}
+
+	// ===========================
+	// Immunity
+	// ===========================
+
+	"Immunity Shield Not Available"
+	{
+		"pt_p"		"Você não tem um escudo."
+	}
+
+	"Immunity Shield Cooldown"
+	{
+		"#format"	"{1:d}"
+		"pt_p"		"{1} segundos até que o escudo esteja disponível."
+	}
+
+	"Immunity Shield Time Left"
+	{
+		"#format"	"{1:d}"
+		"pt_p"		"Tempo restante de escudo: {1}"
+	}
+
+	// ===========================
+	// Overlays (core)
+	// ===========================
+
+	"Overlays not supported"
+	{
+		"#format"	"{1:d},{2:d}"
+		"pt_p"		"Sobreposição de bloqueio - DX{1} detectado (DX{2} obrigatório)"
+	}
+
+	// ===========================
+	// Infect (core)
+	// ===========================
+
+	// General
+
+	"Infect infected"
+	{
+		"pt_p"		"Você foi infectado! Passe adiante para o maior número de jogadores que puder."
+	}
+
+	"Infect human"
+	{
+		"pt_p"		"Os deuses misericordiosos (conhecidos como administradores) ressuscitaram sua alma, encontre um abrigo!"
+	}
+
+	"Infect disconnect"
+	{
+		"pt_p"		"O último zumbi saiu do jogo e passou a infecção para você."
+	}
+
+	// Center Text
+
+	"Infect countdown"
+	{
+		"#format"	"{1:d}"
+		"pt_p"		"Primeira infecção em {1} segundos."
+	}
+
+	// Menu
+
+	"Infect menu clients title"
+	{
+		"pt_p"		"Gerenciamento de zumbis\nAlternar infecção:\n[] = Infetado"
+	}
+
+	// Commands
+
+	"Infect command infect syntax"
+	{
+		"pt_p"		"Infecte um cliente. Usar: zr_infect <filter> [respawn - 1/0]"
+	}
+
+	"Infect command human syntax"
+	{
+		"pt_p"		"Transforme um cliente em humano. Usar: zr_human <filter> [respawn - 1/0] [protect - 1/0]"
+	}
+
+	"Infect command infect successful"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"O jogador @green{1} @defaultfoi infectado com sucesso."
+	}
+
+	"Infect command infect mother successful"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"O jogador @green{1} @defaultfoi infectado com sucesso como o zumbi mãe."
+	}
+
+	"Infect command infect unsuccessful"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"O jogador  @green{1} @defaultjá é um zumbi."
+	}
+
+	"Infect command human successful"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"O jogador @green{1} @defaultfoi trazido de volta como humano com sucesso."
+	}
+
+	"Infect command human unsuccessful"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"O jogador  @green{1} @defaultjá é um humano."
+	}
+
+	// ===========================
+	// Damage (core)
+	// ===========================
+
+	"Damage suicide intercept"
+	{
+		"pt_p"		"Tentativa de suicídio interceptada."
+	}
+
+	// ===========================
+	// Menu (core)
+	// ===========================
+
+	// General
+
+	"Menu main title"
+	{
+		"#format"	"{1:s},{2:s}"
+		"pt_p"		"ZR Comandos:\nComando com prefixo \"{1}\" ou \"{2}\" (são silenciosos) ao digitar no chat."
+	}
+
+	"Menu main zadmin"
+	{
+		"pt_p"		"ZAdmin - Abra o menu de administração"
+	}
+
+	"Menu main zclass"
+	{
+		"pt_p"		"ZClass - Definir configurações de classe"
+	}
+
+	"Menu main zcookies"
+	{
+		"pt_p"		"ZCookies - Alternar configurações pessoais do ZR"
+	}
+
+	"Menu main zspawn"
+	{
+		"pt_p"		"ZSpawn - Entrou tarde? Spawn com isto"
+	}
+
+	"Menu main ztele"
+	{
+		"pt_p"		"ZTele - Preso? Teleporte-se de volta para ao spawn"
+	}
+
+	"Menu main zmarket"
+	{
+		"pt_p"		"ZMarket - Personalize sua armas aqui"
+	}
+
+	// ===========================
+	// Weapons (core)
+	// ===========================
+
+	// General
+
+	"Zombie cant use weapon"
+	{
+		"pt_p"		"Zumbis não podem usar armas!"
+	}
+
+	// Restrict
+
+	"Restrict weapon"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"A arma @green\"{1}\" @defaultfoi restrita"
+	}
+
+	"Unrestrict weapon"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"A arma @green\"{1}\" @defaultfoi liberada."
+	}
+
+	"Restrict weapon stopped"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"A arma @green\"{1}\" @defaulja esta restrita."
+	}
+
+	"Unrestrict weapon stopped"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"A arma @green\"{1}\" @default não tem restrições definidas."
+	}
+
+	"Restrict weapon type"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"Armas do tipo @green\"{1}\" @defaultforam restritas."
+	}
+
+	"Unrestrict weapon type"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"Armas do tipo @green\"{1}\" @defaultforam liberadas."
+	}
+
+	"Restrict weapon type stopped"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"Armas do tipo @green\"{1}\" @defaultjá estão restritas. "
+	}
+
+	"Unrestrict weapon type stopped"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"Armas do tipo @green\"{1}\" @defaultnão tem restrições definidas."
+	}
+
+	"Restrict weapon untoggleable"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"A arma @green\"{1}\" @default não ter suas restrições alternadas."
+	}
+
+	"Weapon invalid"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"A arma @green\"{1}\" @defaulté um nome de arma (tipo) inválido."
+	}
+
+	"Weapon is restricted"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"A arma @green{1} @defaulté restrita."
+	}
+
+	// ZMarket
+
+	"Weapons zmarket buyzone"
+	{
+		"pt_p"		"Você deve estar em uma zona de compra para usar o ZMarket."
+	}
+
+	"Weapons zmarket purchase"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"Você comprou a arma @green{1}. @defaultSelecione o item novamente para comprar munição se você estiver com pouca munição."
+	}
+
+	"Weapons zmarket purchase max"
+	{
+		"#format"	"{1:s},{2:d}"
+		"pt_p"		"A arma @green{1} @defaulttem um limite de compra de @green{2}@default. Espere até o respawn para tentar comprar novamente."
+	}
+
+	"Weapons zmarket grenade max"
+	{
+		"#format"	"{1:d}"
+		"pt_p"		"Você só pode carregar {1} granada (s) deste tipo."
+	}
+
+	"Weapons zmarket auto-rebuy toggle on"
+	{
+		"pt_p"		"A recompra automática foi habilitada, seu carregamento será comprado automaticamente para você a cada spawn."
+	}
+
+	"Weapons zmarket auto-rebuy toggle off"
+	{
+		"pt_p"		"A recompra automática foi desativada."
+	}
+
+	"Weapons zmarket updated loadout"
+	{
+		"pt_p"		"Você não pode comprar uma arma neste momento, mas seu carregamento foi atualizado com esta arma."
+	}
+
+	"Weapons zmarket get current loadout"
+	{
+		"pt_p"		"Armas atualizadas, use a opção de recompra para comprar essas armas novamente."
+	}
+
+	// Commands
+
+	"Weapons command restrict syntax"
+	{
+		"pt_p"		"Restringe uma arma ou tipo de arma. Usar: zr_restrict <weapon|weapon type> [weapon2|weapontype2] ..."
+	}
+
+	"Weapons command unrestrict syntax"
+	{
+		"pt_p"		"Retirar restrição de uma arma ou tipo de arma. Usar: zr_unrestrict <weapon|weapon type> [weapon2|weapontype2] ..."
+	}
+
+	// Menu (Restrict)
+
+	"Weapons menu restrict main title"
+	{
+		"pt_p"		"Gerenciamento de Armas"
+	}
+
+	"Weapons menu restrict main restrict"
+	{
+		"pt_p"		"Restrições de Armas"
+	}
+
+	"Weapons menu restrict main market"
+	{
+		"pt_p"		"ZMarket"
+	}
+
+	"Weapons menu restrict types title"
+	{
+		"pt_p"		"Restrições de arma\nSelecione o tipo de arma:"
+	}
+
+	"Weapons menu restrict types weapon type title"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"Restrições de arma\nTipo de arma: {1}\n[] = Restrito"
+	}
+
+	"Weapons menu restrict types restrict all"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"Restringir tipo de arma {1}"
+	}
+
+	"Weapons menu restrict types unrestrict all"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"Remover restrição do tipo de arma {1}"
+	}
+
+	"Weapons menu restrict zmarket title"
+	{
+		"pt_p"		"ZMarket\nSelecione a configuração:"
+	}
+
+	"Weapons menu restrict zmarket buyzone"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"Zona de Compra Apenas - {1}"
+	}
+
+	// Menu (ZMarket)
+
+	"Weapons menu zmarket main title"
+	{
+		"pt_p"		"ZMarket\nSelecione uma Opção:"
+	}
+
+	"Weapons menu zmarket main get loadout"
+	{
+		"pt_p"		"Salvar Configuração Atual"
+	}
+
+	"Weapons menu zmarket main view loadout"
+	{
+		"pt_p"		"Exibir Configuração Salva"
+	}
+
+	"Weapons menu zmarket main rebuy"
+	{
+		"pt_p"		"Configuração de Comprar Salva"
+	}
+
+	"Weapons menu zmarket main auto-rebuy"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"Recompra-Automática: {1}"
+	}
+
+	"Weapons menu zmarket main weapons list"
+	{
+		"pt_p"		"Compre Armas"
+	}
+
+	"Weapons menu zmarket loadout title"
+	{
+		"pt_p"		"ZMarket\nMinha configuração atual:\nSelecione o slot de arma para limpar.\nNota: Recompra se refere a essas armas."
+	}
+
+	"Weapons menu zmarket loadout primary"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"Primária: {1}"
+	}
+
+	"Weapons menu zmarket loadout secondary"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"Secundária: {1}"
+	}
+
+	"Weapons menu zmarket loadout melee"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"Facas: {1}"
+	}
+
+	"Weapons menu zmarket loadout projectile"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"Projétil: {1}"
+	}
+
+	"Weapons menu zmarket loadout explosive"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"Explosivo: {1}"
+	}
+
+	"Weapons menu zmarket loadout nvgs"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"NVGs: {1}"
+	}
+
+	"Weapons menu zmarket loadout empty"
+	{
+		"pt_p"		"(Vazio)"
+	}
+
+	"Weapons menu zmarket types title"
+	{
+		"pt_p"		"ZMarket\nSelecione o tipo de arma:"
+	}
+
+	"Weapons menu zmarket types weapon type title"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"ZMarket\nArma Tipo: {1}\n[] = Restrita"
+	}
+
+	"Weapons menu zmarket types weapon info"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+		"pt_p"		"{1} (${2})\nCompras restantes: {3}"
+	}
+
+	"Weapons menu zmarket types weapon ammo"
+	{
+		"pt_p"		"Munição"
+	}
+
+	// ===========================
+	// Hitgroups (core)
+	// ===========================
+
+	// Menu
+
+	"Hitgroups menu hitgroups title"
+	{
+		"pt_p"		"Gerenciamento de Hitgroup\nComando: zr_hitgroup(_enable_all/_headshots_only)\nSelecione um Hitgroup para alternar:"
+	}
+
+	"Hitgroups menu hitgroups enable all"
+	{
+		"pt_p"		"Habilitar todos os Hitgroups"
+	}
+
+	"Hitgroups menu hitgroups headshots only"
+	{
+		"pt_p"		"Tiros na Cabeça Apenas"
+	}
+
+	// Commands
+
+	"Hitgroups command syntax"
+	{
+		"pt_p"		"Alterna ou define se o hitgroup de um zumbi pode ser danificado. Usar: zr_hitgroup <hitgroup alias> [1/0]"
+	}
+
+	"Hitgroups command related commands"
+	{
+		"pt_p"		"Comando(s) relacionado(s): zr_hitgroup_enable_all, zr_hitgroup_headshots_only"
+	}
+
+	"Hitgroups command syntax names"
+	{
+		"pt_p"		"Nomes Hitgroup:"
+	}
+
+	"Hitgroups command successful on"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"O dano para o hitgroup \"{1}\" foi ativado."
+	}
+
+	"Hitgroups command successful off"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"O dano para o hitgroup \"{1}\" foi desativado."
+	}
+
+	"Hitgroups command invalid hitgroup"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"\"{1}\" não é um alias de hitgroup válido.  Tipo zr_hitgroup para ver todos os aliases."
+	}
+
+	"Hitgroups command enable all successful"
+	{
+		"pt_p"		"Todos os hitgroups de zumbis foram habilitados para danos."
+	}
+
+	"Hitgroups command headshots only successful"
+	{
+		"pt_p"		"Zumbis agora só podem ser feridos por tiros na cabeça."
+	}
+
+	// ===========================
+	// ZAdmin (core)
+	// ===========================
+
+	"ZAdmin main title"
+	{
+		"pt_p"		"ZAdmin\nSelecione a Categoria:"
+	}
+
+	"ZAdmin main class multipliers"
+	{
+		"pt_p"		"Multiplicadores de classe"
+	}
+
+	"ZAdmin main weapons"
+	{
+		"pt_p"		"Gerenciamento de armas"
+	}
+
+	"ZAdmin main hitgroups"
+	{
+		"pt_p"		"Gerenciamento de Hitgroup"
+	}
+
+	"ZAdmin main zombie"
+	{
+		"pt_p"		"Gerenciamento de Zumbis"
+	}
+
+	"ZAdmin main force zspawn"
+	{
+		"pt_p"		"Forçar ZSpawn"
+	}
+
+	"ZAdmin main force ztele"
+	{
+		"pt_p"		"Forçar ZTele"
+	}
+
+	// ===========================
+	// AntiStick (module)
+	// ===========================
+
+	// Commands
+
+	"AntiStick command set width syntax"
+	{
+		"pt_p"		"Define a largura do casco de um modelo. (Veja zr_antistick_list_models) Usar: zr_antistick_set_width <model/player> <width>"
+	}
+
+	"AntiStick command list models list"
+	{
+		"pt_p"		"Nome Jogador:                        Modelo:                                              Largura do casco:\n-------------------------------------------------------------------------------------------------------------"
+	}
+
+	"AntiStick command list models name"
+	{
+		"#format"	"{1:-35s},{2:-51s},{3:-.2f}"
+		"pt_p"		"{1} {2} {3}"
+	}
+
+	"AntiStick command set width successful"
+	{
+		"#format"	"{1:s},{2:f}"
+		"pt_p"		"A largura do casco do modelo para o modelo \"{1}\" foi alterada para \"{2}.\""
+	}
+
+	"AntiStick command set width invalid model"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"Modelo/Jogador inválido especificado: \"{1}\""
+	}
+
+	"AntiStick command set width invalid width"
+	{
+		"#format"	"{1:f}"
+		"pt_p"		"Largura de casco de modelo inválida especificada: \"{1}\""
+	}
+
+	// ===========================
+	// Spawn Protect (module)
+	// ===========================
+
+	// General
+
+	"Spawn protection begin"
+	{
+		"#format"	"{1:d}"
+		"pt_p"		"Zumbis estão presentes, você tem {1} segundos para encontrar um lugar seguro antes de perder imunidade."
+	}
+
+	"Spawn protection end"
+	{
+		"pt_p"		"Agora você está suscetível à infecção de zumbis."
+	}
+
+	// HUD
+
+	"Spawn Protect"
+	{
+		"#format"	"{1:d}"
+		"pt_p"		"A proteção do zumbi termina em: {1} segundos."
+	}
+
+	// ===========================
+	// ZCookies (module)
+	// ===========================
+
+	"ZCookies Menu main title"
+	{
+		"pt_p"		"ZCookies\nSelecione um Cookie:"
+	}
+
+	"ZCookies menu main auto-rebuy"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"ZMarket Recompra-Automática: {1}"
+	}
+
+	"ZCookies menu main overlay"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"Humano/Zumbi Classe Overlay: {1}"
+	}
+
+	"ZCookies zmarket loadout"
+	{
+		"pt_p"		"ZMarket Recompra"
+	}
+
+	// ===========================
+	// ZSpawn (module)
+	// ===========================
+
+	// General
+
+	"ZSpawn double spawn"
+	{
+		"pt_p"		"ZSpawn só pode ser usado se você entrar tarde durante uma rodada em andamento."
+	}
+
+	"AutoZspawn is disabled"
+	{
+		"pt_p" 		"Auto-Zspawn Desativado."
+	}
+
+	"ZSpawn timelimit"
+	{
+		"#format"	"{1:d}"
+		"pt_p"		"O limite de tempo ({1} segundos), para usar ZSpawn, já expirou."
+	}
+
+	// Menu
+
+	"ZSpawn clients title"
+	{
+		"pt_p"		"Forçar ZSpawn (zr_zspawn_force)\nSelecione um jogador:"
+	}
+
+	// Commands
+
+	"ZSpawn command force syntax"
+	{
+		"pt_p"		"Força ZSpawn em um cliente. Usar: zr_zspawn_force <client> ['0' = Spawn as human | '1' = Spawn as zombie]"
+	}
+
+	"ZSpawn command force successful"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"O jogador {1} foi spawnado com sucesso."
+	}
+
+	"ZSpawn command force unsuccessful"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"O jogador {1} não pode ser spawnado."
+	}
+
+	// ===========================
+	// ZTele (module)
+	// ===========================
+
+	// General
+
+	"ZTele restricted human"
+	{
+		"pt_p"		"ZTele é restrito para humanos no momento. "
+	}
+
+	"ZTele max"
+	{
+		"#format"	"{1:d}"
+		"pt_p"		"Você atingiu o máximo de {1} teletransporte (s) por round."
+	}
+
+	"ZTele in progress"
+	{
+		"pt_p"		"Você está atualmente com teletransporte pendente."
+	}
+
+	"ZTele autocancel text"
+	{
+		"#format"	"{1:d}"
+		"pt_p"		"O teletransporte foi cancelado. (O limite restritivo é de {1} metro)"
+	}
+
+	// Center Text
+
+	"ZTele countdown"
+	{
+		"#format"	"{1:d}"
+		"pt_p"		"Teleportando de volta para spawn em: {1} segundos."
+	}
+
+	"ZTele autocancel centertext"
+	{
+		"pt_p"		"O teletransporte foi cancelado."
+	}
+
+	"ZTele countdown end"
+	{
+		"#format"	"{1:d},{2:d}"
+		"pt_p"		"Teleportado de volta para o spawn. (Vezes: {1}/{2})"
+	}
+
+	// Menu
+
+	"ZTele clients title"
+	{
+		"pt_p"		"Forçar ZTele (zr_ztele_force)\nSelecione um jogador:"
+	}
+
+	// Commands
+
+	"ZTele command force syntax"
+	{
+		"pt_p"		"Forçar ZTele em um cliente. Usar: zr_ztele_force <client>"
+	}
+
+	"ZTele command force successful"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"O jogador {1} foi teletransportado com sucesso."
+	}
+
+	"ZTele command force unsuccessful"
+	{
+		"#format"	"{1:s}"
+		"pt_p"		"O jogador {1} não pôde ser teletransportado."
+	}
+
+	// ===========================
+	// Volumetric features (module)
+	// ===========================
+
+	"Vol Anticamp Message"
+	{
+		"pt_p"		"Esta área é restrita, por favor, mova-se."
+	}
+
+	"Vol Slay"
+	{
+		"#format"	"{1:s},{2:d}"
+		"pt_p"		"Jogador morto \"{1}\" por acampar em uma área restrita (ID: {2})."
+	}
+
+	"Vol Ignite"
+	{
+		"#format"	"{1:s},{2:d}"
+		"pt_p"		"Jogador pegou fogo \"{1}\" por acampar em uma área restrita (ID: {2})."
+	}
+
+	// ===========================
+	// Repeat Kill (module)
+	// ===========================
+	
+	"Repeat killer detected"
+	{
+		"pt_p" 		"Repeat-Kill detectado. Desativando o respawn (Zspawn) por este round."
+	}
+	
+	"Disabling respawn"
+	{
+		"pt_p" 		"Desativando o respawn por este round."
+	}
+
+	"Repeat killer detector force toggled off"
+	{
+		"pt_p" 		"Repeat-Kill detector desativado. Respawn (Zspawn) ativado ."
+	}
+
+	"Repeat killer is already turned off"
+	{
+		"pt_p" 		"Repeat-kill detector ainda não esta ativado!"
+	}
+
+	// ===========================
+	// No alone Infection (module)
+	// ===========================
+
+	"No alone Infection"
+	{
+		"pt_p" 		"Número insuficiente de jogadores para iniciar a infecção!"
+	}
+
+	"Infect Alone on"
+	{
+		"pt_p" 		"Infect Alone Ligado!"
+	}
+
+	"Infect Alone off"
+	{
+		"pt_p" 		"Infect Alone Desligado!"
+	}
+}

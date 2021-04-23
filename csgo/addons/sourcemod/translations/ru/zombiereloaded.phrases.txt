@@ -1,0 +1,1172 @@
+﻿"Phrases"
+{
+	// ===========================
+	// General (base)
+	// ===========================
+
+	"General round objective"
+	{
+		"ru"		"Битва @greenлюдей против зомби@default, цель для зомби — инфицировать всех людей, используя нож."
+	}
+
+	"General zmenu reminder"
+	{
+		"#format"	"{1:s},{2:s}"
+		"ru"		"Для помощи по командам Zombie:Reloaded, введите \"{1}{2}\" в чат."
+	}
+
+	// ===========================
+	// Generic (base)
+	// ===========================
+
+	// General
+
+	"Literal text"
+	{
+		"#format"	"{1:s}"
+		"ru"		"{1}"
+	}
+	// Set string to "{1}" for all languages.
+
+	"Feature is disabled"
+	{
+		"ru"		"Данная функция отключена."
+	}
+
+	"Not enough money"
+	{
+		"ru"		"У вас недостаточно денег для покупки данной вещи."
+	}
+
+	"Must be player"
+	{
+		"ru"		"Данная функция только для игроков."
+	}
+
+	"Must be admin"
+	{
+		"ru"		"Данная функция только для админов."
+	}
+
+	"No access to command"
+	{
+		"ru"		"У вас нет доступа к этой команде."
+	}
+
+	"Must be alive"
+	{
+		"ru"		"Данная функция доступна только, когда вы живы."
+	}
+
+	"Must be dead"
+	{
+		"ru"		"Данная функция доступна только, когда вы мертвы."
+	}
+
+	"Must be on team"
+	{
+		"ru"		"Данная функция доступна только после присоединения к какой-либо команде."
+	}
+
+	"Must be zombie"
+	{
+		"ru"		"Данная функция доступна только, когда вы зомби."
+	}
+
+	"Must be human"
+	{
+		"ru"		"Данная функция доступна только, когда вы человек."
+	}
+	
+	"Increase by"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Увеличить на {1}"
+	}
+
+	"Decrease by"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Уменьшить на {1}"
+	}
+
+	"Current Value"
+	{
+		"ru"		"Текущее значение:"
+	}
+
+	"Zombie"
+	{
+		"ru"		"Зомби"
+	}
+
+	"Human"
+	{
+		"ru"		"Человек"
+	}
+
+	// Menu
+
+	"Menu empty"
+	{
+		"ru"		"(Пусто)"
+	}
+
+	// ===========================
+	// Config (core)
+	// ===========================
+
+	// Commands
+
+	"Config command reload syntax"
+	{
+		"ru"		"Синтаксис: zr_reloadconfig <алиас файла1> [алиас файла2] ... - Перезагрузить файл конфигурации."
+	}
+
+	"Config command reload related commands"
+	{
+		"ru"		"Связанные команды: zr_config_reloadall"
+	}
+
+	"Config command reload syntax aliases"
+	{
+		"#format"	"{1:s},{2:s},{3:s},{4:s},{5:s}"
+		"ru"		"Алиасы файла:\n* \"{1}\"\n* \"{2}\"\n* \"{3}\"\n* \"{4}\"\n* \"{5}\""
+	}
+
+	"Config command reload invalid"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Неправильный алиас файла: \"{1}\""
+	}
+
+	"Config command reload not loaded"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Не удалось загрузить файл конфигурации \"{1}\". (Отключен или неверное содержимое файла.)"
+	}
+
+	"Config command reload all stats begin"
+	{
+		"ru"		"Перезагрузка всех файлов конфигурации Zombie:Reloaded...\n------------------------------------------------"
+	}
+
+	"Config command reload all stats successful"
+	{
+		"#format"	"{1:s}"
+		"ru"		"\"{1}\" - Готово."
+	}
+
+	"Config command reload all stats failed"
+	{
+		"#format"	"{1:s}"
+		"ru"		"\"{1}\" - Ошибка. (Отключен или неверное содержимое файла.)"
+	}
+
+	// ===========================
+	// Log (core)
+	// ===========================
+
+	"Log Generic Flag"
+	{
+		// Max length: 19 characters.
+		"ru"		"Осн.флаг:"
+	}
+
+	"Log Value"
+	{
+		// Max length: 7 characters:
+		"ru"		"3нaч:"
+	}
+
+	"Log Module"
+	{
+		// Max length: 23 characters:
+		"ru"		"Модуль:"
+	}
+
+	"Log Status"
+	{
+		"ru"		"Статус фильтра:"
+	}
+
+	"Log Module Filtering"
+	{
+		"ru"		"Фильтрация модуля:"
+	}
+
+	"Log Module Short Name"
+	{
+		"ru"		"Краткое имя:"
+	}
+
+	// ===========================
+	// Classes
+	// ===========================
+
+	// General
+
+	"Classes admin mode enabled"
+	{
+		"ru"		"Админ режим включен!"
+	}
+
+	"Classes random assignment"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Вам был случайным образом присвоен класс @green\"{1}\"@default."
+	}
+
+	// Center Text/HUD
+
+	"Classes overlay toggle"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Команды классового оверлея: {1}"
+	}
+
+	// Menu
+
+	"Classes menu title"
+	{
+		"ru"		"Выбор класса:"
+	}
+
+	"Classes menu active"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Текущий: {1}"
+	}
+
+	"Classes menu next"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Новый: {1}"
+	}
+
+	"Classes menu select zombie"
+	{
+		"ru"		"Выбор класса зомби"
+	}
+
+	"Classes menu select human"
+	{
+		"ru"		"Выбор класса человека"
+	}
+
+	"Classes menu select admin"
+	{
+		"ru"		"Выбор админского класса"
+	}
+
+	"Classes menu admin mode toggle"
+	{
+		"ru"		"Включить админский режим"
+	}
+
+	"Classes Menu Team Select Title"
+	{
+		"ru"		"Выбор команды:"
+	}
+
+	"Classes Menu Zombies"
+	{
+		"ru"		"Зомби"
+	}
+
+	"Classes Menu Humans"
+	{
+		"ru"		"Люди"
+	}
+
+	"Classes Menu Multiplier Select Title"
+	{
+		"ru"		"Выбор множителя:"
+	}
+
+	"Classes Menu Adjust Value"
+	{
+		"ru"		"Изменение:"
+	}
+
+	// Attributes
+
+	"Classes Attrib Napalm Time"
+	{
+		"ru"		"Время горения"
+	}
+
+	"Classes Attrib Health"
+	{
+		"ru"		"Здоровье"
+	}
+
+	"Classes Attrib Regen Interval"
+	{
+		"ru"		"Интервал восполнения HP"
+	}
+
+	"Classes Attrib Regen Amount"
+	{
+		"ru"		"Кол-во восполняемого HP"
+	}
+
+	"Classes Attrib Infect Gain"
+	{
+		"ru"		"Бонус HP при инфекции"
+	}
+
+	"Classes Attrib Speed"
+	{
+		"ru"		"Скорость бега"
+	}
+
+	"Classes Attrib Knockback"
+	{
+		"ru"		"Отбрасывание"
+	}
+
+	"Classes Attrib Jump Height"
+	{
+		"ru"		"Высота прыжков"
+	}
+
+	"Classes Attrib Jump Distance"
+	{
+		"ru"		"Дальность прыжков"
+	}
+
+	"Classes Selection Not Allowed"
+	{
+		"ru"		"Изменение класса запрещено."
+	}
+
+	// ===========================
+	// Immunity
+	// ===========================
+
+	"Immunity Shield Not Available"
+	{
+		"en"		"You don't have a shield."
+	}
+
+	"Immunity Shield Cooldown"
+	{
+		"#format"	"{1:d}"
+		"en"		"{1} seconds until shield is available."
+	}
+
+	"Immunity Shield Time Left"
+	{
+		"#format"	"{1:d}"
+		"en"		"Shield time left: {1}"
+	}
+
+	// ===========================
+	// Overlays (core)
+	// ===========================
+
+	"Overlays not supported"
+	{
+		"#format"	"{1:d},{2:d}"
+		"ru"		"Оверлей отключен - обнаржуен DX{1} (необходим DX{2})"
+	}
+
+	// ===========================
+	// Infect (core)
+	// ===========================
+
+	// General
+
+	"Infect infected"
+	{
+		"ru"		"Вы были инфицированны!  Теперь заразите как можно больше других людей."
+	}
+
+	"Infect human"
+	{
+		"ru"		"Вы были воскрешены администратором, ищите укрытие!"
+	}
+
+	"Infect disconnect"
+	{
+		"ru"		"Последний зомби покинул игру, поэтому вам досталась его инфекция."
+	}
+
+	// Center Text
+
+	"Infect countdown"
+	{
+		"#format"	"{1:d}"
+		"ru"		"First infection in {1} seconds."
+	}
+
+	// Menu
+
+	"Infect menu clients title"
+	{
+		"ru"		"Управление зомби\nПереключение инфекции:\n[] = Инфицирован"
+	}
+
+	// Commands
+
+	"Infect command infect syntax"
+	{
+		"ru"		"Инфицировать игрока. Использование: zr_infect <фильтр> [воскресить - 1/0]"
+	}
+
+	"Infect command human syntax"
+	{
+		"ru"		"Превратить игрока в человека. Использование: zr_human <фильтр> [воскресить - 1/0] [защита - 1/0]"
+	}
+
+	"Infect command infect successful"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Игрок @green{1}@default был успешно инфицирован."
+	}
+
+	"Infect command infect mother successful"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Игрок @green{1}@default был успешно инфицирован и стал первым зомби."
+	}
+
+	"Infect command infect unsuccessful"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Игрок @green{1}@default уже является зомби."
+	}
+
+	"Infect command human successful"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Игрок @green{1}@default был успешно превращен обратно в человека."
+	}
+
+	"Infect command human unsuccessful"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Игрок@green{1}@default уже является человеком."
+	}
+
+	// ===========================
+	// Damage (core)
+	// ===========================
+
+	"Damage suicide intercept"
+	{
+		"ru"		"Пресечена попытка суицида."
+	}
+
+	// ===========================
+	// Menu (core)
+	// ===========================
+
+	// General
+
+	"Menu main title"
+	{
+		"#format"	"{1:s},{2:s}"
+		"ru"		"Команды:\nПрефикс команд чата \"{1}\" или \"{2}\" (тихо)."
+	}
+
+	"Menu main zadmin"
+	{
+		"ru"		"ZAdmin - Админ меню"
+	}
+
+	"Menu main zclass"
+	{
+		"ru"		"ZClass - Настройка классов"
+	}
+
+	"Menu main zcookies"
+	{
+		"ru"		"ZCookies - Персональные настройки"
+	}
+
+	"Menu main zspawn"
+	{
+		"ru"		"ZSpawn - Воскрешение"
+	}
+
+	"Menu main ztele"
+	{
+		"ru"		"ZTele - Телепорт к респавну"
+	}
+
+	"Menu main zmarket"
+	{
+		"ru"		"ZMarket - Выбор амуниции"
+	}
+
+	// ===========================
+	// Weapons (core)
+	// ===========================
+
+	// General
+
+	"Zombie cant use weapon"
+	{
+		"ru"		"Зомби не могут использовать оружие!"
+	}
+
+	// Restrict
+
+	"Restrict weapon"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Оружие @green\"{1}\"@default было запрещено."
+	}
+
+	"Unrestrict weapon"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Оружие @green\"{1}\"@default было разрешено."
+	}
+
+	"Restrict weapon stopped"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Оружие @green\"{1}\"@default уже является запрещенным."
+	}
+
+	"Unrestrict weapon stopped"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Оружие @green\"{1}\"@default не является запрещенным."
+	}
+
+	"Restrict weapon type"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Оружие типа @green\"{1}\"@default было запрещено."
+	}
+
+	"Unrestrict weapon type"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Оружие типа @green\"{1}\"@default было разрешено."
+	}
+
+	"Restrict weapon type stopped"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Оружие типа @green\"{1}\"@default уже является запрещенным."
+	}
+
+	"Unrestrict weapon type stopped"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Оружие типа @green\"{1}\"@default не является запрещенным."
+	}
+
+	"Restrict weapon untoggleable"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Оружие @green\"{1}\"@default не может быть запрещено."
+	}
+
+	"Weapon invalid"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Оружие @green\"{1}\"@default не является правильным именем или типом оружия."
+	}
+
+	"Weapon is restricted"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Оружие @green{1}@default запрещено."
+	}
+
+	// ZMarket
+
+	"Weapons zmarket buyzone"
+	{
+		"ru"		"Вы должны находиться в зоне закупки для использования ZMarket."
+	}
+
+	"Weapons zmarket purchase"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Вы приобрели оружие @green{1}@default. Выберите его еще раз для покупки патрон."
+	}
+
+	"Weapons zmarket purchase max"
+	{
+		"#format"	"{1:s},{2:d}"
+		"ru"		"Оружие @green{1}@default имеет лимит покупок @green{2}@default.  Попробуйте приобрести его в следующий раз."
+	}
+
+	"Weapons zmarket grenade max"
+	{
+		"#format"	"{1:d}"
+		"ru"		"Вы можете нести только {1} гранаты данного типа."
+	}
+
+	"Weapons zmarket auto-rebuy toggle on"
+	{
+		"ru"		"Авто-покупка была включена, ваша амуниция будет автоматически закупаться при каждом респавне."
+	}
+
+	"Weapons zmarket auto-rebuy toggle off"
+	{
+		"ru"		"Авто-покупка была отключена."
+	}
+
+	"Weapons zmarket updated loadout"
+	{
+		"ru"		"В данный момент вы не можете получить данное оружие, но ваш заказ был сохранен."
+	}
+
+	"Weapons zmarket get current loadout"
+	{
+		"ru"		"Амуниция обновлена, используйте опцию повторной покупки для приобретения этого же оружия."
+	}
+
+	// Commands
+
+	"Weapons command restrict syntax"
+	{
+		"ru"		"Запрет оружия или типа оружия. Использование: zr_restrict <оружие|тип оружия> [оружие2|тип оружия2] ..."
+	}
+
+	"Weapons command unrestrict syntax"
+	{
+		"ru"		"Разрешение оружия или типа оружия. Использование: zr_unrestrict <оружие|тип оружия> [оружие2|тип оружия2] ..."
+	}
+
+	// Menu (Restrict)
+
+	"Weapons menu restrict main title"
+	{
+		"ru"		"Управление оружием"
+	}
+
+	"Weapons menu restrict main restrict"
+	{
+		"ru"		"Запрет оружия"
+	}
+
+	"Weapons menu restrict main market"
+	{
+		"ru"		"ZMarket"
+	}
+
+	"Weapons menu restrict types title"
+	{
+		"ru"		"Запрет оружия\nВыберите тип оружия:"
+	}
+
+	"Weapons menu restrict types weapon type title"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Запрет оружия\nТип оружия: {1}\n[] = Запрещено"
+	}
+
+	"Weapons menu restrict types restrict all"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Запретить оружие типа {1}"
+	}
+
+	"Weapons menu restrict types unrestrict all"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Разрешить оружие типа {1}"
+	}
+
+	"Weapons menu restrict zmarket title"
+	{
+		"ru"		"ZMarket\nВыберите настройку:"
+	}
+
+	"Weapons menu restrict zmarket buyzone"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Только в зоне закупки - {1}"
+	}
+
+	// Menu (ZMarket)
+
+	"Weapons menu zmarket main title"
+	{
+		"ru"		"ZMarket\nВыберите опцию:"
+	}
+
+	"Weapons menu zmarket main get loadout"
+	{
+		"ru"		"Сохранить текущее оружие"
+	}
+
+	"Weapons menu zmarket main view loadout"
+	{
+		"ru"		"Просмотр текущй амуниции"
+	}
+
+	"Weapons menu zmarket main rebuy"
+	{
+		"ru"		"Снова купить мою амуницию"
+	}
+
+	"Weapons menu zmarket main auto-rebuy"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Авто-покупка: {1}"
+	}
+
+	"Weapons menu zmarket main weapons list"
+	{
+		"ru"		"Просмотр списка оружия"
+	}
+
+	"Weapons menu zmarket loadout title"
+	{
+		"ru"		"ZMarket\nМоя текущая амуниция:\nВыберите слот для очистки.\nПримечаие: Авто-покупка использует данный список."
+	}
+
+	"Weapons menu zmarket loadout primary"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Основное: {1}"
+	}
+
+	"Weapons menu zmarket loadout secondary"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Пистолет: {1}"
+	}
+
+	"Weapons menu zmarket loadout melee"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Ближний бой: {1}"
+	}
+
+	"Weapons menu zmarket loadout projectile"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Снаряды: {1}"
+	}
+
+	"Weapons menu zmarket loadout explosive"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Взрывчатка: {1}"
+	}
+
+	"Weapons menu zmarket loadout nvgs"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Ночное видение: {1}"
+	}
+
+	"Weapons menu zmarket loadout empty"
+	{
+		"ru"		"(Пусто)"
+	}
+
+	"Weapons menu zmarket types title"
+	{
+		"ru"		"ZMarket\nВыберите тип оружия:"
+	}
+
+	"Weapons menu zmarket types weapon type title"
+	{
+		"#format"	"{1:s}"
+		"ru"		"ZMarket\nТип оружия: {1}\n[] = Запрещено"
+	}
+
+	"Weapons menu zmarket types weapon info"
+	{
+		"#format"	"{1:s},{2:d},{3:d}"
+		"ru"		"{1} (${2})\nОсталось покупок: {3}"
+	}
+
+	"Weapons menu zmarket types weapon ammo"
+	{
+		"ru"		"Патроны"
+	}
+
+	// ===========================
+	// Hitgroups (core)
+	// ===========================
+
+	// Menu
+
+	"Hitgroups menu hitgroups title"
+	{
+		"ru"		"Управление зонами поражений\nКоманды: zr_hitgroup(_enable_all/_headshots_only)\nВыберите зону для переключения:"
+	}
+
+	"Hitgroups menu hitgroups enable all"
+	{
+		"ru"		"Включить все зоны поражений"
+	}
+
+	"Hitgroups menu hitgroups headshots only"
+	{
+		"ru"		"Только в голову"
+	}
+
+	// Commands
+
+	"Hitgroups command syntax"
+	{
+		"ru"		"Переключение или задание зоны поражений зомби, которые могут получить урон. Использование: zr_hitgroup <алиас зоны> [1/0]"
+	}
+
+	"Hitgroups command related commands"
+	{
+		"ru"		"Связанные команды: zr_hitgroup_enable_all, zr_hitgroup_headshots_only"
+	}
+
+	"Hitgroups command syntax names"
+	{
+		"ru"		"Имена зон поражений:"
+	}
+
+	"Hitgroups command successful on"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Урон для зоны поражений \"{1}\" был включен."
+	}
+
+	"Hitgroups command successful off"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Урон для зоны поражений \"{1}\" был выключен."
+	}
+
+	"Hitgroups command invalid hitgroup"
+	{
+		"#format"	"{1:s}"
+		"ru"		"\"{1}\" не является правильным алиасом зоны поражений.  Напишите zr_hitgroup для просмотра всех алиасов."
+	}
+
+	"Hitgroups command enable all successful"
+	{
+		"ru"		"Все зоны поражений зомби были открыты для получения урона."
+	}
+
+	"Hitgroups command headshots only successful"
+	{
+		"ru"		"Теперь зомби могут получать урон только при попаданиях в голову."
+	}
+
+	// ===========================
+	// ZAdmin (core)
+	// ===========================
+
+	"ZAdmin main title"
+	{
+		"ru"		"ZAdmin\nВыберите категорию:"
+	}
+
+	"ZAdmin main class multipliers"
+	{
+		"ru"		"Параметры классов"
+	}
+
+	"ZAdmin main weapons"
+	{
+		"ru"		"Управление оружием"
+	}
+
+	"ZAdmin main hitgroups"
+	{
+		"ru"		"Управление зонами поражений"
+	}
+
+	"ZAdmin main zombie"
+	{
+		"ru"		"Управление зомби"
+	}
+
+	"ZAdmin main force zspawn"
+	{
+		"ru"		"Воскресить игрока"
+	}
+
+	"ZAdmin main force ztele"
+	{
+		"ru"		"Телепортировать игрока"
+	}
+
+	// ===========================
+	// AntiStick (module)
+	// ===========================
+
+	// Commands
+
+	"AntiStick command set width syntax"
+	{
+		"ru"		"Устанавливает границы модели. (Смотрите zr_antistick_list_models) Использование: zr_antistick_set_width <модель/игрок> <ширина>"
+	}
+
+	"AntiStick command list models list"
+	{
+		"ru"		"Имя игрока:                        Модель:                                              Ширина:\n-------------------------------------------------------------------------------------------------------------"
+	}
+
+	"AntiStick command list models name"
+	{
+		"#format"	"{1:-35s},{2:-51s},{3:-.2f}"
+		"ru"		"{1} {2} {3}"
+	}
+
+	"AntiStick command set width successful"
+	{
+		"#format"	"{1:s},{2:f}"
+		"ru"		"Граниы модели \"{1}\" были изменены на \"{2}.\""
+	}
+
+	"AntiStick command set width invalid model"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Задана неверная модель/игрок: \"{1}\""
+	}
+
+	"AntiStick command set width invalid width"
+	{
+		"#format"	"{1:f}"
+		"ru"		"Задана неправильная ширина модели: \"{1}\""
+	}
+
+	// ===========================
+	// Spawn Protect (module)
+	// ===========================
+
+	// General
+
+	"Spawn protection begin"
+	{
+		"#format"	"{1:d}"
+		"ru"		"Зомби на свободе, у вас есть {1} секунд, чтобы найти безопасное место, пока вы не потеряли иммунитет."
+	}
+
+	"Spawn protection end"
+	{
+		"ru"		"Ваш иммунитет закончился."
+	}
+
+	// HUD
+
+	"Spawn Protect"
+	{
+		"#format"	"{1:d}"
+		"ru"		"Иммунитет закончится через: {1} секунд."
+	}
+
+	// ===========================
+	// ZCookies (module)
+	// ===========================
+
+	"ZCookies Menu main title"
+	{
+		"ru"		"ZCookies\nВыберите настройку:"
+	}
+
+	"ZCookies menu main auto-rebuy"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Авто-покупка: {1}"
+	}
+
+	"ZCookies menu main overlay"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Классовый оверлей: {1}"
+	}
+
+	"ZCookies zmarket loadout"
+	{
+		"ru"		"Амуниция"
+	}
+
+	// ===========================
+	// ZSpawn (module)
+	// ===========================
+
+	// General
+
+	"ZSpawn double spawn"
+	{
+		"ru"		"ZSpawn может быть использован только, когда вы поздно зашли в игру и раунд уже начался."
+	}
+
+	"AutoZspawn is disabled"
+	{
+		"ru" 		"AutoZspawn отключен"
+	}
+
+	"ZSpawn timelimit"
+	{
+		"#format"	"{1:d}"
+		"ru"		"Лимит времени ({1} секунд) на использование ZSpawn уже истек."
+	}
+
+	// Menu
+
+	"ZSpawn clients title"
+	{
+		"ru"		"Воскресить игрока (zr_zspawn_force)\nВыберите игрока:"
+	}
+
+	// Commands
+
+	"ZSpawn command force syntax"
+	{
+		"ru"		"Воскрешение игрока. Использование: zr_zspawn_force <игрок> ['0' = Сделать человеком | '1' = Сделать зомби]"
+	}
+
+	"ZSpawn command force successful"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Игрок {1} был успешно воскрешен."
+	}
+
+	"ZSpawn command force unsuccessful"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Игрок {1} не может быть воскрешен."
+	}
+
+	// ===========================
+	// ZTele (module)
+	// ===========================
+
+	// General
+
+	"ZTele restricted human"
+	{
+		"ru"		"В данный момент ZTele разрешен только людям."
+	}
+
+	"ZTele max"
+	{
+		"#format"	"{1:d}"
+		"ru"		"Вы достигли лимита использование в {1} телепортов за раунд."
+	}
+
+	"ZTele in progress"
+	{
+		"ru"		"Вы ожидаете телепортации."
+	}
+
+	"ZTele autocancel text"
+	{
+		"#format"	"{1:d}"
+		"ru"		"Телепортация отменена.  (Вы отошли на {1} футов)"
+	}
+
+	// Center Text
+
+	"ZTele countdown"
+	{
+		"#format"	"{1:d}"
+		"ru"		"Телепорт к респавну через: {1} секунд."
+	}
+
+	"ZTele autocancel centertext"
+	{
+		"ru"		"Телепортация была отменена."
+	}
+
+	"ZTele countdown end"
+	{
+		"#format"	"{1:d},{2:d}"
+		"ru"		"Телепортация завершена. (Использовано: {1}/{2})"
+	}
+
+	// Menu
+
+	"ZTele clients title"
+	{
+		"ru"		"Телепортировать игрока (zr_ztele_force)\nВыбрать игрока:"
+	}
+
+	// Commands
+
+	"ZTele command force syntax"
+	{
+		"ru"		"Телепортировать игрока. Использование: zr_ztele_force <игрок>"
+	}
+
+	"ZTele command force successful"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Игрок {1} был успешно телепортирован."
+	}
+
+	"ZTele command force unsuccessful"
+	{
+		"#format"	"{1:s}"
+		"ru"		"Игрок {1} не может быть телепортирован."
+	}
+
+	// ===========================
+	// Volumetric features (module)
+	// ===========================
+
+	"Vol Anticamp Message"
+	{
+		"ru"		"Данная зона является запрещенной. Пожалуйста, покиньте ее."
+	}
+
+	"Vol Slay"
+	{
+		"#format"	"{1:s},{2:d}"
+		"ru"		"Игрок убит \"{1}\" за отсидку в запрещенной зоне (ID: {2})."
+	}
+
+	"Vol Ignite"
+	{
+		"#format"	"{1:s},{2:d}"
+		"ru"		"Игрок подожжен \"{1}\" за отсидку в запрещенной зоне (ID: {2})."
+	}
+
+	// ===========================
+	// Repeat Kill (module)
+	// ===========================
+	
+	"Repeat killer detected"
+	{
+		"ru" 		"Обнаружен повторный убийца. Отключение респауна в этом раунде."
+	}
+	
+	"Disabling respawn"
+	{
+		"ru" 		"Отключение респауна в этом раунде."
+	}
+
+	"Repeat killer detector force toggled off"
+	{
+		"ru" 		"Сила детектора повторного убийства выключена. Повторное включение респауна в этом раунде."
+	}
+
+	"Repeat killer is already turned off"
+	{
+		"ru" 		"Repeat killer уже выключен!"
+	}
+
+	// ===========================
+	// No alone Infection (module)
+	// ===========================
+
+	"No alone Infection"
+	{
+		"ru" 		"Недостаточное количество игроков для начала заражения!"
+	}
+
+	"Infect Alone on"
+	{
+		"ru" 		"Заразить в одиночку!"
+	}
+
+	"Infect Alone off"
+	{
+		"ru" 		"Заразить в одиночку!"
+	}
+}

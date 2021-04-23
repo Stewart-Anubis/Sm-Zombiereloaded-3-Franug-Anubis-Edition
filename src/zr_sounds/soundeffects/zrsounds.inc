@@ -250,7 +250,7 @@ void ZSoundsVolumeMenuMain(int client)
 	
 		
 	// Translate each line into client's language.
-	Format(volumemenutitle, sizeof(volumemenutitle), "%t\n%t %i%t\n ", "Volume Menu Title", "Volume Current", RoundFloat(g_fClientVol[client] * 100), "Porcento");
+	Format(volumemenutitle, sizeof(volumemenutitle), "%t\n%t\n ", "Volume Menu Title", "Volume Current", RoundFloat(g_fClientVol[client] * 100));
 	Format(v100, sizeof(v100), "%t", "v100");
 	Format(v75, sizeof(v75), "%t", "v75");
 	Format(v50, sizeof(v50), "%t", "v50");
@@ -358,7 +358,7 @@ int CounToggle(int client)
 	if (Cdstate == 1)
 	{
 	// Toggle the value.
-		TranslationPrintCenterText(client, "CCountDown select 2");
+		TranslationPrintCenterText(client, "CountDown select 2");
 		TranslationPrintToChat(client, "CountDown select 2");
 		CookiesSetInt(client, g_CountDownCookie, 2);
 		return true;
@@ -366,7 +366,7 @@ int CounToggle(int client)
 	if (Cdstate == 2)
 	{
 	// Toggle the value.
-		TranslationPrintCenterText(client, "CCountDown select 0");
+		TranslationPrintCenterText(client, "CountDown select 0");
 		TranslationPrintToChat(client, "CountDown select 0");
 		CookiesSetInt(client, g_CountDownCookie, 0);
 		return true;
@@ -374,7 +374,7 @@ int CounToggle(int client)
 	else
 	{
 	// Toggle the value.
-		TranslationPrintCenterText(client, "CCountDown select 1");
+		TranslationPrintCenterText(client, "CountDown select 1");
 		TranslationPrintToChat(client, "CountDown select 1");
 		CookiesSetInt(client, g_CountDownCookie, 1);
 	}
@@ -403,13 +403,13 @@ bool ZSEToggle(int client)
 	if (zsestate)
 	{
 		TranslationPrintToChat(client, "Zombis sounds disable");
-		TranslationPrintCenterText(client, "CZombis sounds disable");
+		TranslationPrintCenterText(client, "Zombis sounds disable");
 	}
 	// If ZHP was disabled, then tell client it has been enabled.
 	else
 	{
 		TranslationPrintToChat(client, "Zombis sounds enable");
-		TranslationPrintCenterText(client, "CZombis sounds enable");
+		TranslationPrintCenterText(client, "Zombis sounds enable");
 	}
 	
 	return true;
@@ -436,13 +436,13 @@ bool ZREToggle(int client)
 	if (zrestate)
 	{
 		TranslationPrintToChat(client, "RoundEnd sounds disable");
-		TranslationPrintCenterText(client, "CRoundEnd sounds disable");
+		TranslationPrintCenterText(client, "RoundEnd sounds disable");
 	}
 	// If RoundEnd sounds was disabled, then tell client it has been enabled.
 	else
 	{
 		TranslationPrintToChat(client, "RoundEnd sounds enable");
-		TranslationPrintCenterText(client, "CRoundEnd sounds enable");
+		TranslationPrintCenterText(client, "RoundEnd sounds enable");
 	}
 	
 	return true;

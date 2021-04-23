@@ -6,129 +6,129 @@
 	
 	"Select Countdown"
 	{
-		"en"	  	"Voice Countdown:"
+		"no"	  	"Stemmetelling:"
 	}
 
 	"Volume Menu Title"
 	{
-		"en"	  	"[ZR] Sounds Volume:"
+		"no"	  	"[ZR] Høres volum:"
 	}
 	
 	"Volume Current"
 	{
 		"#format"	"{1:i}"
-		"en"	  	"Current Volume: {1}%%%"
+		"no"	  	"Nåværende volum: {1}%%%"
 	}
 
 	"v100"
 	{
-		"en"	  	"100%"
+		"no"	  	"100%"
 	}
 
 	"v75"
 	{
-		"en"	  	"75%"
+		"no"	  	"75%"
 	}
 
 	"v50"
 	{
-		"en"	  	"50%"
+		"no"	  	"50%"
 	}
 
 	"v25"
 	{
-		"en"	  	"25%"
+		"no"	  	"25%"
 	}
 
 	"v10"
 	{
-		"en"	  	"10%"
+		"no"	  	"10%"
 	}
 
 	"v05"
 	{
-		"en"	  	"5%"
+		"no"	  	"5%"
 	}
 
 	"zr sounds"
 	{
-		"en"	  	"[ZR] Sounds:"
+		"no"	  	"[ZR] Høres ut:"
 	}
 	
 	"RoundEnd_Sounds"
 	{
 		"#format"	"{1:s}"
-		"en"		"RoundEnd Songs: {1}"
+		"no"		"Sanger RoundEnd: {1}"
 	}
 	
 	"Volume updated"
 	{
-		"en"	  	"The volume will be updated on the next song."
+		"no"	  	"Volumet blir oppdatert på neste sang."
 	}
 	
 	"Volume set to"
 	{
-		"en"	  	"Volume set to: %i%."
+		"no"	  	"Volum satt til: %i%."
 	}
 	
 	"voz_1"
 	{
-		"en"	  	"Male."
+		"no"	  	"Mann."
 	}
 
 	"voz_2"
 	{
-		"en"	  	"Women."
+		"no"	  	"Kvinner."
 	}
 	
 	"voz_3"
 	{
-		"en"	  	"Disabled."
+		"no"	  	"Funksjonshemmet."
 	}
 	
 	"CountDown select 0"
 	{
-		"en"	  	"Countdown without sound."
+		"no"	  	"Nedtelling uten lyd."
 	}
 
 	"CountDown select 1"
 	{
-		"en"	  	"Countdown With Male Voice."
+		"no"	  	"Nedtelling med mannstemme."
 	}
 
 	"CountDown select 2"
 	{
-		"en"	  	"Countdown With Female Voice."
+		"no"	  	"Nedtelling med kvinnestemme."
 	}
 
 	"zr_volume"
 	{
-		"en" 		"Current Volume:"
+		"no" 		"Nåværende volum:"
 	}
 	
 	"Zombis sounds enable"
 	{
-		"en" 		"Zombie Sounds Enabled."
+		"no" 		"Zombie lyder aktivert."
 	}
 	
 	"Zombis sounds disable"
 	{
-		"en" 		"Zombie Sounds Disabled."
+		"no" 		"Zombie lyder deaktivert."
 	}
 	
 	"Zombies_Sounds"
 	{
 		"#format"	"{1:s}"
-		"en"		"Zombie Sounds: {1}"
+		"no"		"Zombie lyder: {1}"
 	}
 	
 	"RoundEnd sounds enable"
 	{
-		"en" 		"RoundEnd music enabled."
+		"no" 		"RoundEnd-musikk aktivert."
 	}
 	
 	"RoundEnd sounds disable"
 	{
-		"en" 		"RoundEnd music disabled."
+		"no" 		"RoundEnd-musikk deaktivert."
 	}
 }
