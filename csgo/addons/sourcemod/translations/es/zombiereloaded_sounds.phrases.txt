@@ -131,4 +131,9 @@
 	{
 		"es" 		"Música de RoundEnd desactivada."
 	}
+
+	"Must be player"
+	{
+		"es"		"Esta función está reservada solo para jugadores."
+	}
 }

@@ -496,6 +496,11 @@
 		"es"		"ZTele - Estas atascado?  Teleportate al punto de inicio"
 	}
 
+	"Menu main zsounds"
+	{
+		"es"		"ZSounds - Controla los sonidos de ZR."
+	}
+
 	"Menu main zmarket"
 	{
 		"es"		"ZMarket - Comprate cosas aqui"

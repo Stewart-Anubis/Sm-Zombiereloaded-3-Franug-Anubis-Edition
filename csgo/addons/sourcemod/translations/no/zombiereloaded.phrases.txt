@@ -496,6 +496,11 @@
 		"no"		"ZTele - Teleporter til startområde"
 	}
 
+	"Menu main zsounds"
+	{
+		"no"		"ZSounds - Kontroller ZR-lyder."
+	}
+
 	"Menu main zmarket"
 	{
 		"no"		"ZMarket - Endre våpeninstillinger"

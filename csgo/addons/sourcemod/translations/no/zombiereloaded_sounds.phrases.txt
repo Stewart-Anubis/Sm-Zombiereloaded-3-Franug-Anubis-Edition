@@ -131,4 +131,9 @@
 	{
 		"no" 		"RoundEnd-musikk deaktivert."
 	}
+
+	"Must be player"
+	{
+		"no"		"Denne funksjonen er kun reservert for spillere."
+	}
 }

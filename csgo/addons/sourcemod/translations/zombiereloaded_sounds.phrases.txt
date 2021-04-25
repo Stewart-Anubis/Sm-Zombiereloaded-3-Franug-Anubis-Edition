@@ -131,4 +131,9 @@
 	{
 		"en" 		"RoundEnd music disabled."
 	}
+
+	"Must be player"
+	{
+		"en"		"This feature is reserved for players only."
+	}
 }

@@ -131,4 +131,9 @@
 	{
 		"pt_p" 		"Música do RoundEnd Desativada."
 	}
+
+	"Must be player"
+	{
+		"pt_p"		"Este recurso é reservado apenas para jogadores."
+	}
 }

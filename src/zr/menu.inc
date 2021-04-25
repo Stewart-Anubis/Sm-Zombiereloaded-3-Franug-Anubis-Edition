@@ -93,6 +93,7 @@ void ZMenuMain(int client)
 	char zcookies[MENU_LINE_HUGE_LENGTH];
 	char zspawn[MENU_LINE_HUGE_LENGTH];
 	char ztele[MENU_LINE_HUGE_LENGTH];
+	char zsounds[MENU_LINE_HUGE_LENGTH];
 	char zmarket[MENU_LINE_HUGE_LENGTH];
 	
 	// Translate each line into client's language.
@@ -102,6 +103,7 @@ void ZMenuMain(int client)
 	Format(zcookies, sizeof(zcookies), "%t", "Menu main zcookies");
 	Format(zspawn, sizeof(zspawn), "%t", "Menu main zspawn");
 	Format(ztele, sizeof(ztele), "%t", "Menu main ztele");
+	Format(zsounds, sizeof(zsounds), "%t", "Menu main zsounds");
 	Format(zmarket, sizeof(zmarket), "%t", "Menu main zmarket");
 	
 	// Add items to menu.
@@ -119,6 +121,7 @@ void ZMenuMain(int client)
 	AddMenuItem(menu_main, "zcookies", zcookies);
 	AddMenuItem(menu_main, "zspawn", zspawn);
 	AddMenuItem(menu_main, "ztele", ztele);
+	AddMenuItem(menu_main, "zsounds", zsounds);
 	AddMenuItem(menu_main, "zmarket", zmarket);
 	
 	// Display menu to client.
@@ -180,8 +183,17 @@ public int ZMenuMainHandle(Handle menu, MenuAction action, int client, int slot)
 				// Copy return to resend variable.
 				resend = !ZTeleClient(client);
 			}
-			// Select ZMarket.
+			// Select ZSounds.
 			case 5:
+			{
+				// Send ZSounds menu.
+				FakeClientCommand(client, "say !zsounds");
+
+				// Don't resend this menu.
+				resend = false;
+			}
+			// Select ZMarket.
+			case 6:
 			{
 				// Send ZMarket menu.
 				resend = !ZMarketMenuMain(client);

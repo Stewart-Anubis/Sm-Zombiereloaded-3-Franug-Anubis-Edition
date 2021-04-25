@@ -496,6 +496,11 @@
 		"en"		"ZTele - Stuck?  Teleport back to spawn"
 	}
 
+	"Menu main zsounds"
+	{
+		"en"		"ZSounds - Control ZR sounds."
+	}
+
 	"Menu main zmarket"
 	{
 		"en"		"ZMarket - Customize loadouts here"

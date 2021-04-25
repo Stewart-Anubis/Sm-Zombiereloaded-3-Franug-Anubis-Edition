@@ -496,6 +496,11 @@
 		"pt_p"		"ZTele - Preso? Teleporte-se de volta para ao spawn"
 	}
 
+	"Menu main zsounds"
+	{
+		"pt_p"		"ZSounds - Controlar sons do ZR."
+	}
+
 	"Menu main zmarket"
 	{
 		"pt_p"		"ZMarket - Personalize sua armas aqui"

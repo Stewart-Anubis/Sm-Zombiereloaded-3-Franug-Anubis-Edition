@@ -496,6 +496,11 @@
 		"ru"		"ZTele - Телепорт к респавну"
 	}
 
+	"Menu main zsounds"
+	{
+		"ru"		"ZSounds - Управляйте звуками ZR."
+	}
+
 	"Menu main zmarket"
 	{
 		"ru"		"ZMarket - Выбор амуниции"
