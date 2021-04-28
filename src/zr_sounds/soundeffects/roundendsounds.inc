@@ -175,6 +175,7 @@ void RoundEndSoundsSoundFromClient(int x, const char[] soundre, float level)
 	if (IsClientInGame(x) && !IsFakeClient(x))
 	{
 		// Emit sound from client.
-		EmitSoundToClient(x, soundre, SOUND_FROM_PLAYER, SNDCHAN_AUTO, _, _, level);
+		//EmitSoundToClient(x, soundre, SOUND_FROM_PLAYER, SNDCHAN_AUTO, _, _, level);
+		EmitSoundToClient(x, soundre, SOUND_FROM_PLAYER, SNDCHAN_AUTO, SNDLEVEL_GUNFIRE, _, level);
 	}
 }
