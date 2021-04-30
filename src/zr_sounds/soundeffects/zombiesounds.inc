@@ -120,6 +120,12 @@ void ZombieSoundsOnClientSpawn(int client)
  */
 void ZombieSoundsOnClientDeath(int client)
 {
+	// If zombies sound is disabled, then stop.
+	if (!g_hCvarsList.g_bCVAR_ZOMBIES_SOUNDS)
+	{
+		return;
+	}
+
 	// If timer is running, kill it.
 	if (tSEffectsMoan[client] != INVALID_HANDLE)
 	{
@@ -159,6 +165,12 @@ void ZombieSoundsOnClientDeath(int client)
  */
 void ZombieSoundsOnClientHurt(int client)
 {
+	// If zombies sound is disabled, then stop.
+	if (!g_hCvarsList.g_bCVAR_ZOMBIES_SOUNDS)
+	{
+		return;
+	}
+
 	// If player isn't a zombie, then stop.
 	if (!InfectIsClientInfected(client))
 	{
@@ -321,6 +333,12 @@ public Action ZombieSoundsMoanTimer(Handle timer, any client)
  */
 void ZombieSoundsMoan(int client)
 {
+	// If zombies sound is disabled, then stop.
+	if (!g_hCvarsList.g_bCVAR_ZOMBIES_SOUNDS)
+	{
+		return;
+	}
+
 	// Get random moan sound.
 	char sound[SOUND_MAX_PATH];
 	ZombieSoundsGetRandomSound(sound, Moan);
@@ -336,6 +354,12 @@ void ZombieSoundsMoan(int client)
  */
 void ZombieSoundsScream(int client)
 {
+	// If zombies sound is disabled, then stop.
+	if (!g_hCvarsList.g_bCVAR_ZOMBIES_SOUNDS)
+	{
+		return;
+	}
+
 	char SoundFile[PLATFORM_MAX_PATH];
 
 	Format(SoundFile, sizeof(SoundFile), "%s%s", g_hCvarsList.g_sCVAR_ZOMBIES_SOUNDS_FILES, g_hCvarsList.g_sCVAR_INFECT_SOUND);

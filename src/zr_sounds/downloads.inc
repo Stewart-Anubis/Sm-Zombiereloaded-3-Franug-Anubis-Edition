@@ -41,6 +41,12 @@ void DownloadsLoadPreCached()
  */
 void ContDownSoundsLoad()
 {
+	// If contdown sound is disabled, then stop.
+	if (!g_hCvarsList.g_bCVAR_COUNTDOWN_SOUNDS)
+	{
+		return;
+	}
+
 	// Get infection sound.
 	char ContMamPath[PLATFORM_MAX_PATH];
 	char ContWomPath[PLATFORM_MAX_PATH];
@@ -111,6 +117,12 @@ void ContDownSoundsLoad()
  */
 void ZombiesSoundsLoad()
 {
+	// If zombies sound is disabled, then stop.
+	if (!g_hCvarsList.g_bCVAR_ZOMBIES_SOUNDS)
+	{
+		return;
+	}
+
 	// Get round end sound.
 	char ZombiesSoundsPath[PLATFORM_MAX_PATH];
 
@@ -153,6 +165,12 @@ void ZombiesSoundsLoad()
  */
 void RoundEndSoundsLoad()
 {
+	// If contdown sound is disabled, then stop.
+	if (!g_hCvarsList.g_bCVAR_COUNTDOWN_SOUNDS)
+	{
+		return;
+	}
+
 	// Get round end sound.
 	char HumansWinPath[PLATFORM_MAX_PATH];
 	char ZombieWinPath[PLATFORM_MAX_PATH];

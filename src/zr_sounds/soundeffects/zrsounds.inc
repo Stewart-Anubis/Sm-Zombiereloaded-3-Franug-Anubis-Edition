@@ -96,20 +96,20 @@ void ZrSoundsOnCookiesCached(int client)
 		// Set cookie to default value from cvar.
 		CookiesSetInt(client, g_CountDownCookie, g_hCvarsList.g_iCVAR_VOICECOUNT_DEFAULT);
 	}
-	else if(!zombisounde[0])
+	if(!zombisounde[0])
 		{
 		// Set cookie to default value from cvar.
 		CookiesSetClientCookieBool(client, g_ZombiesECookie, g_hCvarsList.g_bCVAR_ZOMBIES_SOUNDS_DEFAULT);
 	}
-	else if(!zroundende[0])
+	if(!zroundende[0])
 		{
 		// Set cookie to default value from cvar.
 		CookiesSetClientCookieBool(client, g_ZRoundEndCookie, g_hCvarsList.g_bCVAR_ROUNDEND_SOUNDS_DEFAULT);
 	}
-	else if(!volumevalue[0])
+	if(!volumevalue[0])
 	{
-		FloatToString(g_hCvarsList.g_fCVAR_VOLUME_DEFAULT, volumevalue, sizeof(volumevalue));
-		SetClientCookie(client, g_ZrSoundsCookie, volumevalue);
+		// Set cookie to default value from cvar.
+		CookiesSetFloat(client, g_ZrSoundsCookie, g_hCvarsList.g_fCVAR_VOLUME_DEFAULT);
 	}
 }
 
@@ -164,17 +164,13 @@ void ZSoundsMenuMain(int client)
 	AddMenuItem(zsounds_menu_main, "soundzombi", soundzombi, MenuGetItemDraw(g_hCvarsList.g_bCVAR_ZOMBIES_SOUNDS));
 	AddMenuItem(zsounds_menu_main, "soundrend", soundrend, MenuGetItemDraw(g_hCvarsList.g_bCVAR_ROUNDEND_SOUNDS));
 	AddMenuItem(zsounds_menu_main, "zrvolume", zrvolume);
-	AddMenuItem(zsounds_menu_main, "coundsound", coundsound);
+	AddMenuItem(zsounds_menu_main, "coundsound", coundsound, MenuGetItemDraw(g_hCvarsList.g_bCVAR_COUNTDOWN_SOUNDS));
 
 	// Create a "Back" button to the main menu.
 	SetMenuExitButton(zsounds_menu_main, true);
 	
 	// Display menu to client.
 	DisplayMenu(zsounds_menu_main, client, MENU_TIME_FOREVER);	
-	
-	//SetMenuExitButton(g_CookieMenu, true);
-	//DisplayMenu(g_CookieMenu, client, 30);
-	//return Plugin_Continue;
 }
 
 public int ZrSoundsMenuHandler(Handle menu, MenuAction action, int client, int slot)
@@ -352,6 +348,14 @@ public int VolumeMenuHandler(Handle menu, MenuAction action, int client, int slo
 //Toggle CountDown Voices.
 int CounToggle(int client)
 {
+	if (!g_hCvarsList.g_bCVAR_COUNTDOWN_SOUNDS)
+	{
+		//Tell client feature is disabled.
+		TranslationPrintToChat(client, "Feature is disabled");
+
+		return false;
+	}
+
 	// Get the cookie value.
 	int Cdstate = CookiesGetInt(client, g_CountDownCookie);
 

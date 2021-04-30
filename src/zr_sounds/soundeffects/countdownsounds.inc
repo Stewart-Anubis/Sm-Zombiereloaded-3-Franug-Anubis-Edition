@@ -27,7 +27,7 @@
 
 public int ZR_OnContdownWarningTick(int tick)
 {
-	if(tick <= 10 && tick >= 1)
+	if(tick <= 10 && tick >= 1 && g_hCvarsList.g_bCVAR_COUNTDOWN_SOUNDS)
 	{
 		// Get infection sound.
 		char ContMamPath[PLATFORM_MAX_PATH];
