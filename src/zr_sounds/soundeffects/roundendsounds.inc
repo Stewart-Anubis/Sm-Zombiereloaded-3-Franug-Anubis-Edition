@@ -102,11 +102,10 @@ void RoundEndSoundsStart(int winner)
 }
 
 // From Cliente Round end sound Zombis Wim.
-void RoundEndSoundsOnClientSoundT(int x)
+void RoundEndSoundsOnClientSoundT(int client)
 {
 	// If death sound cvar is disabled, then stop.
-	bool zrestate = CookiesGetClientCookieBool(x, g_ZRoundEndCookie);
-	float level = CookiesGetFloat(x, g_ZrSoundsCookie);
+	bool zrestate = CookiesGetClientCookieBool(client, g_ZRoundEndCookie);
 	if (!zrestate)
 	{
 		return;
@@ -116,15 +115,14 @@ void RoundEndSoundsOnClientSoundT(int x)
 	char soundre[SOUND_MAX_PATH];
 	RoundEndSoundsGetRandomSound(soundre, ZombisWimT);
 	
-	RoundEndSoundsSoundFromClient(x, soundre, level);
+	RoundEndSoundsSoundFromClient(client, soundre);
 }
 
 // From Cliente Round end sound Humans Wim.
-void RoundEndSoundsOnClientSoundCT(int x)
+void RoundEndSoundsOnClientSoundCT(int client)
 {
 	// If death sound cvar is disabled, then stop.
-	bool zrestate = CookiesGetClientCookieBool(x, g_ZRoundEndCookie);
-	float level = CookiesGetFloat(x, g_ZrSoundsCookie);
+	bool zrestate = CookiesGetClientCookieBool(client, g_ZRoundEndCookie);
 	if (!zrestate)
 	{
 		return;
@@ -134,7 +132,7 @@ void RoundEndSoundsOnClientSoundCT(int x)
 	char soundre[SOUND_MAX_PATH];
 	RoundEndSoundsGetRandomSound(soundre, HumansWinCt);
 	
-	RoundEndSoundsSoundFromClient(x, soundre, level);
+	RoundEndSoundsSoundFromClient(client, soundre);
 }
 
 bool RoundEndSoundsGetRandomSound(char[] soundre, RoundEndSounds soundtype)
@@ -170,11 +168,11 @@ bool RoundEndSoundsGetRandomSound(char[] soundre, RoundEndSounds soundtype)
 	return true;
 }
 
-void RoundEndSoundsSoundFromClient(int x, const char[] soundre, float level)
+void RoundEndSoundsSoundFromClient(int client, const char[] soundre)
 {
-	if (IsClientInGame(x) && !IsFakeClient(x))
+	if (IsClientInGame(client) && !IsFakeClient(client))
 	{
 		// Emit sound from client.
-		EmitSoundToClient(x, soundre, SOUND_FROM_PLAYER, SNDCHAN_AUTO, SNDLEVEL_FRIDGE, _, level);
+		EmitSoundToClient(client, soundre, SOUND_FROM_PLAYER, SNDCHAN_AUTO, _, _, g_hCvarsList.g_fCVAR_ROUNDEND_VOLUME);
 	}
 }

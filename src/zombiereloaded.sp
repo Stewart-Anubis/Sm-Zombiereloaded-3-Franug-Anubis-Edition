@@ -125,10 +125,12 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char []error, int err_max
 {
 	//Register the plugin library.
 	RegPluginLibrary("zombiereloaded");
-	
+
+	MarkNativeAsOptional("SetNumHitboxes");
+
 	// Load API.
 	APIInit();
-	
+
 	// Let plugin load.
 	return APLRes_Success;
 }
@@ -184,6 +186,12 @@ public void OnLibraryRemoved(const char[] name)
  */
 public void OnMapStart()
 {
+	if (FileExists("cfg/sourcemod/zombiereloaded/zombiereloaded.cfg"))
+	{
+		// Auto-exec config file .
+		ServerCommand("exec sourcemod/zombiereloaded/zombiereloaded.cfg");
+	}
+
 	// Forward event to modules.
 	ModelsLoad();
 	ZSpawnOnMapStart();

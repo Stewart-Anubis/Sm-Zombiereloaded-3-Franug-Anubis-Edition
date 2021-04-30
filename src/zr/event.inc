@@ -144,7 +144,7 @@ public Action EventRoundEnd(Handle event, const char[] name, bool dontBroadcast)
 	// Get all required event info.
 	int winner = GetEventInt(event, "winner");
 
-	CreateTimer(0.5, EventRoundEndTime, winner, TIMER_FLAG_NO_MAPCHANGE);
+	CreateTimer(0.1, EventRoundEndTime, winner, TIMER_FLAG_NO_MAPCHANGE);
 }
 
 public Action EventRoundEndTime(Handle hTimer, int winner)

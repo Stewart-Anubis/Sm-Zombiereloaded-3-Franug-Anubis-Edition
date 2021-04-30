@@ -79,6 +79,12 @@ public void OnPluginStart()
  */
 public void OnMapStart()
 {
+	if (FileExists("cfg/sourcemod/zombiereloaded/zombiereloaded_sounds.cfg"))
+	{
+		// Auto-exec config file .
+		ServerCommand("exec sourcemod/zombiereloaded/zombiereloaded_sounds.cfg");
+	}
+
 	// Forward event to modules.
 	DownloadsLoadPreCached();
 	EventInit();

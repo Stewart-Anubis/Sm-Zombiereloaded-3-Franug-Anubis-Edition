@@ -362,11 +362,11 @@ void InfectOnRoundStart()
 	ZREndTimer(tInfect);
 	ZREndTimer(tInfectCountdown);
 
-	// Prevent round end
-	ServerCommand("mp_ignore_round_win_conditions 1");
-	
 	// Tell plugin there are no zombies.
 	g_bZombieSpawned = false;
+
+	// Prevent round end
+	ServerCommand("mp_ignore_round_win_conditions 1");
 }
 
 /**
@@ -379,7 +379,7 @@ void InfectOnRoundFreezeEnd()
 	ZREndTimer(tInfectCountdown);
 
 	// Check infect timer to reset ignore conditions
-	CreateTimer(1.0, CheckRoundEnd, _, TIMER_REPEAT);
+	CreateTimer(1.0, CheckZombieSpawnedEnd, _, TIMER_REPEAT);
 	
 	// If the zombie has spawned already (had to be through admin) then stop.
 	if (g_bZombieSpawned)
@@ -1475,10 +1475,10 @@ InfectMode InfectGetModeOrFail()
 	return mode;
 }
 
-public Action CheckRoundEnd(Handle timer)
+public Action CheckZombieSpawnedEnd(Handle timer)
 {
 	// Allow round end after zombie spawned
-	if (tInfect == INVALID_HANDLE || g_bZombieSpawned)
+	if (tInfect == INVALID_HANDLE && g_bZombieSpawned)
 	{
 		ServerCommand("mp_ignore_round_win_conditions 0");
 		if(!g_bForceTeamsstarted) g_bForceTeamsstarted = true;
