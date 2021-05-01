@@ -142,7 +142,7 @@ void CvarsCreate()
 	CVAR_ROUNDEND_SOUNDS			  =	CreateConVar("zrs_roundend_sounds",	 		  "1",	 						"Enable/disable togle sounds roundend. Default '1'");
 	CVAR_ROUNDEND_HUMANS_WIN		  =	CreateConVar("zrs_files_humans_win",		  "roundend/humanswin/",		"Folder referring to the sounds of the round end. Humans win.");
 	CVAR_ROUNDEND_ZOMBIE_WIN		  =	CreateConVar("zrs_files_zombie_win",		  "roundend/zombiewin/",		"Folder referring to the sounds of the round end. Zombie win.");
-	CVAR_ROUNDEND_VOLUME	 	      =	CreateConVar("zrs_roundend_volume",	    	  "0.8",						"Volume of the roundend sound. [1.0 = Max volume | 0.0001 = Not audible | Dependency: zrs_roundend_sounds]");
+	CVAR_ROUNDEND_VOLUME	 	      =	CreateConVar("zrs_roundend_volume",	    	  "0.08",						"Volume of the roundend sound. [1.0 = Max volume | 0.0001 = Not audible | Dependency: zrs_roundend_sounds]");
 
 	// ===========================
 	// Voice ZrSounds (module)

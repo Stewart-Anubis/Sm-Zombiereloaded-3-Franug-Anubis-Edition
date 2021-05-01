@@ -51,11 +51,18 @@ void RoundEndSoundsStart(int winner)
 		return;
 	}
 	
+	// Get Volume Cvar
+	float LevelVolume = g_hCvarsList.g_fCVAR_ROUNDEND_VOLUME;
+	
 	switch(winner)
 	{
 		// Show "zombies win" RoundSoundsWim
 		case CS_TEAM_T:
 		{	
+			// Get random death sound.
+			char soundre[SOUND_MAX_PATH];
+			RoundEndSoundsGetRandomSound(soundre, ZombisWimT);
+
 			// x = client index.
 			for (int x = 1; x <= MaxClients; x++)
 			{
@@ -70,12 +77,17 @@ void RoundEndSoundsStart(int winner)
 				{
 					continue;
 				}
-				RoundEndSoundsOnClientSoundT(x);
+				// From Cliente Round end sound Zombis Wim.
+				RoundEndSoundsSoundFromClient(x, soundre, LevelVolume);
 			}
 		}
 		// Show "humans win" RoundSoundsWim
 		case CS_TEAM_CT:
 		{
+			// Get random death sound.
+			char soundre[SOUND_MAX_PATH];
+			RoundEndSoundsGetRandomSound(soundre, HumansWinCt);
+
 			// x = client index.
 			for (int x = 1; x <= MaxClients; x++)
 			{
@@ -90,7 +102,8 @@ void RoundEndSoundsStart(int winner)
 				{
 					continue;
 				}
-				RoundEndSoundsOnClientSoundCT(x);
+				// From Cliente Round end sound Humans Wim.
+				RoundEndSoundsSoundFromClient(x, soundre, LevelVolume);
 			}
 		}
 		// Show no overlay.
@@ -99,40 +112,6 @@ void RoundEndSoundsStart(int winner)
 			//strcopy(overlaypath, sizeof(overlaypath), "");
 		}
 	}
-}
-
-// From Cliente Round end sound Zombis Wim.
-void RoundEndSoundsOnClientSoundT(int client)
-{
-	// If death sound cvar is disabled, then stop.
-	bool zrestate = CookiesGetClientCookieBool(client, g_ZRoundEndCookie);
-	if (!zrestate)
-	{
-		return;
-	}
-	
-	// Get random death sound.
-	char soundre[SOUND_MAX_PATH];
-	RoundEndSoundsGetRandomSound(soundre, ZombisWimT);
-	
-	RoundEndSoundsSoundFromClient(client, soundre);
-}
-
-// From Cliente Round end sound Humans Wim.
-void RoundEndSoundsOnClientSoundCT(int client)
-{
-	// If death sound cvar is disabled, then stop.
-	bool zrestate = CookiesGetClientCookieBool(client, g_ZRoundEndCookie);
-	if (!zrestate)
-	{
-		return;
-	}
-	
-	// Get random death sound.
-	char soundre[SOUND_MAX_PATH];
-	RoundEndSoundsGetRandomSound(soundre, HumansWinCt);
-	
-	RoundEndSoundsSoundFromClient(client, soundre);
 }
 
 bool RoundEndSoundsGetRandomSound(char[] soundre, RoundEndSounds soundtype)
@@ -168,11 +147,17 @@ bool RoundEndSoundsGetRandomSound(char[] soundre, RoundEndSounds soundtype)
 	return true;
 }
 
-void RoundEndSoundsSoundFromClient(int client, const char[] soundre)
+void RoundEndSoundsSoundFromClient(int client, const char[] soundre, float level = 1.0)
 {
 	if (IsClientInGame(client) && !IsFakeClient(client))
 	{
-		// Emit sound from client.
-		EmitSoundToClient(client, soundre, SOUND_FROM_PLAYER, SNDCHAN_AUTO, _, _, g_hCvarsList.g_fCVAR_ROUNDEND_VOLUME);
+		// Get Client Zrsounds
+		bool zrestate = CookiesGetClientCookieBool(client, g_ZRoundEndCookie);
+		// If client is disabled Sound, then stop.
+		if (zrestate)
+		{
+			// Emit sound from client.
+			EmitSoundToClient(client, soundre, _, SNDCHAN_AUTO, _, _, level);
+		}
 	}
 }
