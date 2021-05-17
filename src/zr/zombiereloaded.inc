@@ -529,3 +529,10 @@ stock bool Entity_HasChildren(int entity)
 	
 	return false;
 }
+
+stock bool IsValidClient(int client, bool bzrAllowBots = false, bool bzrAllowDead = true)
+{
+	if (!(1 <= client <= MaxClients) || !IsClientInGame(client) || (IsFakeClient(client) && !bzrAllowBots) || IsClientSourceTV(client) || IsClientReplay(client) || (!bzrAllowDead && !IsPlayerAlive(client)))
+		return false;
+	return true;
+}

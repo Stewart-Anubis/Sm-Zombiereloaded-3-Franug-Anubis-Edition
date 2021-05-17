@@ -43,7 +43,9 @@ void ZCookiesMenuMain(int client)
 {
 	// Create menu handle.
 	Handle zcookies_menu_main = CreateMenu(ZCookiesMenuMainHandle);
-	
+	SendConVarValue(client, g_hMp_Maxmoney, "0");
+	SendConVarValue(client, g_hSv_Disable_Radar, "1");
+
 	// Make client global translations target.
 	SetGlobalTransTarget(client);
 	
@@ -144,6 +146,11 @@ public int ZCookiesMenuMainHandle(Handle menu, MenuAction action, int client, in
 	if (action == MenuAction_End)
 	{
 		CloseHandle(menu);
+	}
+	if (action == MenuAction_Cancel && slot != MenuCancel_ExitBack && IsValidClient(client))
+	{
+		SendConVarValue(client, g_hMp_Maxmoney, g_sValue_Mp_Maxmoney);
+		SendConVarValue(client, g_hSv_Disable_Radar, g_sValue_Sv_Disable_Radar);
 	}
 }
 

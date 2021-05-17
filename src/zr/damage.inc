@@ -47,6 +47,11 @@
  */
 
 /**
+ * Low Speed Zombies Array.
+ */
+Handle g_hTimers_Slow[MAXPLAYERS + 1] = INVALID_HANDLE;
+
+/**
  * Array to store TraceAttack HookIDs.
  */
 int g_iDamageTraceAttackHookID[MAXPLAYERS + 1] = {-1, ...};
@@ -136,6 +141,12 @@ void DamageOnClientDisconnect(int client)
 		SDKUnhook(client, SDKHook_OnTakeDamage, DamageOnTakeDamage);
 
 		g_iDamageOnTakeDamageHookID[client] = -1;
+	}
+
+	if (g_hTimers_Slow[client] != INVALID_HANDLE)
+    {
+		KillTimer(g_hTimers_Slow[client]);
+		g_hTimers_Slow[client] = INVALID_HANDLE;
 	}
 }
 
@@ -357,13 +368,28 @@ public Action DamageOnTakeDamage(int client, int &attacker, int &inflictor, floa
 		{
 			return ACTION_CONTINUE;
 		}
+		// Slow down zombie on fire
+		if (g_hCvarsList.g_bCVAR_FIRE_SLOW_SPEED && IsPlayerAlive(client) && InfectIsClientInfected(client))
+		{
+			if (g_hTimers_Slow[client] == INVALID_HANDLE)
+			{
+				SetEntPropFloat(client, Prop_Data, "m_flLaggedMovementValue", g_hCvarsList.g_fCVAR_FIRE_MOVEMENT_SPEED);
+				g_hTimers_Slow[client] = CreateTimer(0.3, StopMovementSlow, client);
+			}
+			else
+			{
+				KillTimer(g_hTimers_Slow[client]);
+				g_hTimers_Slow[client] = INVALID_HANDLE;
 		
+				SetEntPropFloat(client, Prop_Data, "m_flLaggedMovementValue", g_hCvarsList.g_fCVAR_FIRE_MOVEMENT_SPEED);
+				g_hTimers_Slow[client] = CreateTimer(0.3, StopMovementSlow, client);
+			}
+		}		
 		// If attacker isn't valid, then allow damage.
 		if (!ZRIsClientValid(attacker))
 		{
 			return ACTION_CONTINUE;
 		}
-		
 		// If client is a zombie, then allow damage.
 		if (InfectIsClientInfected(client))
 		{
@@ -439,4 +465,15 @@ public Action DamageSuicideIntercept(int client, int argc)
 	
 	// Block command.
 	return Plugin_Handled;
+}
+
+// Restore zombie speed
+public Action StopMovementSlow(Handle timer, any client)
+{
+	g_hTimers_Slow[client] = INVALID_HANDLE;
+	if(IsClientInGame(client) && IsPlayerAlive(client))
+	{
+		float f_Speed = ClassPlayerCache[client][Class_Speed];
+		SetEntPropFloat(client, Prop_Data, "m_flLaggedMovementValue", f_Speed/300.0);
+	}
 }

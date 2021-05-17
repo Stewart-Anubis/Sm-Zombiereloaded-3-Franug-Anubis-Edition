@@ -76,6 +76,8 @@ bool ZAdminMenu(int client)
 	
 	// Create menu handle.
 	Handle menu_zadmin = CreateMenu(ZAdminMenuHandle);
+	SendConVarValue(client, g_hMp_Maxmoney, "0");
+	SendConVarValue(client, g_hSv_Disable_Radar, "1");
 	
 	// Set translation target as the client.
 	SetGlobalTransTarget(client);
@@ -186,6 +188,11 @@ public int ZAdminMenuHandle(Handle menu_zadmin, MenuAction action, int client, i
 		{
 			ZAdminMenu(client);
 		}
+	}
+	if (action == MenuAction_Cancel && slot != MenuCancel_ExitBack && IsValidClient(client))
+	{
+		SendConVarValue(client, g_hMp_Maxmoney, g_sValue_Mp_Maxmoney);
+		SendConVarValue(client, g_hSv_Disable_Radar, g_sValue_Sv_Disable_Radar);
 	}
 	
 	if (action == MenuAction_Cancel)

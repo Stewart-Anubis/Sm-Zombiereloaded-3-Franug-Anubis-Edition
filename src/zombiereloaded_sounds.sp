@@ -35,7 +35,7 @@
 
 #pragma newdecls required
 
-#define VERSION "3.7-A Anubis edition"
+#define VERSION "3.7.1 Anubis edition"
 
 #include "zr_sounds/zombiereloaded"
 
@@ -79,12 +79,6 @@ public void OnPluginStart()
  */
 public void OnMapStart()
 {
-	if (FileExists("cfg/sourcemod/zombiereloaded/zombiereloaded_sounds.cfg"))
-	{
-		// Auto-exec config file .
-		ServerCommand("exec sourcemod/zombiereloaded/zombiereloaded_sounds.cfg");
-	}
-
 	// Forward event to modules.
 	DownloadsLoadPreCached();
 	EventInit();

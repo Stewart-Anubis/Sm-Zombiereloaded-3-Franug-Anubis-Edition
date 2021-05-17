@@ -41,6 +41,8 @@
 void ClassMenuMain(int client)
 {
 	Handle menu = CreateMenu(ClassMenuMainHandle);
+	SendConVarValue(client, g_hMp_Maxmoney, "0");
+	SendConVarValue(client, g_hSv_Disable_Radar, "1");
 	
 	SetGlobalTransTarget(client);
 	
@@ -243,6 +245,11 @@ public int ClassMenuMainHandle(Handle menu, MenuAction action, int client, int s
 			}
 		}
 	}
+	if (action == MenuAction_Cancel && slot != MenuCancel_ExitBack && IsValidClient(client))
+	{
+		SendConVarValue(client, g_hMp_Maxmoney, g_sValue_Mp_Maxmoney);
+		SendConVarValue(client, g_hSv_Disable_Radar, g_sValue_Sv_Disable_Radar);
+	}
 }
 
 /* ------------------------------------
@@ -261,6 +268,8 @@ public int ClassMenuMainHandle(Handle menu, MenuAction action, int client, int s
 void ClassMenuSelect(int client, int teamid)
 {
 	Handle menu = CreateMenu(ClassMenuSelectHandle);
+	SendConVarValue(client, g_hMp_Maxmoney, "0");
+	SendConVarValue(client, g_hSv_Disable_Radar, "1");
 	int arraycount;
 	int classindex;
 	
@@ -355,6 +364,7 @@ public int ClassMenuSelectHandle(Handle menu, MenuAction action, int client, int
 			
 			// Select (and eventually apply) class.
 			ClassSelectClientClass(client, classIndex);
+			ClassMenuMain(client);
 		}
 		case MenuAction_Cancel:
 		{
@@ -373,6 +383,11 @@ public int ClassMenuSelectHandle(Handle menu, MenuAction action, int client, int
 			// Stop so menu doesn't reopen.
 			return;
 		}
+	}
+	if (action == MenuAction_Cancel && slot != MenuCancel_ExitBack && IsValidClient(client))
+	{
+		SendConVarValue(client, g_hMp_Maxmoney, g_sValue_Mp_Maxmoney);
+		SendConVarValue(client, g_hSv_Disable_Radar, g_sValue_Sv_Disable_Radar);
 	}
 	
 	// Redisplay the main class menu if autoclose is disabled.
@@ -405,6 +420,8 @@ bool ClassTeamSelect(int client)
 	
 	// Create menu.
 	Handle menu = CreateMenu(ClassTeamSelectHandle);
+	SendConVarValue(client, g_hMp_Maxmoney, "0");
+	SendConVarValue(client, g_hSv_Disable_Radar, "1");
 	
 	char title[MENU_LINE_TITLE_LENGTH];
 	char zombies[MENU_LINE_SMALL_LENGTH];
@@ -465,6 +482,11 @@ public int ClassTeamSelectHandle(Handle menu, MenuAction action, int client, int
 			}
 		}
 	}
+	if (action == MenuAction_Cancel && slot != MenuCancel_ExitBack && IsValidClient(client))
+	{
+		SendConVarValue(client, g_hMp_Maxmoney, g_sValue_Mp_Maxmoney);
+		SendConVarValue(client, g_hSv_Disable_Radar, g_sValue_Sv_Disable_Radar);
+	}
 }
 
 /* ------------------------------------
@@ -483,6 +505,8 @@ void ClassMultiplierSelectMenu(int client)
 {
 	// Create menu.
 	Handle menu = CreateMenu(ClassMultiplierSelectHandle);
+	SendConVarValue(client, g_hMp_Maxmoney, "0");
+	SendConVarValue(client, g_hSv_Disable_Radar, "1");
 	
 	int teamid = ClassAdminTeamSelected[client];
 	bool zombiesselected = view_as<bool>((teamid == ZR_CLASS_TEAM_ZOMBIES));
@@ -626,6 +650,11 @@ public int ClassMultiplierSelectHandle(Handle menu, MenuAction action, int clien
 			}
 		}
 	}
+	if (action == MenuAction_Cancel && slot != MenuCancel_ExitBack && IsValidClient(client))
+	{
+		SendConVarValue(client, g_hMp_Maxmoney, g_sValue_Mp_Maxmoney);
+		SendConVarValue(client, g_hSv_Disable_Radar, g_sValue_Sv_Disable_Radar);
+	}
 }
 
 /* ------------------------------------
@@ -644,6 +673,8 @@ void ClassMultiplierMenu(int client, ClassMultipliers attribute)
 	ClassAdminAttributeSelected[client] = attribute;
 	
 	Handle menu = CreateMenu(ClassMultiplierHandle);
+	SendConVarValue(client, g_hMp_Maxmoney, "0");
+	SendConVarValue(client, g_hSv_Disable_Radar, "1");
 	
 	char title[MENU_LINE_TITLE_LENGTH];
 	char attributename[MENU_LINE_REG_LENGTH];
@@ -715,6 +746,11 @@ public int ClassMultiplierHandle(Handle menu, MenuAction action, int client, int
 				ClassMultiplierSelectMenu(client);
 			}
 		}
+	}
+	if (action == MenuAction_Cancel && slot != MenuCancel_ExitBack && IsValidClient(client))
+	{
+		SendConVarValue(client, g_hMp_Maxmoney, g_sValue_Mp_Maxmoney);
+		SendConVarValue(client, g_hSv_Disable_Radar, g_sValue_Sv_Disable_Radar);
 	}
 }
 

@@ -41,9 +41,10 @@
 #define ACTION_CHANGED	  Plugin_Changed
 #define ACTION_HANDLED	  Plugin_Handled
 
-#define VERSION "3.7-A Anubis edition"
+#define VERSION "3.7.1 Anubis edition"
 
 bool g_allweapons[MAXPLAYERS + 1];
+bool g_bcvar = false;
 
 // Header includes.
 #include "zr/log.h"
@@ -105,7 +106,7 @@ bool g_allweapons[MAXPLAYERS + 1];
 public Plugin myinfo =
 {
 	name = "Zombie:Reloaded",
-	author = "Greyscale | Richard Helgeby and Franc1sco franug ,Anúbis",
+	author = "Greyscale | Richard Helgeby and Franc1sco franug ,Anubis",
 	description = "Infection/survival style gameplay",
 	version = VERSION,
 	url = "https://github.com/Stewart-Anubis/Sm-Zombiereloaded-3-Franug-Anubis-Edition"
@@ -186,12 +187,6 @@ public void OnLibraryRemoved(const char[] name)
  */
 public void OnMapStart()
 {
-	if (FileExists("cfg/sourcemod/zombiereloaded/zombiereloaded.cfg"))
-	{
-		// Auto-exec config file .
-		ServerCommand("exec sourcemod/zombiereloaded/zombiereloaded.cfg");
-	}
-
 	// Forward event to modules.
 	ModelsLoad();
 	ZSpawnOnMapStart();

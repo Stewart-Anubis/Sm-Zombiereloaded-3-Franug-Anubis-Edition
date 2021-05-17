@@ -120,6 +120,8 @@ void ZSoundsMenuMain(int client)
 	
 	// Create menu handle.
 	Handle zsounds_menu_main = CreateMenu(ZrSoundsMenuHandler);
+	SendConVarValue(client, g_hMp_Maxmoney, "0");
+	SendConVarValue(client, g_hSv_Disable_Radar, "1");
 	
 	// Make client global translations target.
 	SetGlobalTransTarget(client);
@@ -167,7 +169,7 @@ void ZSoundsMenuMain(int client)
 	AddMenuItem(zsounds_menu_main, "coundsound", coundsound, MenuGetItemDraw(g_hCvarsList.g_bCVAR_COUNTDOWN_SOUNDS));
 
 	// Create a "Back" button to the main menu.
-	SetMenuExitButton(zsounds_menu_main, true);
+	SetMenuExitBackButton(zsounds_menu_main, true);
 	
 	// Display menu to client.
 	DisplayMenu(zsounds_menu_main, client, MENU_TIME_FOREVER);	
@@ -213,9 +215,20 @@ public int ZrSoundsMenuHandler(Handle menu, MenuAction action, int client, int s
 			ZSoundsMenuMain(client);
 		}
 	}
+	if (action == MenuAction_Cancel && slot != MenuCancel_ExitBack && IsValidClient(client))
+	{
+		SendConVarValue(client, g_hMp_Maxmoney, g_sValue_Mp_Maxmoney);
+		SendConVarValue(client, g_hSv_Disable_Radar, g_sValue_Sv_Disable_Radar);
+	}
 	// Client closed the menu.
 	if (action == MenuAction_Cancel)
-	{		// Client hit "Back" button.
+	{
+		// Client hit "Back" button.
+		if (slot == MenuCancel_ExitBack)
+		{
+			// Send Zmenu menu.
+			FakeClientCommand(client, "say !zmenu");
+		}
 	}
 	// Client exited menu.
 	if (action == MenuAction_End)
@@ -232,6 +245,8 @@ void ZSoundsVolumeMenuMain(int client)
 	
 	// Create menu handle.
 	Handle Volume_Menu_Main = CreateMenu(VolumeMenuHandler);
+	SendConVarValue(client, g_hMp_Maxmoney, "0");
+	SendConVarValue(client, g_hSv_Disable_Radar, "1");
 	
 	// Make client global translations target.
 	SetGlobalTransTarget(client);
@@ -326,9 +341,13 @@ public int VolumeMenuHandler(Handle menu, MenuAction action, int client, int slo
 			ZSoundsVolumeMenuMain(client);
 		}
 	}
-
-		
-		// Client closed the menu.
+	// Client closed the menu.
+	if (action == MenuAction_Cancel && slot != MenuCancel_ExitBack && IsValidClient(client))
+	{
+		SendConVarValue(client, g_hMp_Maxmoney, g_sValue_Mp_Maxmoney);
+		SendConVarValue(client, g_hSv_Disable_Radar, g_sValue_Sv_Disable_Radar);
+	}
+	// Client closed the menu.
 	if (action == MenuAction_Cancel)
 	{
 		// Client hit "Back" button.

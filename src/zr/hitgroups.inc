@@ -364,6 +364,8 @@ bool HitgroupsMenuHitgroups(int client)
 	
 	// Create menu handle.
 	Handle menu_hitgroups = CreateMenu(HitgroupsMenuHitgroupsHandle);
+	SendConVarValue(client, g_hMp_Maxmoney, "0");
+	SendConVarValue(client, g_hSv_Disable_Radar, "1");
 	
 	// Set client as translation target.
 	SetGlobalTransTarget(client);
@@ -478,6 +480,11 @@ public int HitgroupsMenuHitgroupsHandle(Handle menu_hitgroups, MenuAction action
 		
 		// Re-send menu.
 		HitgroupsMenuHitgroups(client);
+	}
+	if (action == MenuAction_Cancel && slot != MenuCancel_ExitBack && IsValidClient(client))
+	{
+		SendConVarValue(client, g_hMp_Maxmoney, g_sValue_Mp_Maxmoney);
+		SendConVarValue(client, g_hSv_Disable_Radar, g_sValue_Sv_Disable_Radar);
 	}
 	// Client closed the menu.
 	if (action == MenuAction_Cancel)

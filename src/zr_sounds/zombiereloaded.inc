@@ -151,3 +151,10 @@ void ZRBoolToString(bool value, char[] output, int maxlen)
 		strcopy(output, maxlen, "0");
 	}
 }
+
+stock bool IsValidClient(int client, bool bzrAllowBots = false, bool bzrAllowDead = true)
+{
+	if (!(1 <= client <= MaxClients) || !IsClientInGame(client) || (IsFakeClient(client) && !bzrAllowBots) || IsClientSourceTV(client) || IsClientReplay(client) || (!bzrAllowDead && !IsPlayerAlive(client)))
+		return false;
+	return true;
+}

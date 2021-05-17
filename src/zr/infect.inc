@@ -366,7 +366,9 @@ void InfectOnRoundStart()
 	g_bZombieSpawned = false;
 
 	// Prevent round end
-	ServerCommand("mp_ignore_round_win_conditions 1");
+	g_bcvar = false;
+	//ServerCommand("mp_ignore_round_win_conditions 1");
+	SetConVarInt(g_hIgnoreRoundWinConditions, CVARS_IGNORE_ROUND_WIN_CONDITIONS_LOCKED);
 }
 
 /**
@@ -987,6 +989,8 @@ void InfectMenuClients(int client)
 {
 	// Create menu handle.
 	Handle menu_infect_clients = CreateMenu(InfectMenuClientsHandle);
+	SendConVarValue(client, g_hMp_Maxmoney, "0");
+	SendConVarValue(client, g_hSv_Disable_Radar, "1");
 	
 	// Set client as translation target.
 	SetGlobalTransTarget(client);
@@ -1077,6 +1081,11 @@ public int InfectMenuClientsHandle(Handle menu_infect_clients, MenuAction action
 		
 		// Re-send menu.
 		InfectMenuClients(client);
+	}
+	if (action == MenuAction_Cancel && slot != MenuCancel_ExitBack && IsValidClient(client))
+	{
+		SendConVarValue(client, g_hMp_Maxmoney, g_sValue_Mp_Maxmoney);
+		SendConVarValue(client, g_hSv_Disable_Radar, g_sValue_Sv_Disable_Radar);
 	}
 	// Client closed the menu.
 	if (action == MenuAction_Cancel)
@@ -1480,7 +1489,9 @@ public Action CheckZombieSpawnedEnd(Handle timer)
 	// Allow round end after zombie spawned
 	if (tInfect == INVALID_HANDLE && g_bZombieSpawned)
 	{
-		ServerCommand("mp_ignore_round_win_conditions 0");
+		g_bcvar = true;
+		//ServerCommand("mp_ignore_round_win_conditions 0");
+		SetConVarInt(g_hIgnoreRoundWinConditions, CVARS_IGNORE_ROUND_WIN_CONDITIONS_ZOMBIESPAWNED_LOCKED);
 		if(!g_bForceTeamsstarted) g_bForceTeamsstarted = true;
 		return Plugin_Stop;
 	}

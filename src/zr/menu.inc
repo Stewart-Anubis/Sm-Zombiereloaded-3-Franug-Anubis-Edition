@@ -83,6 +83,8 @@ void ZMenuMain(int client)
 {
 	// Create menu handle.
 	Handle menu_main = CreateMenu(ZMenuMainHandle);
+	SendConVarValue(client, g_hMp_Maxmoney, "0");
+	SendConVarValue(client, g_hSv_Disable_Radar, "1");
 	
 	SetGlobalTransTarget(client);
 	
@@ -205,6 +207,11 @@ public int ZMenuMainHandle(Handle menu, MenuAction action, int client, int slot)
 		{
 			ZMenuMain(client);
 		}
+	}
+	if (action == MenuAction_Cancel && slot != MenuCancel_ExitBack && IsValidClient(client))
+	{
+		SendConVarValue(client, g_hMp_Maxmoney, g_sValue_Mp_Maxmoney);
+		SendConVarValue(client, g_hSv_Disable_Radar, g_sValue_Sv_Disable_Radar);
 	}
 	// Client exited menu.
 	if (action == MenuAction_End)

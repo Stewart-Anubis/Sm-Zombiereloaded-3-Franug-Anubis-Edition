@@ -30,6 +30,9 @@
  */
 #define CVARS_AUTOTEAMBALANCE_LOCKED 0
 #define CVARS_LIMITTEAMS_LOCKED 0
+#define CVARS_TEAMMATES_ARE_ENEMIES_LOCKED 0
+#define CVARS_IGNORE_ROUND_WIN_CONDITIONS_LOCKED 1
+#define CVARS_IGNORE_ROUND_WIN_CONDITIONS_ZOMBIESPAWNED_LOCKED 0
 /**
  * @endsection
  */
@@ -82,6 +85,8 @@ ConVar CVAR_DAMAGE_HITGROUPS = null;
 ConVar CVAR_DAMAGE_BLOCK_FF = null;
 ConVar CVAR_DAMAGE_BLOCK_BLAST = null;
 ConVar CVAR_DAMAGE_BLOCK_FIRE = null;
+ConVar CVAR_FIRE_SLOW_SPEED = null;
+ConVar CVAR_FIRE_MOVEMENT_SPEED = null;
 ConVar CVAR_DAMAGE_SUICIDE_ZOMBIE = null;
 ConVar CVAR_DAMAGE_SUICIDE_MZOMBIE = null;
 ConVar CVAR_DAMAGE_SUICIDE_HUMAN = null;
@@ -219,6 +224,8 @@ enum struct CvarsList
 	bool g_bCVAR_DAMAGE_BLOCK_FF;
 	bool g_bCVAR_DAMAGE_BLOCK_BLAST;
 	bool g_bCVAR_DAMAGE_BLOCK_FIRE;
+	bool g_bCVAR_FIRE_SLOW_SPEED;
+	float g_fCVAR_FIRE_MOVEMENT_SPEED;
 	bool g_bCVAR_DAMAGE_SUICIDE_ZOMBIE;
 	bool g_bCVAR_DAMAGE_SUICIDE_MZOMBIE;
 	bool g_bCVAR_DAMAGE_SUICIDE_HUMAN;
@@ -320,6 +327,14 @@ CvarsList g_hCvarsList;
  */
 Handle g_hAutoTeamBalance = INVALID_HANDLE;
 Handle g_hLimitTeams = INVALID_HANDLE;
+Handle g_hIgnoreRoundWinConditions = INVALID_HANDLE;
+Handle g_hTeammatesAreEnemies = INVALID_HANDLE;
+Handle g_hMp_Maxmoney = INVALID_HANDLE;
+Handle g_hSv_Disable_Radar = INVALID_HANDLE;
+
+char g_sValue_Mp_Maxmoney[10];
+char g_sValue_Sv_Disable_Radar[10];
+
 //Handle g_hRestartGame = INVALID_HANDLE;
 /**
  * @endsection
@@ -333,6 +348,10 @@ void CvarsInit()
 	// Retrieve handles of CS:S cvars.
 	g_hAutoTeamBalance = FindConVar("mp_autoteambalance");
 	g_hLimitTeams = FindConVar("mp_limitteams");
+	g_hIgnoreRoundWinConditions = FindConVar("mp_ignore_round_win_conditions");
+	g_hTeammatesAreEnemies = FindConVar("mp_teammates_are_enemies");
+	g_hMp_Maxmoney = FindConVar("mp_maxmoney");
+	g_hSv_Disable_Radar = FindConVar("sv_disable_radar");
 	//g_hRestartGame = FindConVar("mp_restartgame");
 	
 	// Create zombiereloaded cvars.
@@ -479,6 +498,8 @@ void CvarsCreate()
 	CVAR_DAMAGE_BLOCK_FF				  =	CreateConVar("zr_damage_block_ff",		 "1",							"Block friendly fire.");
 	CVAR_DAMAGE_BLOCK_BLAST			   =	CreateConVar("zr_damage_block_blast",	  "1",							"Block blast damage inflicted on self or teammates.");
 	CVAR_DAMAGE_BLOCK_FIRE				=	CreateConVar("zr_damage_block_fire",		 "1",							"Block fire damage inflicted on self or teammates.");
+	CVAR_FIRE_SLOW_SPEED				= CreateConVar("zr_damage_fire_slow_speed", "1",							"Slow zombie on fire.[Dependency: Human Attribute 'has_napalm']");
+	CVAR_FIRE_MOVEMENT_SPEED			 = CreateConVar("zr_damage_fire_movement_speed", "0.5",							"Speed Applied to the zombie on fire. [Dependency: zr_damage_fire_slow_speed]");
 
 	// Suicide Intercept
 	CVAR_DAMAGE_SUICIDE_ZOMBIE			=	CreateConVar("zr_damage_suicide_zombie",   "0",									"Intercept suicide commands attempted by zombies.");
@@ -679,6 +700,8 @@ void CvarsCreate()
 	g_hCvarsList.g_bCVAR_DAMAGE_BLOCK_FF = CVAR_DAMAGE_BLOCK_FF.BoolValue;
 	g_hCvarsList.g_bCVAR_DAMAGE_BLOCK_BLAST = CVAR_DAMAGE_BLOCK_BLAST.BoolValue;
 	g_hCvarsList.g_bCVAR_DAMAGE_BLOCK_FIRE = CVAR_DAMAGE_BLOCK_FIRE.BoolValue;
+	g_hCvarsList.g_bCVAR_FIRE_SLOW_SPEED = CVAR_FIRE_SLOW_SPEED.BoolValue;
+	g_hCvarsList.g_fCVAR_FIRE_MOVEMENT_SPEED = CVAR_FIRE_MOVEMENT_SPEED.FloatValue;
 	g_hCvarsList.g_bCVAR_DAMAGE_SUICIDE_ZOMBIE = CVAR_DAMAGE_SUICIDE_ZOMBIE.BoolValue;
 	g_hCvarsList.g_bCVAR_DAMAGE_SUICIDE_MZOMBIE = CVAR_DAMAGE_SUICIDE_MZOMBIE.BoolValue;
 	g_hCvarsList.g_bCVAR_DAMAGE_SUICIDE_HUMAN = CVAR_DAMAGE_SUICIDE_HUMAN.BoolValue;
@@ -816,6 +839,8 @@ void CvarsCreate()
 	CVAR_DAMAGE_BLOCK_FF.AddChangeHook(ConVarChange);
 	CVAR_DAMAGE_BLOCK_BLAST.AddChangeHook(ConVarChange);
 	CVAR_DAMAGE_BLOCK_FIRE.AddChangeHook(ConVarChange);
+	CVAR_FIRE_SLOW_SPEED.AddChangeHook(ConVarChange);
+	CVAR_FIRE_MOVEMENT_SPEED.AddChangeHook(ConVarChange);
 	CVAR_DAMAGE_SUICIDE_ZOMBIE.AddChangeHook(ConVarChange);
 	CVAR_DAMAGE_SUICIDE_MZOMBIE.AddChangeHook(ConVarChange);
 	CVAR_DAMAGE_SUICIDE_HUMAN.AddChangeHook(ConVarChange);
@@ -912,11 +937,9 @@ void CvarsCreate()
 		// Auto-exec config file .
 		ServerCommand("exec sourcemod/zombiereloaded/zombiereloaded.cfg");
 	}
-	else
-	{
-		// Auto-generate config file if it doesn't exist, then execute.
-		AutoExecConfig(true, "zombiereloaded", "sourcemod/zombiereloaded");
-	}
+	// Auto-generate config file if it doesn't exist, then execute.
+	AutoExecConfig(true, "zombiereloaded", "sourcemod/zombiereloaded");
+	ConfigLoad();
 }
 
 public void ConVarChange(ConVar convar, char[] oldValue, char[] newValue)
@@ -968,6 +991,8 @@ public void ConVarChange(ConVar convar, char[] oldValue, char[] newValue)
 	g_hCvarsList.g_bCVAR_DAMAGE_BLOCK_FF = CVAR_DAMAGE_BLOCK_FF.BoolValue;
 	g_hCvarsList.g_bCVAR_DAMAGE_BLOCK_BLAST = CVAR_DAMAGE_BLOCK_BLAST.BoolValue;
 	g_hCvarsList.g_bCVAR_DAMAGE_BLOCK_FIRE = CVAR_DAMAGE_BLOCK_FIRE.BoolValue;
+	g_hCvarsList.g_bCVAR_FIRE_SLOW_SPEED = CVAR_FIRE_SLOW_SPEED.BoolValue;
+	g_hCvarsList.g_fCVAR_FIRE_MOVEMENT_SPEED = CVAR_FIRE_MOVEMENT_SPEED.FloatValue;
 	g_hCvarsList.g_bCVAR_DAMAGE_SUICIDE_ZOMBIE = CVAR_DAMAGE_SUICIDE_ZOMBIE.BoolValue;
 	g_hCvarsList.g_bCVAR_DAMAGE_SUICIDE_MZOMBIE = CVAR_DAMAGE_SUICIDE_MZOMBIE.BoolValue;
 	g_hCvarsList.g_bCVAR_DAMAGE_SUICIDE_HUMAN = CVAR_DAMAGE_SUICIDE_HUMAN.BoolValue;
@@ -1072,6 +1097,8 @@ Action CvarsHook(bool unhook = false)
 		// Unhook all cvars.
 		UnhookConVarChange(g_hAutoTeamBalance, CvarsHookLocked);
 		UnhookConVarChange(g_hLimitTeams, CvarsHookLocked);
+		UnhookConVarChange(g_hIgnoreRoundWinConditions, CvarsHookLocked);
+		UnhookConVarChange(g_hTeammatesAreEnemies, CvarsHookLocked);
 		//UnhookConVarChange(g_hRestartGame, CvarsHookRestartGame);
 		
 		UnhookConVarChange(CVAR_VOL, VolEnabledChanged);
@@ -1083,12 +1110,17 @@ Action CvarsHook(bool unhook = false)
 	// Set locked cvars to their locked value.
 	SetConVarInt(g_hAutoTeamBalance, CVARS_AUTOTEAMBALANCE_LOCKED);
 	SetConVarInt(g_hLimitTeams, CVARS_LIMITTEAMS_LOCKED);
+	SetConVarInt(g_hIgnoreRoundWinConditions, CVARS_IGNORE_ROUND_WIN_CONDITIONS_LOCKED);
+	SetConVarInt(g_hTeammatesAreEnemies, CVARS_TEAMMATES_ARE_ENEMIES_LOCKED);
 	
 	// Hook cvar to prevent it from changing.
 	HookConVarChange(g_hAutoTeamBalance, CvarsHookLocked);
 	HookConVarChange(g_hLimitTeams, CvarsHookLocked);
+	HookConVarChange(g_hIgnoreRoundWinConditions, CvarsHookLocked);
+	HookConVarChange(g_hTeammatesAreEnemies, CvarsHookLocked);
 	//HookConVarChange(g_hRestartGame, CvarsHookRestartGame);
-	
+	GetConVarString(g_hMp_Maxmoney, g_sValue_Mp_Maxmoney, sizeof(g_sValue_Mp_Maxmoney));
+	GetConVarString(g_hSv_Disable_Radar, g_sValue_Sv_Disable_Radar, sizeof(g_sValue_Sv_Disable_Radar));
 	HookConVarChange(CVAR_VOL, VolEnabledChanged);
 }
 
@@ -1131,6 +1163,53 @@ public void CvarsHookLocked(Handle cvar, const char[] oldvalue, const char[] new
 		
 		// If log flag check fails, then don't log.
 		LogEvent(false, LogType_Normal, LOG_CORE_EVENTS, LogModule_Cvars, "Cvar Locked", "Cvar \"mp_limitteams\" was reverted back to %d.", CVARS_LIMITTEAMS_LOCKED);
+	}
+	// If cvar is mp_ignore_round_win_conditions, then continue.
+	else if (cvar == g_hIgnoreRoundWinConditions)
+	{
+		if(!g_bcvar)
+		{
+			// If plugin is reverting value, then stop.
+			if (StringToInt(newvalue) == CVARS_IGNORE_ROUND_WIN_CONDITIONS_LOCKED)
+			{
+				return;
+			}
+		
+			// Revert to locked value.
+			SetConVarInt(g_hIgnoreRoundWinConditions, CVARS_IGNORE_ROUND_WIN_CONDITIONS_LOCKED);
+		
+			// If log flag check fails, then don't log.
+			LogEvent(false, LogType_Normal, LOG_CORE_EVENTS, LogModule_Cvars, "Cvar Locked", "Cvar \"mp_ignore_round_win_conditions\" was reverted back to %d.", CVARS_IGNORE_ROUND_WIN_CONDITIONS_LOCKED);
+		}
+		else
+		{
+			// If plugin is reverting value, then stop.
+			if (StringToInt(newvalue) == CVARS_IGNORE_ROUND_WIN_CONDITIONS_ZOMBIESPAWNED_LOCKED)
+			{
+				return;
+			}
+		
+			// Revert to locked value.
+			SetConVarInt(g_hIgnoreRoundWinConditions, CVARS_IGNORE_ROUND_WIN_CONDITIONS_ZOMBIESPAWNED_LOCKED);
+		
+			// If log flag check fails, then don't log.
+			LogEvent(false, LogType_Normal, LOG_CORE_EVENTS, LogModule_Cvars, "Cvar Locked", "Cvar \"mp_ignore_round_win_conditions\" was reverted back to %d.", CVARS_IGNORE_ROUND_WIN_CONDITIONS_ZOMBIESPAWNED_LOCKED);
+		}
+	}
+	// If cvar is mp_teammates_are_enemies, then continue.
+	else if (cvar == g_hTeammatesAreEnemies)
+	{
+		// If plugin is reverting value, then stop.
+		if (StringToInt(newvalue) == CVARS_TEAMMATES_ARE_ENEMIES_LOCKED)
+		{
+			return;
+		}
+		
+		// Revert to locked value.
+		SetConVarInt(g_hTeammatesAreEnemies, CVARS_TEAMMATES_ARE_ENEMIES_LOCKED);
+		
+		// If log flag check fails, then don't log.
+		LogEvent(false, LogType_Normal, LOG_CORE_EVENTS, LogModule_Cvars, "Cvar Locked", "Cvar \"mp_teammates_are_enemies\" was reverted back to %d.", CVARS_TEAMMATES_ARE_ENEMIES_LOCKED);
 	}
 }
 

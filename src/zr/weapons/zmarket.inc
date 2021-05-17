@@ -392,6 +392,8 @@ bool ZMarketMenuMain(int client)
 	
 	// Create menu handle.
 	Handle menu_zmarket_main = CreateMenu(ZMarketMenuMainHandle);
+	SendConVarValue(client, g_hMp_Maxmoney, "0");
+	SendConVarValue(client, g_hSv_Disable_Radar, "1");
 	
 	// Set translation target as client.
 	SetGlobalTransTarget(client);
@@ -503,6 +505,11 @@ public int ZMarketMenuMainHandle(Handle menu_zmarket_main, MenuAction action, in
 	{
 		CloseHandle(menu_zmarket_main);
 	}
+	if (action == MenuAction_Cancel && slot != MenuCancel_ExitBack && IsValidClient(client))
+	{
+		SendConVarValue(client, g_hMp_Maxmoney, g_sValue_Mp_Maxmoney);
+		SendConVarValue(client, g_hSv_Disable_Radar, g_sValue_Sv_Disable_Radar);
+	}
 }
 
 /**
@@ -514,7 +521,9 @@ bool ZMarketMenuLoadout(int client)
 {
 	// Create menu handle.
 	Handle menu_zmarket_loadout = CreateMenu(ZMarketMenuLoadoutHandle);
-	
+	SendConVarValue(client, g_hMp_Maxmoney, "0");
+	SendConVarValue(client, g_hSv_Disable_Radar, "1");
+
 	// Transfer cookie values into an array.
 	char rebuyweapons[WeaponsSlot][WEAPONS_MAX_LENGTH];
 	ZMarketCookiesToArray(client, rebuyweapons, WEAPONS_SLOTS_MAX + 1, sizeof(rebuyweapons[]));
@@ -611,6 +620,11 @@ public int ZMarketMenuLoadoutHandle(Handle menu_zmarket_loadout, MenuAction acti
 	{
 		CloseHandle(menu_zmarket_loadout);
 	}
+	if (action == MenuAction_Cancel && slot != MenuCancel_ExitBack && IsValidClient(client))
+	{
+		SendConVarValue(client, g_hMp_Maxmoney, g_sValue_Mp_Maxmoney);
+		SendConVarValue(client, g_hSv_Disable_Radar, g_sValue_Sv_Disable_Radar);
+	}
 }
 
 /**
@@ -622,6 +636,8 @@ void ZMarketMenuTypes(int client)
 {
 	// Create menu handle.
 	Handle menu_zmarket_types = CreateMenu(ZMarketMenuTypesHandle);
+	SendConVarValue(client, g_hMp_Maxmoney, "0");
+	SendConVarValue(client, g_hSv_Disable_Radar, "1");
 	
 	// Set translation target as client.
 	SetGlobalTransTarget(client);
@@ -708,6 +724,11 @@ public int ZMarketMenuTypesHandle(Handle menu_zmarket_types, MenuAction action, 
 	{
 		CloseHandle(menu_zmarket_types);
 	}
+	if (action == MenuAction_Cancel && slot != MenuCancel_ExitBack && IsValidClient(client))
+	{
+		SendConVarValue(client, g_hMp_Maxmoney, g_sValue_Mp_Maxmoney);
+		SendConVarValue(client, g_hSv_Disable_Radar, g_sValue_Sv_Disable_Radar);
+	}
 }
 
 /**
@@ -719,6 +740,8 @@ void ZMarketMenuTypeWeapons(int client)
 {
 	// Create menu handle.
 	Handle menu_zmarket_typeweapons = CreateMenu(ZMarketMenuTypeWeaponsHandle);
+	SendConVarValue(client, g_hMp_Maxmoney, "0");
+	SendConVarValue(client, g_hSv_Disable_Radar, "1");
 	
 	// Get name of current weapon type.
 	char typename[WEAPONS_MAX_LENGTH];
@@ -874,6 +897,11 @@ public int ZMarketMenuTypeWeaponsHandle(Handle menu_zmarket_typeweapons, MenuAct
 	else if (action == MenuAction_End)
 	{
 		CloseHandle(menu_zmarket_typeweapons);
+	}
+	if (action == MenuAction_Cancel && slot != MenuCancel_ExitBack && IsValidClient(client))
+	{
+		SendConVarValue(client, g_hMp_Maxmoney, g_sValue_Mp_Maxmoney);
+		SendConVarValue(client, g_hSv_Disable_Radar, g_sValue_Sv_Disable_Radar);
 	}
 }
 

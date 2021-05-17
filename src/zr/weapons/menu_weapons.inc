@@ -45,6 +45,8 @@ bool WeaponsMenuMain(int client)
 	
 	// Create menu handle.
 	Handle menu_weapons_main = CreateMenu(WeaponsMenuMainHandle);
+	SendConVarValue(client, g_hMp_Maxmoney, "0");
+	SendConVarValue(client, g_hSv_Disable_Radar, "1");
 	
 	SetGlobalTransTarget(client);
 	
@@ -112,6 +114,11 @@ public int WeaponsMenuMainHandle(Handle menu_weapons_main, MenuAction action, in
 	{
 		CloseHandle(menu_weapons_main);
 	}
+	if (action == MenuAction_Cancel && slot != MenuCancel_ExitBack && IsValidClient(client))
+	{
+		SendConVarValue(client, g_hMp_Maxmoney, g_sValue_Mp_Maxmoney);
+		SendConVarValue(client, g_hSv_Disable_Radar, g_sValue_Sv_Disable_Radar);
+	}
 }
 
 /**
@@ -123,6 +130,8 @@ void WeaponsMenuTypes(int client)
 {
 	// Create menu handle.
 	Handle menu_weapons_types = CreateMenu(WeaponsMenuTypesHandle);
+	SendConVarValue(client, g_hMp_Maxmoney, "0");
+	SendConVarValue(client, g_hSv_Disable_Radar, "1");
 	
 	SetGlobalTransTarget(client);
 	
@@ -193,6 +202,11 @@ public int WeaponsMenuTypesHandle(Handle menu_weapons_types, MenuAction action, 
 	{
 		CloseHandle(menu_weapons_types);
 	}
+	if (action == MenuAction_Cancel && slot != MenuCancel_ExitBack && IsValidClient(client))
+	{
+		SendConVarValue(client, g_hMp_Maxmoney, g_sValue_Mp_Maxmoney);
+		SendConVarValue(client, g_hSv_Disable_Radar, g_sValue_Sv_Disable_Radar);
+	}
 }
 
 /**
@@ -204,6 +218,8 @@ void WeaponsMenuTypeWeapons(int client)
 {
 	// Create menu handle.
 	Handle menu_weapons_typeweapons = CreateMenu(WeaponsMenuTypeWeaponsHandle);
+	SendConVarValue(client, g_hMp_Maxmoney, "0");
+	SendConVarValue(client, g_hSv_Disable_Radar, "1");
 	
 	char typename[WEAPONS_MAX_LENGTH];
 	RestrictWeaponTypeGetName(g_iWeaponsCurType[client], typename, sizeof(typename));
@@ -348,6 +364,11 @@ public int WeaponsMenuTypeWeaponsHandle(Handle menu_weapons_typeweapons, MenuAct
 	{
 		CloseHandle(menu_weapons_typeweapons);
 	}
+	if (action == MenuAction_Cancel && slot != MenuCancel_ExitBack && IsValidClient(client))
+	{
+		SendConVarValue(client, g_hMp_Maxmoney, g_sValue_Mp_Maxmoney);
+		SendConVarValue(client, g_hSv_Disable_Radar, g_sValue_Sv_Disable_Radar);
+	}
 }
 
 /**
@@ -359,7 +380,9 @@ void WeaponsMenuZMarket(int client)
 {
 	// Create menu handle.
 	Handle menu_weapons_market = CreateMenu(WeaponsMenuZMarketHandle);
-	
+	SendConVarValue(client, g_hMp_Maxmoney, "0");
+	SendConVarValue(client, g_hSv_Disable_Radar, "1");
+
 	// Get "yes" or "no" settings from respective cvar.
 	char buyzonesetting[MENU_LINE_SMALL_LENGTH];
 	ConfigBoolToSetting(g_hCvarsList.g_bCVAR_WEAPONS_ZMARKET_BUYZONE, buyzonesetting, sizeof(buyzonesetting), true, client);
@@ -422,5 +445,10 @@ public int WeaponsMenuZMarketHandle(Handle menu_weapons_market, MenuAction actio
 	else if (action == MenuAction_End)
 	{
 		CloseHandle(menu_weapons_market);
+	}
+	if (action == MenuAction_Cancel && slot != MenuCancel_ExitBack && IsValidClient(client))
+	{
+		SendConVarValue(client, g_hMp_Maxmoney, g_sValue_Mp_Maxmoney);
+		SendConVarValue(client, g_hSv_Disable_Radar, g_sValue_Sv_Disable_Radar);
 	}
 }
