@@ -5,7 +5,7 @@
 * Sorry for my English.
 
 * Author Greyscale | Richard Helgeby and Franc1sco franug, Anubis Edition
-* Version = 3.7-A Anubis edition
+* Version = 3.7.1 Anubis edition
 
 ### Update
 
@@ -73,6 +73,10 @@ Added the possibility to change the location of the system's sound folders.
 ### Global multiplier for knockback.
 "zr_knockback_multiplier"		"1.0",			"Global multiplier for knockback. Default '1.0'"
 
+### Zr Fuego Slow
+"zr_damage_fire_slow_speed", "1",							"Slow zombie on fire.[Dependency: Human Attribute 'has_napalm']"
+"zr_damage_fire_movement_speed", "0.5",							"Speed Applied to the zombie on fire. [Dependency: zr_damage_fire_slow_speed]"
+
 ### Please remove these plugins if you use them, to test!
 
 * autozspawn.smx
@@ -83,6 +87,7 @@ Added the possibility to change the location of the system's sound folders.
 * zspawnfranug.smx
 * zr_no_alone_infection.smx
 * noblock.smx
+* fuego_slow.smx
 
 ### Warm up in CS:GO
 If you want warm up round work perfectly, Use `optional plugins/ze_warmup.smx`
