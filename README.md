@@ -1,4 +1,11 @@
 # sm-zombiereloaded-3-Franug-Anubis-Edition
+
+* Obs. I will discontinue this version as I am contributing to the official version of Zombie: Relopad. I will not delete it for now but I will not release any more updates.
+
+Oficial Link-1 : https://github.com/Stewart-Anubis/sm-zombiereloaded-3-Franug-Edition
+Oficial Link-1 : https://github.com/Franc1sco/sm-zombiereloaded-3-Franug-Edition
+
+
 ### Improved version of zombiereloaded plugin with support for CS:GO and CS:S
  
 * Test & Compile, SouceMod 1.10.0-6492
